@@ -1,0 +1,27 @@
+@import 'styles/variaveis';
+@import 'styles/breakpoints';
+
+.menu {
+  display: flex;
+  padding: 10px $padding-horizontal;
+
+  &__list {
+    align-items: center;
+    display: flex;
+  }
+  &__link {
+    list-style-type: none;
+    padding: 0 20px;
+    a {
+      color: $dark;
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s ease;
+      &:hover {
+        color: $dark-grey;
+      }
+    }
+  }
+}
