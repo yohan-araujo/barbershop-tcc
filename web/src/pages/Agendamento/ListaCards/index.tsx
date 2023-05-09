@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Card from 'components/CardCopia';
+import Card from 'components/Card';
 import { IProfissional } from 'types/IProfissional';
 
 interface ListaCardProps {

@@ -14,22 +14,26 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
   return (
     <div
       className={`${
-        aoSelecionado ? 'bg-blue-200' : 'bg-white'
-      } border border-gray-300 rounded-lg p-4 shadow-sm hover:bg-gray-100 cursor-pointer flex items-center`}
+        aoSelecionado ? 'bg-blue-100 border-2 border-green-500' : 'bg-gray-200'
+      } w-72 rounded-lg`}
       onClick={handleClick}
     >
-      <div className="flex-shrink-0">
+      <div
+        className={`${
+          aoSelecionado ? 'bg-green-500' : 'bg-gray-200'
+        } rounded-lg flex justify-center`}
+      >
         <img
-          className="h-12 w-12 rounded-full"
+          className="w-24 rounded-full relative bottom-[-3rem]"
           src={profissional.enderecoFoto}
           alt={profissional.nome}
         />
       </div>
-      <div className="ml-4">
-        <h4 className="text-lg font-medium text-gray-900">
+      <div className="bg-white shadow-md rounded-sm pt-24 pb-10 text-center h-80">
+        <h4 className="text-lg font-medium text-blue-300 mb-2">
           {profissional.nome}
         </h4>
-        <p className="text-sm font-medium text-gray-500">
+        <p className="text-3xl font-medium text-black px-4 py-6">
           {profissional.descricao}
         </p>
       </div>
