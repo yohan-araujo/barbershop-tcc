@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import styles from './Navbar.module.scss';
 
 const Navbar = () => {
   const rotas = [
@@ -26,11 +25,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={styles.menu}>
-      <ul className={styles.menu__list}>
+    <nav className="flex items-center py-2 px-4 bg-gray-700">
+      <ul className="flex items-center">
         {rotas.map((rota, index) => (
-          <li key={index} className={styles.menu__link}>
-            <Link to={rota.to}>{rota.label}</Link>
+          <li key={index} className="list-none mr-6">
+            <Link
+              to={rota.to}
+              className="text-white text-lg font-bold no-underline hover:text-gray-800 transition duration-200 ease-in-out"
+            >
+              {rota.label}
+            </Link>
           </li>
         ))}
       </ul>

@@ -1,5 +1,3 @@
-import styles from './InputPadrao.module.scss';
-
 interface InputProps {
   labelTexto: string;
   placeholder: string;
@@ -18,14 +16,14 @@ const InputPadrao = ({
   onChange,
 }: InputProps) => {
   return (
-    <div className={styles.inputPadrao}>
-      <label>{labelTexto}</label>
+    <div className="flex flex-col mb-4 text-center">
+      <label className="font-bold mb-2">{labelTexto}</label>
       <input
         type={tipo}
         placeholder={placeholder}
         name={nome}
         value={value}
-        className={styles.inputPadrao__text}
+        className="py-2 px-4 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-crimson focus:border-crimson"
         onChange={onChange}
       />
     </div>

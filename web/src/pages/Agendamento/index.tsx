@@ -1,4 +1,3 @@
-import styles from './Agendamento.module.scss';
 import InputPadrao from 'components/InputPadrao';
 import ButtonPadrao from 'components/ButtonPadrao';
 import ListaCards from './ListaCards';
@@ -10,16 +9,18 @@ const Agendamento = () => {
   return (
     <>
       <section>
-        <form action="" className={styles.formAgendamento}>
+        <form action="" className="flex flex-col">
           <h1>Seleção do Profissional</h1>
 
           <ListaCards profissionais={profissionais} />
 
-          <h1>Seleção de serviço</h1>
+          <h1 className="mx-5 text-center text-5xl mt-5">Seleção de serviço</h1>
 
           <TabelaServicos servicos={servicos} />
 
-          <h1>Seleção de data e hora</h1>
+          <h1 className="mx-5 text-center text-5xl mt-5">
+            Seleção de data e hora
+          </h1>
 
           <InputPadrao
             labelTexto="Data"

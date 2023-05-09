@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from '../../pages/Home';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
-import Navbar from '../Navbar';
 import PaginaPadrao from '../PaginaPadrao';
 import Login from 'pages/Login';
 import CadastroProfissional from 'pages/CadastroProfissional';
@@ -13,7 +12,6 @@ export default function AppRouter() {
     <main>
       <main>
         <Router>
-          <Navbar />
           <Routes>
             <Route path="/" element={<PaginaPadrao />}>
               <Route index element={<Home />} />

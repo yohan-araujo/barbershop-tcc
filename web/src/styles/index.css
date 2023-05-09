@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f6f6f6;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Italiana', serif;
+}
+
+#root > main.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

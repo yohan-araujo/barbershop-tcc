@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import styles from './TabelaServicos.module.scss';
 import { IServico } from 'types/IServico';
 
 interface TabelaServicosProps {
@@ -25,20 +24,22 @@ const TabelaServicos = ({ servicos }: TabelaServicosProps) => {
   }, [servicoSelecionado]);
 
   return (
-    <table className={styles.tabelaServicos}>
-      <thead className={styles.tabelaServicos__headTabela}>
-        <tr>
-          <th>Tipo</th>
-          <th>Preço</th>
-          <th>Selecionar</th>
+    <table className="w-full border-collapse">
+      <thead>
+        <tr className="bg-gray-200">
+          <th className="border p-2 text-left">Tipo</th>
+          <th className="border p-2 text-left">Preço</th>
+          <th className="border p-2 text-left">Selecionar</th>
         </tr>
       </thead>
-      <tbody className={styles.tabelaServicos__bodyTabela}>
+      <tbody>
         {servicos.map((servico) => (
-          <tr key={servico.id}>
-            <td>{servico.tipo}</td>
-            <td>R$ {servico.preco.toFixed(2)}</td>
-            <td>
+          <tr key={servico.id} className="hover:bg-gray-100">
+            <td className="border p-2 text-left">{servico.tipo}</td>
+            <td className="border p-2 text-left">
+              R$ {servico.preco.toFixed(2)}
+            </td>
+            <td className="border p-2 text-left">
               <input
                 type="checkbox"
                 value={servico.id}

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import styles from './ListaCards.module.scss';
-import Card from 'components/Card';
+import Card from 'components/CardCopia';
 import { IProfissional } from 'types/IProfissional';
 
 interface ListaCardProps {
@@ -28,7 +27,7 @@ const ListaCards = ({ profissionais }: ListaCardProps) => {
   };
 
   return (
-    <div className={styles.listaCards}>
+    <div className="flex justify-around mt-32 flex-wrap">
       {profissionais.map((profissional) => (
         <Card
           key={profissional.id}
