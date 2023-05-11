@@ -25,8 +25,14 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="flex items-center py-2 px-4 bg-gray-700">
-      <ul className="flex items-center">
+    <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
+      <ul className="flex items-center justify-start text-white">
+        <li>icone</li>
+        <li>
+          <p className="font-normal">Barbershop</p>
+        </li>
+      </ul>
+      <ul className="flex items-center justify-center flex-grow">
         {rotas.map((rota, index) => (
           <li key={index} className="list-none mr-6">
             <Link
@@ -37,6 +43,18 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
+      </ul>
+      <ul className="flex items-center justify-end">
+        <li className="list-none">
+          <button className="bg-[#0064B1] text-white font-bold py-2 px-4 rounded-full mr-2">
+            Login
+          </button>
+        </li>
+        <li className="list-none">
+          <button className="bg-[#0064B1] text-white font-bold py-2 px-4 rounded-full">
+            Cadastrar
+          </button>
+        </li>
       </ul>
     </nav>
   );
