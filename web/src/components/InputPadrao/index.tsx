@@ -17,13 +17,15 @@ const InputPadrao = ({
 }: InputProps) => {
   return (
     <div className="flex flex-col mb-4 text-center">
-      <label className="font-bold mb-2">{labelTexto}</label>
+      <label className="mb-2 font-face-montserrat text-white">
+        {labelTexto}
+      </label>
       <input
         type={tipo}
         placeholder={placeholder}
         name={nome}
         value={value}
-        className="py-2 px-4 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-crimson focus:border-crimson"
+        className="py-2 px-4 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-crimson focus:border-crimson font-face-montserrat"
         onChange={onChange}
       />
     </div>

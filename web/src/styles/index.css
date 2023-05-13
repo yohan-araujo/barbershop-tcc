@@ -1,6 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+
+@font-face {
+  font-family: 'Playlist';
+  src: local('Playlist'),
+    url('../fonts/Playlist/Playlist_Script.otf') format('truetype');
+  font-weight: normal;
+}
+
+.font-face-playlist {
+  font-family: 'Playlist';
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: local('Montserrat'),
+    url('../fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
+.font-face-montserrat {
+  font-family: 'Montserrat';
+}
+
+html {
+  font-family: 'Montserrat';
+}
 
 body {
   background-color: #f6f6f6;

@@ -6,7 +6,7 @@ interface PropsButton {
 const ButtonPadrao = ({ texto, onClick }: PropsButton) => {
   return (
     <button
-      className="inline-block px-4 py-2 text-lg font-bold text-white bg-crimson rounded-md cursor-pointer hover:bg-darkred focus:outline-none focus:ring-4 focus:ring-brown disabled:opacity-50 disabled:cursor-not-allowed"
+      className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat hover:bg-blue-300 border border-[#0064B1] focus:border-blue-950"
       onClick={onClick}
     >
       {texto}
