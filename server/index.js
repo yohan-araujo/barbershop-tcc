@@ -92,6 +92,13 @@ app.get('/api/getProfissionais', (req, res) => {
   });
 });
 
+app.get('/api/getServicos', (req, res) => {
+  const selectServicos = 'SELECT * FROM ser_servicos';
+  db.query(selectServicos, (err, result) => {
+    res.send(result);
+  });
+});
+
 app.listen(3001, () => {
   console.log('Server rodando em localhost:3001');
 });

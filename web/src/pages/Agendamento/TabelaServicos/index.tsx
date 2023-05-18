@@ -34,15 +34,15 @@ const TabelaServicos = ({ servicos }: TabelaServicosProps) => {
       </thead>
       <tbody>
         {servicos.map((servico) => (
-          <tr key={servico.id} className="hover:bg-gray-100">
-            <td className="border p-2 text-left">{servico.tipo}</td>
+          <tr key={servico.ser_id} className="hover:bg-gray-100">
+            <td className="border p-2 text-left">{servico.ser_tipo}</td>
             <td className="border p-2 text-left">
-              R$ {servico.preco.toFixed(2)}
+              R$ {servico.ser_preco.toFixed(2)}
             </td>
             <td className="border p-2 text-left">
               <input
                 type="checkbox"
-                value={servico.id}
+                value={servico.ser_id}
                 checked={servicoSelecionado === servico}
                 onChange={() => handleServicoSelecionado(servico)}
               />
