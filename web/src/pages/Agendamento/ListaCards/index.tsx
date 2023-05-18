@@ -14,7 +14,7 @@ const ListaCards = ({ profissionais }: ListaCardProps) => {
     setCardSelecionadoID((cardSelecionadoAntigo) => {
       const novoCardSelecionado = cardSelecionadoAntigo === id ? null : id;
       const profissionalSelecionado = profissionais.find(
-        (profissional) => profissional.id === novoCardSelecionado
+        (profissional) => profissional.usu_id === novoCardSelecionado
       );
       if (profissionalSelecionado === undefined) {
         console.log('Profissional selecionado: Nenhum');
@@ -30,10 +30,10 @@ const ListaCards = ({ profissionais }: ListaCardProps) => {
     <div className="flex justify-around mt-32 flex-wrap">
       {profissionais.map((profissional) => (
         <Card
-          key={profissional.id}
+          key={profissional.usu_id}
           profissional={profissional}
-          aoSelecionado={profissional.id === cardSelecionadoID}
-          onClick={() => handleCardClick(profissional.id)}
+          aoSelecionado={profissional.usu_id === cardSelecionadoID}
+          onClick={() => handleCardClick(profissional.usu_id)}
         />
       ))}
     </div>

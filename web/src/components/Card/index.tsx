@@ -8,7 +8,7 @@ interface CardProps {
 
 const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
   const handleClick = () => {
-    onClick(profissional.id);
+    onClick(profissional.usu_id);
   };
 
   return (
@@ -25,16 +25,16 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
       >
         <img
           className="w-24 rounded-full relative bottom-[-3rem]"
-          src={profissional.enderecoFoto}
-          alt={profissional.nome}
+          src={profissional.usu_foto}
+          alt={profissional.usu_nomeCompleto}
         />
       </div>
       <div className="bg-white shadow-md rounded-sm pt-24 pb-10 text-center h-80">
         <h4 className="text-lg font-medium text-blue-300 mb-2">
-          {profissional.nome}
+          {profissional.usu_nomeCompleto}
         </h4>
         <p className="text-3xl font-medium text-black px-4 py-6">
-          {profissional.descricao}
+          {profissional.pro_descricao}
         </p>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const CadastroUsuario = () => {
+  //useStates do Cadastro
   const [usu_nomeCompleto, setUsuNome] = useState('');
   const [usu_email, setUsuEmail] = useState('');
   const [usu_foto, setUsuFoto] = useState('');
@@ -11,25 +12,28 @@ const CadastroUsuario = () => {
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [cli_tel, setCliTel] = useState('');
 
-  if (usu_senha === usu_confirmaSenha) {
-  }
-
-  const submitUsuario = () => {
-    axios
-      .post('http://localhost:3001/api/insertUsuarioCliente', {
-        usu_nomeCompleto: usu_nomeCompleto,
-        usu_email: usu_email,
-        usu_senha: usu_senha,
-        usu_foto: usu_foto,
-        cli_tel: cli_tel,
-      })
-      .then((response) => {
-        alert(response);
-      });
-  };
+  //Outros
+  const [mensagemErro, setMensagemErro] = useState<Boolean>();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (usu_senha !== usu_confirmaSenha) {
+      setMensagemErro(false);
+      return;
+    } else {
+      axios
+        .post('http://localhost:3001/api/insertUsuarioCliente', {
+          usu_nomeCompleto: usu_nomeCompleto,
+          usu_email: usu_email,
+          usu_senha: usu_senha,
+          usu_foto: usu_foto,
+          cli_tel: cli_tel,
+        })
+        .then((response) => {
+          setMensagemErro(true);
+        });
+    }
+
     console.log('submit', {
       usu_nomeCompleto,
       usu_email,
@@ -109,8 +113,16 @@ const CadastroUsuario = () => {
                 setUsuConfirmarSenha(e.target.value);
               }}
             />
+
+            {mensagemErro === false && (
+              <p className="text-red-700">As senhas não coincidem.</p>
+            )}
+
+            {mensagemErro === true && (
+              <p className="text-green-700">Usuário cadastrado com sucesso!</p>
+            )}
           </div>
-          <ButtonPadrao texto="Cadastrar" onClick={submitUsuario} />
+          <ButtonPadrao texto="Cadastrar" tipo="submit" />
         </div>
       </form>
     </section>

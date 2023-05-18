@@ -1,6 +1,6 @@
 export interface IProfissional {
-  id: number;
-  nome: string;
-  enderecoFoto: string;
-  descricao: string;
+  usu_id: number;
+  usu_nomeCompleto: string;
+  usu_foto: string;
+  pro_descricao: string;
 }

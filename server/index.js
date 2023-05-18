@@ -91,6 +91,14 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
   );
 });
 
+app.get('/api/getProfissionais', (req, res) => {
+  const selectProfissionais =
+    'SELECT p.usu_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
+  db.query(selectProfissionais, (err, result) => {
+    res.send(result);
+  });
+});
+
 app.listen(3001, () => {
   console.log('Server rodando na porta 3001');
 });
