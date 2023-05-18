@@ -1,17 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql');
+const db = require('./database');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-const db = mysql.createConnection({
-  user: 'root',
-  host: 'localhost',
-  password: '1234',
-  database: 'projeto_interdisciplinar',
-});
 
 app.post('/api/insertUsuarioCliente', (req, res) => {
   const usu_nomeCompleto = req.body.usu_nomeCompleto;
@@ -100,5 +93,5 @@ app.get('/api/getProfissionais', (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('Server rodando na porta 3001');
+  console.log('Server rodando em localhost:3001');
 });
