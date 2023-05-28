@@ -3,6 +3,7 @@
 # dependencies
 web/node_modules
 server/node_modules
+server/database.js
 web/build
 /.pnp
 .pnp.js
@@ -24,4 +25,3 @@ yarn-debug.log*
 yarn-error.log*
 
 
-server/database.js

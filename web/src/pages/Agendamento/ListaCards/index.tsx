@@ -4,9 +4,13 @@ import { IProfissional } from 'types/IProfissional';
 
 interface ListaCardProps {
   profissionais: IProfissional[];
+  onProfissionalSelecionado: (profissional: IProfissional) => void;
 }
 
-const ListaCards = ({ profissionais }: ListaCardProps) => {
+const ListaCards = ({
+  profissionais,
+  onProfissionalSelecionado,
+}: ListaCardProps) => {
   const [cardSelecionadoID, setCardSelecionadoID] = useState<number | null>(
     null
   );
@@ -20,6 +24,7 @@ const ListaCards = ({ profissionais }: ListaCardProps) => {
         console.log('Profissional selecionado: Nenhum');
       } else {
         console.log('Profissional selecionado:', profissionalSelecionado);
+        onProfissionalSelecionado(profissionalSelecionado);
       }
 
       return novoCardSelecionado;
@@ -30,7 +35,7 @@ const ListaCards = ({ profissionais }: ListaCardProps) => {
     <div className="flex justify-around mt-32 flex-wrap">
       {profissionais.map((profissional) => (
         <Card
-          key={profissional.usu_id}
+          key={profissional.pro_id}
           profissional={profissional}
           aoSelecionado={profissional.usu_id === cardSelecionadoID}
           onClick={() => handleCardClick(profissional.usu_id)}

@@ -3,9 +3,13 @@ import { IServico } from 'types/IServico';
 
 interface TabelaServicosProps {
   servicos: IServico[];
+  onServicoSelecionado: (servico: IServico) => void;
 }
 
-const TabelaServicos = ({ servicos }: TabelaServicosProps) => {
+const TabelaServicos = ({
+  servicos,
+  onServicoSelecionado,
+}: TabelaServicosProps) => {
   const [servicoSelecionado, setServicoSelecionado] = useState<IServico | null>(
     null
   );
@@ -17,6 +21,7 @@ const TabelaServicos = ({ servicos }: TabelaServicosProps) => {
       }
       return servico;
     });
+    onServicoSelecionado(servico);
   };
 
   useEffect(() => {

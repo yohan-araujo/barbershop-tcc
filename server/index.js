@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Funcoes mais importantes
 app.post('/api/insertUsuarioCliente', (req, res) => {
   const usu_nomeCompleto = req.body.usu_nomeCompleto;
   const usu_email = req.body.usu_email;
@@ -39,6 +40,30 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
         }
         res.send('Usuário cadastrado com sucesso');
       });
+    }
+  );
+});
+
+app.post('/api/insertAgendamento', (req, res) => {
+  const { data, hora, profissionalID, servicoID } = req.body;
+  const clienteID = 1;
+
+  const insertAgendamento =
+    'INSERT INTO age_agendamento (age_data, age_hora, cli_id, pro_id, ser_id) VALUES (?,?,?,?,?)';
+
+  db.query(
+    insertAgendamento,
+    [data, hora, clienteID, profissionalID, servicoID],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+
+      res
+        .status(200)
+        .json({ success: true, message: 'Agendamento inserido com sucesso!' });
     }
   );
 });
@@ -86,7 +111,7 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
 
 app.get('/api/getProfissionais', (req, res) => {
   const selectProfissionais =
-    'SELECT p.usu_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
+    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
   db.query(selectProfissionais, (err, result) => {
     res.send(result);
   });
@@ -98,6 +123,29 @@ app.get('/api/getServicos', (req, res) => {
     res.send(result);
   });
 });
+
+app.post('/api/loginUsuario', (req, res) => {
+  const { usu_email, usu_senha } = req.body;
+
+  const selectLogin =
+    'SELECT usu_email, usu_senha FROM usu_usuarios WHERE usu_email = ? AND usu_senha = ?';
+
+  db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }
+
+    if (result.length > 0) {
+      res.json({ success: true, message: 'Foi' });
+    } else {
+      res.json({ success: false, message: 'Falhou' });
+    }
+  });
+});
+
+// Mostrando onde o servidor esta rodando!
 
 app.listen(3001, () => {
   console.log('Server rodando em localhost:3001');
