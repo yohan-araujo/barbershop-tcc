@@ -32,7 +32,7 @@ const ListaCards = ({
   };
 
   return (
-    <div className="flex justify-around mt-32 flex-wrap">
+    <div className="flex justify-around mt-8 flex-wrap">
       {profissionais.map((profissional) => (
         <Card
           key={profissional.pro_id}

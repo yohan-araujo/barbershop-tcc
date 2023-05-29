@@ -1,3 +1,5 @@
+// Importacoes
+
 import ButtonPadrao from 'components/ButtonPadrao';
 import ListaCards from './ListaCards';
 import TabelaServicos from './TabelaServicos';
@@ -8,11 +10,12 @@ import { IServico } from 'types/IServico';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'react-time-picker';
 import { format } from 'date-fns';
-
+import Modal from 'components/Modal';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-time-picker/dist/TimePicker.css';
 
 const Agendamento = () => {
+  // useStates ou Variaveis
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
@@ -23,6 +26,8 @@ const Agendamento = () => {
     useState<IServico | null>(null);
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
+  const [etapaAtual, setEtapaAtual] = useState(1);
+  const [modalAberta, setModalAberta] = useState(false);
 
   //Trazendo informação do banco
   useEffect(() => {
@@ -62,6 +67,26 @@ const Agendamento = () => {
   const handleTimeChange = (time: string | null) => {
     setHoraSelecionada(time);
   };
+
+  // Colocando modal para funcionar
+
+  const handleAbrirModal = () => {
+    setModalAberta(true);
+  };
+
+  const handleFecharModal = () => {
+    setModalAberta(false);
+  };
+
+  const handleProximaEtapa = () => {
+    setEtapaAtual((etapaAnterior) => etapaAnterior + 1);
+  };
+
+  const handleEtapaAnterior = () => {
+    setEtapaAtual((etapaAnterior) => etapaAnterior - 1);
+  };
+
+  // Submit no form todo
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Servico Selecionado: ', servicoSelecionado);
@@ -91,45 +116,61 @@ const Agendamento = () => {
         });
     }
   };
+
+  useEffect(() => {
+    handleAbrirModal();
+  }, []);
+
   return (
     <>
       <section>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <h1 className="mx-5 text-center text-5xl mt-5">
-            Seleção do Profissional
-          </h1>
+          {modalAberta && (
+            <Modal aoFechar={handleFecharModal} etapaAtual={etapaAtual}>
+              {etapaAtual === 1 && (
+                <>
+                  <ListaCards
+                    profissionais={listaProfissionais}
+                    onProfissionalSelecionado={handleProfissionalSelecionado}
+                  />
+                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                </>
+              )}
 
-          <ListaCards
-            profissionais={listaProfissionais}
-            onProfissionalSelecionado={handleProfissionalSelecionado}
-          />
+              {etapaAtual === 2 && (
+                <>
+                  <TabelaServicos
+                    servicos={listaServicos}
+                    onServicoSelecionado={handleServicoSelecionado}
+                  />
+                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                </>
+              )}
 
-          <h1 className="mx-5 text-center text-5xl mt-5">Seleção de serviço</h1>
+              {etapaAtual === 3 && (
+                <>
+                  <label>Data</label>
+                  <DatePicker
+                    selected={dataSelecionada}
+                    onChange={handleDateChange}
+                    da
+                    teFormat="dd/MM/yyyy"
+                  />
 
-          <TabelaServicos
-            servicos={listaServicos}
-            onServicoSelecionado={handleServicoSelecionado}
-          />
-
-          <h1 className="mx-5 text-center text-5xl mt-5">
-            Seleção de data e hora
-          </h1>
-
-          <label>Data</label>
-          <DatePicker
-            selected={dataSelecionada}
-            onChange={handleDateChange}
-            dateFormat="dd/MM/yyyy"
-          />
-
-          <label>Hora:</label>
-          <TimePicker
-            value={horaSelecionada}
-            onChange={handleTimeChange}
-            disableClock={true}
-          />
-
-          <ButtonPadrao texto="Agendar!" tipo="submit" />
+                  <label>Hora:</label>
+                  <TimePicker
+                    value={horaSelecionada}
+                    onChange={handleTimeChange}
+                    disableClock={true}
+                  />
+                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                  <ButtonPadrao texto="Agendar!" tipo="submit" />
+                </>
+              )}
+            </Modal>
+          )}
         </form>
       </section>
     </>
