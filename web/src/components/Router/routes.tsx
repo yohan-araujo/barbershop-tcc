@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import Home from '../../pages/Home';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
@@ -8,6 +13,7 @@ import CadastroProfissional from 'pages/CadastroProfissional';
 // import Footer from 'components/Footer';
 
 export default function AppRouter() {
+  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
   return (
     <main>
       <main>

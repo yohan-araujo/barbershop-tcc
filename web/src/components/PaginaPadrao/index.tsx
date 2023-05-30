@@ -7,7 +7,7 @@ const PaginaPadrao = ({ children }: { children?: React.ReactNode }) => {
     <>
       <Navbar />
       <header>
-        <div>Aqui vai todo o conteúdo que uma pagina tera como padrao</div>
+        <div>pagina mestra</div>
       </header>
       <div>
         <Outlet />

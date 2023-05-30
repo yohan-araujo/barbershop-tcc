@@ -2,12 +2,15 @@ import InputPadrao from 'components/InputPadrao';
 import ButtonPadrao from 'components/ButtonPadrao';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [usu_email, setUsuEmail] = useState('');
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmaSenha] = useState('');
   const [senhaInvalida, setSenhaInvalida] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -26,7 +29,9 @@ const Login = () => {
         if (response.data.success) {
           // Login bem-sucedido
           console.log(response.data.message);
-          // Redirecionar ou realizar outras ações
+          sessionStorage.setItem('usuarioLogado', 'true');
+          // Redirecionar
+          navigate('/');
         } else {
           // Login falhou
           console.log(response.data.message);

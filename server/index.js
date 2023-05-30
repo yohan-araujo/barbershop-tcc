@@ -1,10 +1,20 @@
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const db = require('./database');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+//Inicializando sessoes
+app.use(
+  session({
+    secret: 'D3m!R7j#K6g@U1wP', // Uma chave secreta para assinar o cookie de sessão (deve ser mantida em segredo)
+    resave: false, // Evita regravar a sessão no armazenamento se não houver alterações
+    saveUninitialized: false, // Evita salvar uma sessão não inicializada no armazenamento
+  })
+);
 
 // Funcoes mais importantes
 app.post('/api/insertUsuarioCliente', (req, res) => {
@@ -139,6 +149,8 @@ app.post('/api/loginUsuario', (req, res) => {
 
     if (result.length > 0) {
       res.json({ success: true, message: 'Foi' });
+      req.session.usuarioId = result[0].usu_id;
+      req.session.usuarioTipo = result[0].usu_tipo;
     } else {
       res.json({ success: false, message: 'Falhou' });
     }
