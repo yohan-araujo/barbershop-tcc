@@ -135,7 +135,7 @@ const Agendamento = () => {
                 profissionais={listaProfissionais}
                 onProfissionalSelecionado={handleProfissionalSelecionado}
               />
-              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+
               <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
             </>
           )}

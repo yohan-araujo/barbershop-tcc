@@ -64,7 +64,7 @@ const Navbar = () => {
               alt="Foto do usuário"
               className="w-8 h-8 rounded-full"
             />
-            <ButtonPadrao texto="sair" onClick={handleLogout} />
+            <ButtonPadrao texto="Sair" onClick={handleLogout} />
           </li>
         ) : (
           <li className="list-none">

@@ -2,12 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const db = require('./database');
+const crypto = require('crypto');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-//Inicializando sessoes
 app.use(
   session({
     secret: 'D3m!R7j#K6g@U1wP', // Uma chave secreta para assinar o cookie de sessão (deve ser mantida em segredo)
@@ -16,14 +15,20 @@ app.use(
   })
 );
 
-// Funcoes mais importantes
+function gerarChaveAleatoria() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+// Requisicoes
 app.post('/api/insertUsuarioCliente', (req, res) => {
-  const usu_nomeCompleto = req.body.usu_nomeCompleto;
-  const usu_email = req.body.usu_email;
-  const usu_senha = req.body.usu_senha;
-  const usu_foto = req.body.usu_foto;
-  const usu_tipo = 'C';
-  const cli_tel = req.body.cli_tel;
+  const {
+    usu_nomeCompleto,
+    usu_email,
+    usu_senha,
+    usu_foto,
+    usu_tipo,
+    cli_tel,
+  } = req.body;
 
   const insertUsuario =
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
@@ -79,12 +84,14 @@ app.post('/api/insertAgendamento', (req, res) => {
 });
 
 app.post('/api/insertUsuarioProfissional', (req, res) => {
-  const usu_nomeCompleto = req.body.usu_nomeCompleto;
-  const usu_email = req.body.usu_email;
-  const usu_senha = req.body.usu_senha;
-  const usu_foto = req.body.usu_foto;
-  const usu_tipo = 'P';
-  const pro_descricao = req.body.pro_descricao;
+  const {
+    usu_nomeCompleto,
+    usu_email,
+    usu_senha,
+    usu_foto,
+    usu_tipo,
+    pro_descricao,
+  } = req.body;
 
   const insertUsuario =
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
@@ -134,6 +141,8 @@ app.get('/api/getServicos', (req, res) => {
   });
 });
 
+//Inicializando sessoes
+
 app.post('/api/loginUsuario', (req, res) => {
   const { usu_email, usu_senha } = req.body;
 
@@ -149,6 +158,17 @@ app.post('/api/loginUsuario', (req, res) => {
 
     if (result.length > 0) {
       const usuario = result[0];
+
+      const chaveAleatoria = gerarChaveAleatoria();
+
+      app.use(
+        session({
+          secret: chaveAleatoria,
+          resave: false,
+          saveUninitialized: false,
+        })
+      );
+
       res.json({
         success: true,
         message: 'Login bem-sucedido',
