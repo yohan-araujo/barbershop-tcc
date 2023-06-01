@@ -10,7 +10,6 @@ import { IServico } from 'types/IServico';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'react-time-picker';
 import { format } from 'date-fns';
-import Modal from 'components/Modal';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-time-picker/dist/TimePicker.css';
 
@@ -27,7 +26,6 @@ const Agendamento = () => {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
   const [etapaAtual, setEtapaAtual] = useState(1);
-  const [modalAberta, setModalAberta] = useState(false);
 
   //Trazendo informação do banco
   useEffect(() => {
@@ -68,15 +66,7 @@ const Agendamento = () => {
     setHoraSelecionada(time);
   };
 
-  // Colocando modal para funcionar
-
-  const handleAbrirModal = () => {
-    setModalAberta(true);
-  };
-
-  const handleFecharModal = () => {
-    setModalAberta(false);
-  };
+  // Colocando o stepper para funcionar
 
   const handleProximaEtapa = () => {
     setEtapaAtual((etapaAnterior) => etapaAnterior + 1);
@@ -89,10 +79,6 @@ const Agendamento = () => {
   // Submit no form todo
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Servico Selecionado: ', servicoSelecionado);
-    console.log('Profissional selecionado:', profissionalSelecionado);
-    console.log('Data:', dataSelecionada);
-    console.log('Hora:', horaSelecionada);
 
     if (
       dataSelecionada &&
@@ -117,63 +103,76 @@ const Agendamento = () => {
     }
   };
 
-  useEffect(() => {
-    handleAbrirModal();
-  }, []);
-
   return (
-    <>
-      <section>
+    <section className="container mx-auto px-4 py-8">
+      <div className="max-w-2xl mx-auto bg-slate-300">
+        <div className="flex items-center justify-between mb-4">
+          <div className="text-sm">Etapa {etapaAtual} de 3</div>
+        </div>
+
+        <div className="flex justify-between mb-8">
+          <div
+            className={`w-1/3 h-4 rounded-full ${
+              etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
+            }`}
+          ></div>
+          <div
+            className={`w-1/3 h-4 rounded-full ${
+              etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
+            }`}
+          ></div>
+          <div
+            className={`w-1/3 h-4 rounded-full ${
+              etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
+            }`}
+          ></div>
+        </div>
+
         <form onSubmit={handleSubmit} className="flex flex-col">
-          {modalAberta && (
-            <Modal aoFechar={handleFecharModal} etapaAtual={etapaAtual}>
-              {etapaAtual === 1 && (
-                <>
-                  <ListaCards
-                    profissionais={listaProfissionais}
-                    onProfissionalSelecionado={handleProfissionalSelecionado}
-                  />
-                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
-                </>
-              )}
+          {etapaAtual === 1 && (
+            <>
+              <ListaCards
+                profissionais={listaProfissionais}
+                onProfissionalSelecionado={handleProfissionalSelecionado}
+              />
+              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+              <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+            </>
+          )}
 
-              {etapaAtual === 2 && (
-                <>
-                  <TabelaServicos
-                    servicos={listaServicos}
-                    onServicoSelecionado={handleServicoSelecionado}
-                  />
-                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
-                </>
-              )}
+          {etapaAtual === 2 && (
+            <>
+              <TabelaServicos
+                servicos={listaServicos}
+                onServicoSelecionado={handleServicoSelecionado}
+              />
+              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+              <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+            </>
+          )}
 
-              {etapaAtual === 3 && (
-                <>
-                  <label>Data</label>
-                  <DatePicker
-                    selected={dataSelecionada}
-                    onChange={handleDateChange}
-                    da
-                    teFormat="dd/MM/yyyy"
-                  />
+          {etapaAtual === 3 && (
+            <>
+              <label>Data</label>
+              <DatePicker
+                selected={dataSelecionada}
+                onChange={handleDateChange}
+                dateFormat="dd/MM/yyyy"
+              />
 
-                  <label>Hora:</label>
-                  <TimePicker
-                    value={horaSelecionada}
-                    onChange={handleTimeChange}
-                    disableClock={true}
-                  />
-                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                  <ButtonPadrao texto="Agendar!" tipo="submit" />
-                </>
-              )}
-            </Modal>
+              <label>Hora:</label>
+              <TimePicker
+                value={horaSelecionada}
+                onChange={handleTimeChange}
+                disableClock={true}
+              />
+              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+              <ButtonPadrao texto="Agendar!" tipo="submit" />
+            </>
           )}
         </form>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

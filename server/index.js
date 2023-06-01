@@ -138,7 +138,7 @@ app.post('/api/loginUsuario', (req, res) => {
   const { usu_email, usu_senha } = req.body;
 
   const selectLogin =
-    'SELECT usu_email, usu_senha FROM usu_usuarios WHERE usu_email = ? AND usu_senha = ?';
+    'SELECT usu_id, usu_tipo, usu_nomeCompleto, usu_foto FROM usu_usuarios WHERE usu_email = ? AND usu_senha = ?';
 
   db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
     if (err) {
@@ -148,11 +148,21 @@ app.post('/api/loginUsuario', (req, res) => {
     }
 
     if (result.length > 0) {
-      res.json({ success: true, message: 'Foi' });
-      req.session.usuarioId = result[0].usu_id;
-      req.session.usuarioTipo = result[0].usu_tipo;
+      const usuario = result[0];
+      res.json({
+        success: true,
+        message: 'Login bem-sucedido',
+        usuarioId: usuario.usu_id,
+        usuarioTipo: usuario.usu_tipo,
+        usuarioNome: usuario.usu_nomeCompleto,
+        usuarioFoto: usuario.usu_foto,
+      });
+      req.session.usuarioId = usuario.usu_id;
+      req.session.usuarioTipo = usuario.usu_tipo;
+      req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
+      req.session.usuarioFoto = usuario.usu_foto;
     } else {
-      res.json({ success: false, message: 'Falhou' });
+      res.json({ success: false, message: 'Login falhou' });
     }
   });
 });
