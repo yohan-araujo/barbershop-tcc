@@ -10,6 +10,11 @@ import Agendamento from '../../pages/Agendamento';
 import PaginaPadrao from '../PaginaPadrao';
 import Login from 'pages/Login';
 import CadastroProfissional from 'pages/CadastroProfissional';
+import Sobre from 'pages/Sobre';
+import PerfilCliente from 'pages/PerfilCliente';
+import PerfilProfissional from 'pages/PerfilProfissional';
+import PerfilAdministrador from 'pages/PerfilAdministrador';
+import CadastroServico from 'pages/CadastroServico';
 // import Footer from 'components/Footer';
 
 export default function AppRouter() {
@@ -26,8 +31,19 @@ export default function AppRouter() {
                 path="cadastroProfissional"
                 element={<CadastroProfissional />}
               />
+              <Route path="cadastroServico" element={<CadastroServico />} />
               <Route path="agendamento" element={<Agendamento />} />
               <Route path="login" element={<Login />} />
+              <Route path="sobre" element={<Sobre />} />
+              <Route path="perfilCliente" element={<PerfilCliente />} />
+              <Route
+                path="perfilProfissional"
+                element={<PerfilProfissional />}
+              />
+              <Route
+                path="perfilAdministrador"
+                element={<PerfilAdministrador />}
+              />
             </Route>
           </Routes>
         </Router>

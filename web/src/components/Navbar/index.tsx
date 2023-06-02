@@ -1,16 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
+import DropdownSelect from 'components/Select';
+import { UserCircle, UserPlus, FilePlus } from 'lucide-react';
+import { IOption } from 'types/IOptions';
+import { useState, useEffect } from 'react';
 
 const Navbar = () => {
+  const [dropdownOptions, setDropdownOptions] = useState<IOption[]>([]);
+
   const rotas = [
     {
       label: 'Home',
       to: '/',
     },
     {
-      label: 'Cadastro 2',
-      to: '/cadastroProfissional',
+      label: 'Sobre',
+      to: '/sobre',
     },
     {
       label: 'Agendamento',
@@ -19,6 +25,7 @@ const Navbar = () => {
   ];
 
   const usuarioLogado = sessionStorage.getItem('usuarioLogado') === 'true';
+  const usuarioTipo = sessionStorage.getItem('usuarioTipo');
   const usuarioFoto = sessionStorage.getItem('usuarioFoto');
   const usuarioNome = sessionStorage.getItem('usuarioNome');
   const navigate = useNavigate();
@@ -33,14 +40,68 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const handleOptionChange = (option: IOption | null) => {
+    if (option) {
+      console.log('Opção selecionada:', option);
+      // Implemente a lógica para redirecionar para a página correspondente à opção selecionada
+    }
+  };
+
+  useEffect(() => {
+    let options: IOption[] = [];
+
+    if (usuarioTipo === 'C') {
+      options = [
+        {
+          value: '1',
+          label: 'Perfil',
+          to: '/perfilCliente',
+          icon: <UserCircle />,
+        },
+      ];
+    } else if (usuarioTipo === 'P') {
+      options = [
+        {
+          value: '1',
+          label: 'Perfil',
+          to: '/perfilProfissional',
+          icon: <UserCircle />,
+        },
+      ];
+    } else if (usuarioTipo === 'A') {
+      options = [
+        {
+          value: '1',
+          label: 'Perfil',
+          to: '/perfilAdministrador',
+          icon: <UserCircle />,
+        },
+        {
+          value: '2',
+          label: 'Cadastrar Profissional',
+          to: '/cadastroProfissional',
+          icon: <UserPlus />,
+        },
+        {
+          value: '3',
+          label: 'Cadastrar Serviço',
+          to: '/cadastroServico',
+          icon: <FilePlus />,
+        },
+      ];
+    }
+
+    setDropdownOptions(options);
+  }, [usuarioTipo]);
+
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
-      <ul className="flex items-center justify-start text-white">
+      <div className="flex items-center justify-start text-white">
         <img src={barbershopLogo} alt="logo do barbershop" />
-        <li className="ml-7">
-          <p className="font-face-playlist font-normal text-4xl">Barbershop</p>
-        </li>
-      </ul>
+        <p className="ml-7 font-face-playlist font-normal text-4xl">
+          Barbershop
+        </p>
+      </div>
       <ul className="flex items-center justify-center flex-grow">
         {rotas.map((rota, index) => (
           <li key={index} className="list-none mr-6">
@@ -53,17 +114,22 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-      <ul className="flex items-center justify-end ">
+      <ul className="flex items-center justify-end">
         {usuarioLogado ? (
-          <li className="list-none">
-            <p className="text-white text-2xl font-medium mr-2">
+          <li className="list-none flex items-center">
+            <DropdownSelect
+              options={dropdownOptions}
+              onChange={handleOptionChange}
+            />
+            <p className="text-white text-2xl font-medium mr-2 font-face-montserrat">
               {usuarioNome}
             </p>
             <img
               src={usuarioFoto ?? ''}
               alt="Foto do usuário"
-              className="w-8 h-8 rounded-full"
+              className="w-12 h-12 rounded-full mr-2"
             />
+
             <ButtonPadrao texto="Sair" onClick={handleLogout} />
           </li>
         ) : (
