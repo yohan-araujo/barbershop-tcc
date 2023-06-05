@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ButtonPadrao from 'components/ButtonPadrao';
 import TabelaAgendamento from './TabelaAgendamento';
+import { useNavigate } from 'react-router-dom';
 
 const ConfirmarServico = () => {
   const [listaAgendamentos, setListaAgendamentos] = useState<IAgendamento[]>(
@@ -49,9 +50,11 @@ const ConfirmarServico = () => {
       });
   };
 
+  const navigate = useNavigate();
   return (
     <section>
       <div>
+        <ButtonPadrao texto="Voltar" onClick={() => navigate(-2)} />
         <TabelaAgendamento
           agendamentos={listaAgendamentos}
           onAgendamentoSelecionado={handleAgendamentoSelecionado}

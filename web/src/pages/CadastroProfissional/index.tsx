@@ -11,9 +11,6 @@ const CadastroProfissional = () => {
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [pro_descricao, setProDescricao] = useState('');
 
-  if (usu_senha === usu_confirmaSenha) {
-  }
-
   const submitProfissional = () => {
     axios
       .post('http://localhost:3001/api/insertUsuarioProfissional', {

@@ -21,7 +21,7 @@ const PerfilProfissional = () => {
 
       <div className="mb-6">
         <ButtonPadrao texto="Editar agenda" />
-        <Link to="confirmarServico">
+        <Link to="/confirmarServico">
           <ButtonPadrao texto="Confirmar Horario" />
         </Link>
       </div>

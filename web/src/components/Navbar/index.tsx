@@ -40,7 +40,6 @@ const Navbar = () => {
 
     // Redirecionar para a página de login ou qualquer outra página desejada após o logout
     navigate('/');
-    window.location.reload();
   };
 
   const handleOptionChange = (option: IOption | null) => {

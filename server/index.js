@@ -83,6 +83,24 @@ app.post('/api/insertAgendamento', (req, res) => {
   );
 });
 
+app.post('/api/insertServico', (req, res) => {
+  const { tipo, preco } = req.body;
+
+  const insertServico =
+    'INSERT INTO ser_servicos (ser_tipo, ser_preco) VALUES (?,?)';
+
+  db.query(insertServico, [tipo, preco], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }
+    res
+      .status(200)
+      .json({ success: true, message: 'Servico inserido com sucesso' });
+  });
+});
+
 app.post('/api/insertUsuarioProfissional', (req, res) => {
   const {
     usu_nomeCompleto,
