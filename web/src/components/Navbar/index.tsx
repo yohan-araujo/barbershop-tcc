@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 import DropdownSelect from 'components/Select';
-import { UserCircle, UserPlus, FilePlus } from 'lucide-react';
+import { UserCircle, UserPlus, FilePlus, CheckCircle } from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
 
@@ -66,6 +66,12 @@ const Navbar = () => {
           label: 'Perfil',
           to: '/perfilProfissional',
           icon: <UserCircle />,
+        },
+        {
+          value: '2',
+          label: 'Confirmar Servico',
+          to: 'perfilProfissional/confirmarServico',
+          icon: <CheckCircle />,
         },
       ];
     } else if (usuarioTipo === 'A') {

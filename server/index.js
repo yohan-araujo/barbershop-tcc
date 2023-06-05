@@ -64,11 +64,11 @@ app.post('/api/insertAgendamento', (req, res) => {
   const clienteID = 1;
 
   const insertAgendamento =
-    'INSERT INTO age_agendamento (age_data, age_hora, cli_id, pro_id, ser_id) VALUES (?,?,?,?,?)';
+    'INSERT INTO age_agendamento (age_data, age_hora, cli_id, pro_id, ser_id, age_status) VALUES (?,?,?,?,?,?)';
 
   db.query(
     insertAgendamento,
-    [data, hora, clienteID, profissionalID, servicoID],
+    [data, hora, clienteID, profissionalID, servicoID, false],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -138,6 +138,35 @@ app.get('/api/getServicos', (req, res) => {
   const selectServicos = 'SELECT * FROM ser_servicos';
   db.query(selectServicos, (err, result) => {
     res.send(result);
+  });
+});
+
+app.get('/api/getAgendamentos', (req, res) => {
+  const selectAgendamento =
+    'SELECT age.age_id, age.age_data, age.age_hora, usu.usu_nomeCompleto, ser.ser_tipo, age.age_status FROM age_agendamento  age JOIN cli_clientes  cli ON age.cli_id = cli.cli_id JOIN usu_usuarios  usu ON cli.usu_id = usu.usu_id JOIN ser_servicos  ser ON age.ser_id = ser.ser_id;';
+  db.query(selectAgendamento, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.put('/api/atualizarStatusAgendamentos', (req, res) => {
+  const { agendamentosSelecionados } = req.body;
+
+  const updateStatusQuery = `
+    UPDATE age_agendamento
+    SET age_status = true
+    WHERE age_id IN (${agendamentosSelecionados.join(',')});
+  `;
+
+  db.query(updateStatusQuery, (err, result) => {
+    if (err) {
+      // Tratar o erro de atualização
+      console.error(err);
+      res.status(500).send('Erro ao atualizar o status dos agendamentos.');
+    } else {
+      // Agendamentos atualizados com sucesso
+      res.status(200).send('Status dos agendamentos atualizado com sucesso.');
+    }
   });
 });
 

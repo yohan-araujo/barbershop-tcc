@@ -21,8 +21,9 @@ const Agendamento = () => {
   const [profissionalSelecionado, setProfissionalSelecionado] =
     useState<IProfissional | null>(null);
   const [listaServicos, setListaServicos] = useState<IServico[]>([]);
-  const [servicoSelecionado, setServicolSelecionado] =
-    useState<IServico | null>(null);
+  const [servicoSelecionado, setServicoSelecionado] = useState<IServico | null>(
+    null
+  );
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
   const [etapaAtual, setEtapaAtual] = useState(1);
@@ -51,7 +52,7 @@ const Agendamento = () => {
   };
 
   const handleServicoSelecionado = (servico: IServico) => {
-    setServicolSelecionado(servico);
+    setServicoSelecionado(servico);
   };
 
   // Colocando a data e hora pra funcionar
