@@ -43,7 +43,7 @@ const Navbar = () => {
   const handleOptionChange = (option: IOption | null) => {
     if (option) {
       console.log('Opção selecionada:', option);
-      // Implemente a lógica para redirecionar para a página correspondente à opção selecionada
+      navigate(option.to);
     }
   };
 
@@ -70,7 +70,7 @@ const Navbar = () => {
         {
           value: '2',
           label: 'Confirmar Servico',
-          to: 'perfilProfissional/confirmarServico',
+          to: '/perfilProfissional/confirmarServico',
           icon: <CheckCircle />,
         },
       ];
