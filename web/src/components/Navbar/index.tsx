@@ -33,11 +33,14 @@ const Navbar = () => {
   const handleLogout = () => {
     // Limpar dados de sessão ou estado relacionados ao login
     sessionStorage.removeItem('usuarioLogado');
+    sessionStorage.removeItem('usuarioId');
     sessionStorage.removeItem('usuarioFoto');
     sessionStorage.removeItem('usuarioNome');
+    sessionStorage.removeItem('usuarioTipo');
 
     // Redirecionar para a página de login ou qualquer outra página desejada após o logout
     navigate('/');
+    window.location.reload();
   };
 
   const handleOptionChange = (option: IOption | null) => {
@@ -70,7 +73,7 @@ const Navbar = () => {
         {
           value: '2',
           label: 'Confirmar Servico',
-          to: '/perfilProfissional/confirmarServico',
+          to: '/confirmarServico',
           icon: <CheckCircle />,
         },
       ];
@@ -100,6 +103,7 @@ const Navbar = () => {
     setDropdownOptions(options);
   }, [usuarioTipo]);
 
+  console.log(sessionStorage.getItem('usuarioTipo'));
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
       <div className="flex items-center justify-start text-white">

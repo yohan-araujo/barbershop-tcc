@@ -1,26 +1,26 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import Home from '../../pages/Home';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
 import PaginaPadrao from '../PaginaPadrao';
-import Login from 'pages/Login';
-import CadastroProfissional from 'pages/CadastroProfissional';
-import Sobre from 'pages/Sobre';
-import PerfilCliente from 'pages/PerfilCliente';
-import PerfilProfissional from 'pages/PerfilProfissional';
-import PerfilAdministrador from 'pages/PerfilAdministrador';
-import CadastroServico from 'pages/CadastroServico';
-import ConfirmarServico from 'pages/ConfirmarServico';
-import Pagina404 from 'pages/Pagina404';
+import Login from '../../pages/Login';
+import CadastroProfissional from '../../pages/CadastroProfissional';
+import Sobre from '../../pages/Sobre';
+import PerfilCliente from '../../pages/PerfilCliente';
+import PerfilProfissional from '../../pages/PerfilProfissional';
+import PerfilAdministrador from '../../pages/PerfilAdministrador';
+import CadastroServico from '../../pages/CadastroServico';
+import ConfirmarServico from '../../pages/ConfirmarServico';
+import Pagina404 from '../../pages/Pagina404';
 
 export default function AppRouter() {
+  const usuarioTipo = sessionStorage.getItem('usuarioTipo');
   const usuarioLogado = sessionStorage.getItem('usuarioLogado');
-  const tipoUsuario = sessionStorage.getItem('usuarioTipo');
-
-  // Função auxiliar para verificar se o tipo de usuário é igual ao esperado
-  const verificaTipoUsuario = (tipoEsperado: string) => {
-    return tipoUsuario === tipoEsperado;
-  };
 
   return (
     <Router>
@@ -28,58 +28,50 @@ export default function AppRouter() {
         <Route path="/" element={<PaginaPadrao />}>
           <Route index element={<Home />} />
 
-          {/* Rota para usuários autenticados */}
-          {usuarioLogado && (
-            <>
-              {/* Rota para usuários com tipo 'C' (Cliente) */}
-              {verificaTipoUsuario('C') && (
-                <Route path="perfilCliente" element={<PerfilCliente />}>
-                  <Route index element={<PerfilCliente />} />
-                  <Route path="cadastroUsuario" element={<CadastroUsuario />} />
-                </Route>
-              )}
+          {/* Rotas do Cliente */}
+          <Route
+            path="perfilCliente"
+            element={usuarioTipo === 'C' ? <PerfilCliente /> : <Pagina404 />}
+          />
 
-              {/* Rota para usuários com tipo 'A' (Administrador) */}
-              {verificaTipoUsuario('A') && (
-                <Route
-                  path="perfilAdministrador"
-                  element={<PerfilAdministrador />}
-                >
-                  <Route index element={<PerfilAdministrador />} />
-                  <Route path="cadastroServico" element={<CadastroServico />} />
-                  <Route
-                    path="cadastroProfissional"
-                    element={<CadastroProfissional />}
-                  />
-                </Route>
-              )}
+          {/* Rotas do Profissional */}
+          <Route
+            path="perfilProfissional"
+            element={
+              usuarioTipo === 'P' ? <PerfilProfissional /> : <Pagina404 />
+            }
+          />
+          <Route
+            path="confirmarServico"
+            element={usuarioTipo === 'P' ? <ConfirmarServico /> : <Pagina404 />}
+          />
 
-              {/* Rota para usuários com tipo 'P' (Profissional) */}
-              {verificaTipoUsuario('P') && (
-                <Route
-                  path="perfilProfissional"
-                  element={<PerfilProfissional />}
-                >
-                  <Route index element={<PerfilProfissional />} />
-                  <Route
-                    path="confirmarServico"
-                    element={<ConfirmarServico />}
-                  />
-                  <Route
-                    path="cadastrarServico"
-                    element={<CadastroServico />}
-                  />
-                </Route>
-              )}
-            </>
-          )}
+          {/* Rotas do Administrador */}
+          <Route
+            path="perfilAdministrador"
+            element={
+              usuarioTipo === 'A' ? <PerfilAdministrador /> : <Pagina404 />
+            }
+          />
+          <Route
+            path="cadastroProfissional"
+            element={
+              usuarioTipo === 'A' ? <CadastroProfissional /> : <Pagina404 />
+            }
+          />
+          <Route
+            path="cadastroServico"
+            element={usuarioTipo === 'A' ? <CadastroServico /> : <Pagina404 />}
+          />
 
-          {/* Rota comum para todos os tipos de usuário */}
+          {/* Rotas do Gerais */}
+          <Route
+            path="cadastroUsuario"
+            element={usuarioLogado ? <Pagina404 /> : <CadastroUsuario />}
+          />
           <Route path="agendamento" element={<Agendamento />} />
           <Route path="login" element={<Login />} />
           <Route path="sobre" element={<Sobre />} />
-
-          {/* Rota para página 404 */}
           <Route path="*" element={<Pagina404 />} />
         </Route>
       </Routes>

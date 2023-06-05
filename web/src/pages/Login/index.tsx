@@ -38,6 +38,7 @@ const Login = () => {
           sessionStorage.setItem('usuarioFoto', usuarioFoto);
           // Redirecionar
           navigate('/');
+          window.location.reload();
         } else {
           // Login falhou
           console.log(response.data.message);
