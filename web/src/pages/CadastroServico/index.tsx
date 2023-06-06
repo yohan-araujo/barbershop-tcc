@@ -7,7 +7,7 @@ const CadastroServico = () => {
   const [tipo, setTipo] = useState('');
   const [preco, setPreco] = useState('');
 
-  const submitProfissional = () => {
+  const submitServico = () => {
     axios
       .post('http://localhost:3001/api/insertServico', {
         tipo: tipo,
@@ -26,39 +26,58 @@ const CadastroServico = () => {
     });
   };
   return (
-    <section>
-      <form
-        className="flex flex-col items-center my-20"
-        onSubmit={handleSubmit}
-      >
-        <div className="text-center rounded-md bg-[#414141] p-14">
-          <h1 className="text-white text-4xl font-face-montserrat uppercase font-medium">
-            Cadastrar
-          </h1>
-          <div className="my-5">
-            <InputPadrao
-              labelTexto="Tipo"
-              placeholder="Digite o tipo do servico.."
-              tipo="text"
-              nome="ser_tipo"
-              onChange={(e) => {
-                setTipo(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Preco"
-              placeholder="Digite o preco do servico..."
-              tipo="text"
-              nome="ser_preco"
-              onChange={(e) => {
-                setPreco(e.target.value);
-              }}
+    <section className="flex items-center min-h-screen bg-gray-50">
+      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
+        <div className="flex flex-col md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2">
+            <img
+              className="object-cover w-full h-full"
+              src="https://source.unsplash.com/user/erondu/1600x900"
+              alt="img"
             />
           </div>
-          <ButtonPadrao texto="Cadastrar" onClick={submitProfissional} />
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <form action="" onSubmit={handleSubmit}>
+                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
+                  Cadastrar
+                </h1>
+
+                <div className="mt-12">
+                  <InputPadrao
+                    labelTexto="Tipo"
+                    placeholder="Digite o tipo do servico.."
+                    tipo="text"
+                    nome="ser_tipo"
+                    onChange={(e) => {
+                      setTipo(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Preco"
+                    placeholder="Digite o preco do servico..."
+                    tipo="text"
+                    nome="ser_preco"
+                    onChange={(e) => {
+                      setPreco(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="flex justify-center mt-12">
+                  <ButtonPadrao
+                    texto="Cadastrar"
+                    tipo="submit"
+                    onClick={submitServico}
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </section>
   );
 };

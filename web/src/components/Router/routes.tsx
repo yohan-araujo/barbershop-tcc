@@ -65,10 +65,7 @@ export default function AppRouter() {
           />
 
           {/* Rotas do Gerais */}
-          <Route
-            path="cadastroUsuario"
-            element={usuarioLogado ? <Pagina404 /> : <CadastroUsuario />}
-          />
+          <Route path="cadastroUsuario" element={<CadastroUsuario />} />
           <Route path="agendamento" element={<Agendamento />} />
           <Route path="login" element={<Login />} />
           <Route path="sobre" element={<Sobre />} />
