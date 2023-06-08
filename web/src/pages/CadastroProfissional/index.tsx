@@ -10,9 +10,7 @@ const CadastroProfissional = () => {
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [pro_descricao, setProDescricao] = useState('');
-
-  if (usu_senha === usu_confirmaSenha) {
-  }
+  const [pro_cor, setProCor] = useState('');
 
   const submitProfissional = () => {
     axios
@@ -22,6 +20,7 @@ const CadastroProfissional = () => {
         usu_senha: usu_senha,
         usu_foto: usu_foto,
         pro_descricao: pro_descricao,
+        pro_cor: pro_cor,
       })
       .then((response) => {
         alert(response);
@@ -36,83 +35,121 @@ const CadastroProfissional = () => {
       usu_senha,
       usu_foto,
       pro_descricao,
+      pro_cor,
     });
   };
 
   return (
-    <section>
-      <form
-        className="flex flex-col items-center my-20"
-        onSubmit={handleSubmit}
-      >
-        <div className="text-center rounded-md bg-[#414141] p-14">
-          <h1 className="text-white text-4xl font-face-montserrat uppercase font-medium">
-            Registrar
-          </h1>
-          <div className="my-5">
-            <InputPadrao
-              labelTexto="Nome"
-              placeholder="Digite aqui o seu nome.."
-              tipo="text"
-              nome="usu_nomeCompleto"
-              onChange={(e) => {
-                setUsuNome(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Email"
-              placeholder="Digite aqui o seu email..."
-              tipo="email"
-              nome="usu_email"
-              onChange={(e) => {
-                setUsuEmail(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Foto"
-              placeholder="Insira o endereço da foto"
-              tipo="text"
-              nome="usu_foto"
-              onChange={(e) => {
-                setUsuFoto(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Descricao"
-              placeholder="Digite aqui uma breve descrição..."
-              tipo="text"
-              nome="pro_descricao"
-              onChange={(e) => {
-                setProDescricao(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Senha"
-              placeholder="Digite aqui a sua senha..."
-              tipo="password"
-              nome="usu_senha"
-              onChange={(e) => {
-                setUsuSenha(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Confirmar senha"
-              placeholder="Confirme sua senha..."
-              tipo="password"
-              nome="usuSenhaConfirma"
-              onChange={(e) => {
-                setUsuConfirmarSenha(e.target.value);
-              }}
+    <section className="flex items-center min-h-screen bg-gray-50">
+      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
+        <div className="flex flex-col md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2">
+            <img
+              className="object-cover w-full h-full"
+              src="https://source.unsplash.com/user/erondu/1600x900"
+              alt="img"
             />
           </div>
-          <ButtonPadrao texto="Cadastrar" onClick={submitProfissional} />
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <form onSubmit={handleSubmit}>
+                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
+                  Cadastro
+                </h1>
+
+                <div className="mt-12">
+                  <InputPadrao
+                    labelTexto="Nome"
+                    placeholder="Digite aqui o seu nome.."
+                    tipo="text"
+                    nome="usu_nomeCompleto"
+                    onChange={(e) => {
+                      setUsuNome(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Email"
+                    placeholder="Digite aqui o seu email..."
+                    tipo="email"
+                    nome="usu_email"
+                    onChange={(e) => {
+                      setUsuEmail(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Foto"
+                    placeholder="Insira o endereço da foto"
+                    tipo="text"
+                    nome="usu_foto"
+                    onChange={(e) => {
+                      setUsuFoto(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Descricao"
+                    placeholder="Digite aqui uma breve descrição..."
+                    tipo="text"
+                    nome="pro_descricao"
+                    onChange={(e) => {
+                      setProDescricao(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Cor"
+                    placeholder="Digite aqui o codigo da cor.."
+                    tipo="text"
+                    nome="pro_cor"
+                    onChange={(e) => {
+                      setProCor(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Senha"
+                    placeholder="Digite aqui a sua senha..."
+                    tipo="password"
+                    nome="usu_senha"
+                    onChange={(e) => {
+                      setUsuSenha(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Confirmar senha"
+                    placeholder="Confirme sua senha..."
+                    tipo="password"
+                    nome="usuSenhaConfirma"
+                    onChange={(e) => {
+                      setUsuConfirmarSenha(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="flex justify-center mt-12">
+                  <ButtonPadrao
+                    texto="Cadastrar"
+                    tipo="submit"
+                    onClick={submitProfissional}
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </section>
   );
 };

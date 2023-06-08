@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 import DropdownSelect from 'components/Select';
-import { UserCircle, UserPlus, FilePlus } from 'lucide-react';
+import { UserCircle, UserPlus, FilePlus, CheckCircle } from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
 
@@ -33,8 +33,10 @@ const Navbar = () => {
   const handleLogout = () => {
     // Limpar dados de sessão ou estado relacionados ao login
     sessionStorage.removeItem('usuarioLogado');
+    sessionStorage.removeItem('usuarioId');
     sessionStorage.removeItem('usuarioFoto');
     sessionStorage.removeItem('usuarioNome');
+    sessionStorage.removeItem('usuarioTipo');
 
     // Redirecionar para a página de login ou qualquer outra página desejada após o logout
     navigate('/');
@@ -43,7 +45,7 @@ const Navbar = () => {
   const handleOptionChange = (option: IOption | null) => {
     if (option) {
       console.log('Opção selecionada:', option);
-      // Implemente a lógica para redirecionar para a página correspondente à opção selecionada
+      navigate(option.to);
     }
   };
 
@@ -66,6 +68,12 @@ const Navbar = () => {
           label: 'Perfil',
           to: '/perfilProfissional',
           icon: <UserCircle />,
+        },
+        {
+          value: '2',
+          label: 'Confirmar Servico',
+          to: '/confirmarServico',
+          icon: <CheckCircle />,
         },
       ];
     } else if (usuarioTipo === 'A') {
@@ -94,6 +102,7 @@ const Navbar = () => {
     setDropdownOptions(options);
   }, [usuarioTipo]);
 
+  console.log(sessionStorage.getItem('usuarioTipo'));
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
       <div className="flex items-center justify-start text-white">

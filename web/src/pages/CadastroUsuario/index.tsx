@@ -2,6 +2,7 @@ import ButtonPadrao from 'components/ButtonPadrao';
 import InputPadrao from 'components/InputPadrao';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CadastroUsuario = () => {
   //useStates do Cadastro
@@ -14,7 +15,7 @@ const CadastroUsuario = () => {
 
   //Outros
   const [mensagemErro, setMensagemErro] = useState<Boolean>();
-
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
@@ -31,6 +32,7 @@ const CadastroUsuario = () => {
         })
         .then((response) => {
           setMensagemErro(true);
+          navigate('/login');
         });
     }
 
@@ -44,87 +46,111 @@ const CadastroUsuario = () => {
   };
 
   return (
-    <section>
-      <form
-        className="flex flex-col items-center my-20"
-        onSubmit={handleSubmit}
-      >
-        <div className="text-center rounded-md bg-[#414141] p-14">
-          <h1 className="text-white text-4xl font-face-montserrat uppercase font-medium">
-            Registrar
-          </h1>
-          <div className="my-5">
-            <InputPadrao
-              labelTexto="Nome"
-              placeholder="Digite aqui o seu nome.."
-              tipo="text"
-              nome="usu_nomeCompleto"
-              onChange={(e) => {
-                setUsuNome(e.target.value);
-              }}
+    <section className="flex items-center min-h-screen bg-gray-50">
+      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
+        <div className="flex flex-col md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2">
+            <img
+              className="object-cover w-full h-full"
+              src="https://source.unsplash.com/user/erondu/1600x900"
+              alt="img"
             />
-
-            <InputPadrao
-              labelTexto="Email"
-              placeholder="Digite aqui o seu email..."
-              tipo="email"
-              nome="usu_email"
-              onChange={(e) => {
-                setUsuEmail(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Foto"
-              placeholder="Insira o endereço da foto"
-              tipo="text"
-              nome="usu_foto"
-              onChange={(e) => {
-                setUsuFoto(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Telefone"
-              placeholder="Digite aqui o seu telefone..."
-              tipo="text"
-              nome="cli_tel"
-              onChange={(e) => {
-                setCliTel(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Senha"
-              placeholder="Digite aqui a sua senha..."
-              tipo="password"
-              nome="usu_senha"
-              onChange={(e) => {
-                setUsuSenha(e.target.value);
-              }}
-            />
-
-            <InputPadrao
-              labelTexto="Confirmar senha"
-              placeholder="Confirme sua senha..."
-              tipo="password"
-              nome="usuSenhaConfirma"
-              onChange={(e) => {
-                setUsuConfirmarSenha(e.target.value);
-              }}
-            />
-
-            {mensagemErro === false && (
-              <p className="text-red-700">As senhas não coincidem.</p>
-            )}
-
-            {mensagemErro === true && (
-              <p className="text-green-700">Usuário cadastrado com sucesso!</p>
-            )}
           </div>
-          <ButtonPadrao texto="Cadastrar" tipo="submit" />
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <form action="" onSubmit={handleSubmit}>
+                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
+                  Cadastro
+                </h1>
+
+                <div className="mt-12">
+                  <InputPadrao
+                    labelTexto="Nome"
+                    placeholder="Digite aqui o seu nome.."
+                    tipo="text"
+                    nome="usu_nomeCompleto"
+                    onChange={(e) => {
+                      setUsuNome(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Email"
+                    placeholder="Digite aqui o seu email..."
+                    tipo="email"
+                    nome="usu_email"
+                    onChange={(e) => {
+                      setUsuEmail(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Foto"
+                    placeholder="Insira o endereço da foto"
+                    tipo="text"
+                    nome="usu_foto"
+                    onChange={(e) => {
+                      setUsuFoto(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Telefone"
+                    placeholder="Digite aqui o seu telefone..."
+                    tipo="text"
+                    nome="cli_tel"
+                    onChange={(e) => {
+                      setCliTel(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Senha"
+                    placeholder="Digite aqui a sua senha..."
+                    tipo="password"
+                    nome="usu_senha"
+                    onChange={(e) => {
+                      setUsuSenha(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Confirmar senha"
+                    placeholder="Confirme sua senha..."
+                    tipo="password"
+                    nome="usuSenhaConfirma"
+                    onChange={(e) => {
+                      setUsuConfirmarSenha(e.target.value);
+                    }}
+                  />
+                </div>
+                {mensagemErro === false && (
+                  <p className="flex justify-center font-face-montserrat text-red-700">
+                    As senhas não coincidem.
+                  </p>
+                )}
+
+                {mensagemErro === true && (
+                  <p className="flex justify-center font-face-montserrat text-green-700">
+                    Usuário cadastrado com sucesso!
+                  </p>
+                )}
+                <div className="flex justify-center mt-12">
+                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </section>
   );
 };
