@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { IProfissional } from 'types/IProfissional';
 
 interface CardProps {
@@ -14,14 +15,16 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
   return (
     <div
       className={`${
-        aoSelecionado ? 'bg-blue-100 border-2 border-green-500' : 'bg-gray-200'
+        aoSelecionado
+          ? 'bg-blue-100 border-2 border-green-500'
+          : `bg-blue-100 border-2`
       } w-72 rounded-lg`}
       onClick={handleClick}
     >
       <div
         className={`${
-          aoSelecionado ? 'bg-green-500' : 'bg-gray-200'
-        } rounded-lg flex justify-center`}
+          aoSelecionado ? 'bg-green-500' : `bg-[${profissional.pro_cor}]`
+        } rounded-t-lg flex justify-center`}
       >
         <img
           className="w-24 rounded-full relative bottom-[-3rem]"

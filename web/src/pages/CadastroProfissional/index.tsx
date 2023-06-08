@@ -10,6 +10,7 @@ const CadastroProfissional = () => {
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [pro_descricao, setProDescricao] = useState('');
+  const [pro_cor, setProCor] = useState('');
 
   const submitProfissional = () => {
     axios
@@ -19,6 +20,7 @@ const CadastroProfissional = () => {
         usu_senha: usu_senha,
         usu_foto: usu_foto,
         pro_descricao: pro_descricao,
+        pro_cor: pro_cor,
       })
       .then((response) => {
         alert(response);
@@ -33,6 +35,7 @@ const CadastroProfissional = () => {
       usu_senha,
       usu_foto,
       pro_descricao,
+      pro_cor,
     });
   };
 
@@ -49,7 +52,7 @@ const CadastroProfissional = () => {
           </div>
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
-              <form action="" onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
                   Cadastro
                 </h1>
@@ -96,6 +99,17 @@ const CadastroProfissional = () => {
                     nome="pro_descricao"
                     onChange={(e) => {
                       setProDescricao(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <InputPadrao
+                    labelTexto="Cor"
+                    placeholder="Digite aqui o codigo da cor.."
+                    tipo="text"
+                    nome="pro_cor"
+                    onChange={(e) => {
+                      setProCor(e.target.value);
                     }}
                   />
                 </div>

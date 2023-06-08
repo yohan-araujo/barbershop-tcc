@@ -101,14 +101,20 @@ app.post('/api/insertServico', (req, res) => {
 });
 
 app.post('/api/insertUsuarioProfissional', (req, res) => {
-  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto, pro_descricao } =
-    req.body;
+  const {
+    usu_nomeCompleto,
+    usu_email,
+    usu_senha,
+    usu_foto,
+    pro_descricao,
+    pro_cor,
+  } = req.body;
   usu_tipo = 'P';
 
   const insertUsuario =
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
   const insertUsuarioProfissional =
-    'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?)';
+    'INSERT INTO pro_profissionais (usu_id, pro_descricao, pro_cor) VALUES (?,?,?)';
 
   db.query(
     insertUsuario,
@@ -124,7 +130,7 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
 
       db.query(
         insertUsuarioProfissional,
-        [usu_id, pro_descricao],
+        [usu_id, pro_descricao, pro_cor],
         (err, result) => {
           if (err) {
             console.log(err);
@@ -140,7 +146,7 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
 
 app.get('/api/getProfissionais', (req, res) => {
   const selectProfissionais =
-    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
+    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao, p.pro_cor FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
   db.query(selectProfissionais, (err, result) => {
     res.send(result);
   });

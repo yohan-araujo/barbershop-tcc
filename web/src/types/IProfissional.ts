@@ -4,4 +4,5 @@ export interface IProfissional {
   usu_nomeCompleto: string;
   usu_foto: string;
   pro_descricao: string;
+  pro_cor: string;
 }

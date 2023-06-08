@@ -134,10 +134,12 @@ const Agendamento = () => {
           {etapaAtual === 1 && (
             <>
               {listaProfissionais.length > 0 ? (
-                <ListaCards
-                  profissionais={listaProfissionais}
-                  onProfissionalSelecionado={handleProfissionalSelecionado}
-                />
+                <div className="my-12">
+                  <ListaCards
+                    profissionais={listaProfissionais}
+                    onProfissionalSelecionado={handleProfissionalSelecionado}
+                  />
+                </div>
               ) : (
                 <p>Nenhum profissional registrado.</p>
               )}

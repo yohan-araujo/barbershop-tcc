@@ -1,5 +1,4 @@
 import { FacebookIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const LegendaServicos = () => {
   return (
