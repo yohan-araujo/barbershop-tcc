@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { IAgendamento } from 'types/IAgendamento';
 
 interface TabelaAgendamentoProps {

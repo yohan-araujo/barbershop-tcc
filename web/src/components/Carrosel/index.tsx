@@ -22,7 +22,7 @@ const Carrosel = ({ imagens }: CarroselProps) => {
 
   return (
     <div className="relative">
-      <div className="w-screen h-[28rem]">
+      <div className="max-w-screen h-[28rem]">
         <img
           src={imagens[indexAtual]}
           alt="Carousel"

@@ -18,7 +18,7 @@ const ListaCards = ({
     setCardSelecionadoID((cardSelecionadoAntigo) => {
       const novoCardSelecionado = cardSelecionadoAntigo === id ? null : id;
       const profissionalSelecionado = profissionais.find(
-        (profissional) => profissional.usu_id === novoCardSelecionado
+        (profissional) => profissional.pro_id === novoCardSelecionado
       );
       if (profissionalSelecionado === undefined) {
         console.log('Profissional selecionado: Nenhum');
@@ -37,8 +37,8 @@ const ListaCards = ({
         <Card
           key={profissional.pro_id}
           profissional={profissional}
-          aoSelecionado={profissional.usu_id === cardSelecionadoID}
-          onClick={() => handleCardClick(profissional.usu_id)}
+          aoSelecionado={profissional.pro_id === cardSelecionadoID}
+          onClick={() => handleCardClick(profissional.pro_id)}
         />
       ))}
     </div>

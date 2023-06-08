@@ -60,8 +60,7 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
 });
 
 app.post('/api/insertAgendamento', (req, res) => {
-  const { data, hora, profissionalID, servicoID } = req.body;
-  const clienteID = 1;
+  const { data, hora, profissionalID, servicoID, clienteID } = req.body;
 
   const insertAgendamento =
     'INSERT INTO age_agendamento (age_data, age_hora, cli_id, pro_id, ser_id, age_status) VALUES (?,?,?,?,?,?)';
@@ -102,14 +101,9 @@ app.post('/api/insertServico', (req, res) => {
 });
 
 app.post('/api/insertUsuarioProfissional', (req, res) => {
-  const {
-    usu_nomeCompleto,
-    usu_email,
-    usu_senha,
-    usu_foto,
-    usu_tipo,
-    pro_descricao,
-  } = req.body;
+  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto, pro_descricao } =
+    req.body;
+  usu_tipo = 'P';
 
   const insertUsuario =
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
@@ -193,9 +187,14 @@ app.put('/api/atualizarStatusAgendamentos', (req, res) => {
 app.post('/api/loginUsuario', (req, res) => {
   const { usu_email, usu_senha } = req.body;
 
-  const selectLogin =
-    'SELECT usu_id, usu_tipo, usu_nomeCompleto, usu_foto FROM usu_usuarios WHERE usu_email = ? AND usu_senha = ?';
-
+  const selectLogin = `
+  SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_foto, 
+    c.cli_id, a.adm_id
+  FROM usu_usuarios u
+  LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
+  LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
+  WHERE u.usu_email = ? AND u.usu_senha = ?;
+`;
   db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
     if (err) {
       console.log(err);
@@ -223,6 +222,7 @@ app.post('/api/loginUsuario', (req, res) => {
         usuarioTipo: usuario.usu_tipo,
         usuarioNome: usuario.usu_nomeCompleto,
         usuarioFoto: usuario.usu_foto,
+        clienteID: usuario.cli_id,
       });
       req.session.usuarioId = usuario.usu_id;
       req.session.usuarioTipo = usuario.usu_tipo;

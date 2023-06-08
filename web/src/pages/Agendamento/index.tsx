@@ -94,6 +94,7 @@ const Agendamento = () => {
           hora: horaSelecionada,
           profissionalID: profissionalSelecionado.pro_id,
           servicoID: servicoSelecionado.ser_id,
+          clienteID: sessionStorage.getItem('clienteID'),
         })
         .then((response) => {
           console.log('Agendamento inserido com sucesso!');
@@ -132,10 +133,14 @@ const Agendamento = () => {
         <form onSubmit={handleSubmit} className="flex flex-col">
           {etapaAtual === 1 && (
             <>
-              <ListaCards
-                profissionais={listaProfissionais}
-                onProfissionalSelecionado={handleProfissionalSelecionado}
-              />
+              {listaProfissionais.length > 0 ? (
+                <ListaCards
+                  profissionais={listaProfissionais}
+                  onProfissionalSelecionado={handleProfissionalSelecionado}
+                />
+              ) : (
+                <p>Nenhum profissional registrado.</p>
+              )}
 
               <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
             </>

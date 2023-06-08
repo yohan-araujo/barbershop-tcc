@@ -28,14 +28,20 @@ const Login = () => {
         // Verificar a resposta do servidor e realizar as ações necessárias
         if (response.data.success) {
           // Login bem-sucedido
-          const { usuarioId, usuarioTipo, usuarioNome, usuarioFoto } =
-            response.data;
+          const {
+            usuarioId,
+            usuarioTipo,
+            usuarioNome,
+            usuarioFoto,
+            clienteID,
+          } = response.data;
           console.log(response.data.message);
           sessionStorage.setItem('usuarioLogado', 'true');
           sessionStorage.setItem('usuarioId', usuarioId);
           sessionStorage.setItem('usuarioNome', usuarioNome);
           sessionStorage.setItem('usuarioTipo', usuarioTipo);
           sessionStorage.setItem('usuarioFoto', usuarioFoto);
+          sessionStorage.setItem('clienteID', clienteID);
           // Redirecionar
           navigate('/');
           window.location.reload();

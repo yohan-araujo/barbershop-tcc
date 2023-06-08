@@ -38,8 +38,10 @@ const Footer = () => {
 
       <div className="flex flex-grow justify-between px-5 mt-10">
         <div className="ml-4 flex-initial">
-          <p className="font-face-montserrat font-normal text-xl w-96">
-            <sup>Â© 2023 BarberShop. All rights reserved</sup>
+          <p className="font-normal text-xl w-96">
+            <sup className="font-face-montserrat">
+              © 2023 BarberShop. All rights reserved
+            </sup>
           </p>
         </div>
 
