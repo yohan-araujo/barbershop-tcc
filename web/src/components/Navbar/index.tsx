@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
-import DropdownSelect from 'components/Select';
+import DropdownSelect from 'components/DropdownSelect';
 import { UserCircle, UserPlus, FilePlus, CheckCircle } from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
@@ -40,6 +40,7 @@ const Navbar = () => {
 
     // Redirecionar para a página de login ou qualquer outra página desejada após o logout
     navigate('/');
+    window.location.reload();
   };
 
   const handleOptionChange = (option: IOption | null) => {
@@ -102,7 +103,6 @@ const Navbar = () => {
     setDropdownOptions(options);
   }, [usuarioTipo]);
 
-  console.log(sessionStorage.getItem('usuarioTipo'));
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
       <div className="flex items-center justify-start text-white">
@@ -130,7 +130,7 @@ const Navbar = () => {
               options={dropdownOptions}
               onChange={handleOptionChange}
             />
-            <p className="text-white text-2xl font-medium mr-2 font-face-montserrat">
+            <p className="text-white text-2xl font-medium mr-4 font-face-montserrat">
               {usuarioNome}
             </p>
             <img
@@ -143,15 +143,15 @@ const Navbar = () => {
           </li>
         ) : (
           <li className="list-none">
-            <Link to="/login">
-              <button className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full mr-2 font-face-montserrat">
-                Login
-              </button>
-            </Link>
             <Link to="/cadastroUsuario">
-              <button className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat">
+              <button className=" text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat uppercase">
                 Cadastrar
               </button>
+            </Link>
+            <Link to="/login">
+              <span className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full mr-2 font-face-montserrat uppercase">
+                Login
+              </span>
             </Link>
           </li>
         )}

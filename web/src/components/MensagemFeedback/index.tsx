@@ -25,6 +25,7 @@ const MensagemFeedback = ({
     onClose();
     if (type === 'success' && redirectTo) {
       navigate(redirectTo);
+      window.location.reload();
     }
   };
 

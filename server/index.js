@@ -21,15 +21,9 @@ function gerarChaveAleatoria() {
 
 // Requisicoes
 app.post('/api/insertUsuarioCliente', (req, res) => {
-  const {
-    usu_nomeCompleto,
-    usu_email,
-    usu_senha,
-    usu_foto,
-    usu_tipo,
-    cli_tel,
-  } = req.body;
-
+  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto, cli_tel } =
+    req.body;
+  const usu_tipo = 'C';
   const insertUsuario =
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
   const insertUsuarioCliente =
@@ -195,10 +189,11 @@ app.post('/api/loginUsuario', (req, res) => {
 
   const selectLogin = `
   SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_foto, 
-    c.cli_id, a.adm_id
+    c.cli_id, a.adm_id, p.pro_descricao, p.pro_cor
   FROM usu_usuarios u
   LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
   LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
+  LEFT JOIN pro_profissionais p ON p.usu_id = p.usu_id
   WHERE u.usu_email = ? AND u.usu_senha = ?;
 `;
   db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
@@ -229,6 +224,8 @@ app.post('/api/loginUsuario', (req, res) => {
         usuarioNome: usuario.usu_nomeCompleto,
         usuarioFoto: usuario.usu_foto,
         clienteID: usuario.cli_id,
+        proDesc: usuario.pro_descricao,
+        proCor: usuario.pro_cor,
       });
       req.session.usuarioId = usuario.usu_id;
       req.session.usuarioTipo = usuario.usu_tipo;

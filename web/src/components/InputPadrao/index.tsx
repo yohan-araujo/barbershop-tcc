@@ -17,7 +17,7 @@ const InputPadrao = ({
 }: InputProps) => {
   return (
     <div className="flex flex-col mb-4 text-center">
-      <label className="mb-2 font-face-montserrat text-white">
+      <label className="mb-2 font-face-montserrat text-white text-xl ">
         {labelTexto}
       </label>
       <input

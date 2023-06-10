@@ -3,28 +3,39 @@ import ButtonPadrao from 'components/ButtonPadrao';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MensagemFeedback from 'components/MensagemFeedback';
 
 const Login = () => {
   const [usu_email, setUsuEmail] = useState('');
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmaSenha] = useState('');
-  const [senhaInvalida, setSenhaInvalida] = useState(false);
-
-  const navigate = useNavigate();
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log(usu_email, usu_senha);
     // Verificacao para ver se as senhas coincidem, se nao ja retorna uma mensagem!
     if (usu_senha !== usu_confirmaSenha) {
-      setSenhaInvalida(true);
+      setFeedback({
+        type: 'failure',
+        message: 'As senhas não correspondem!',
+        subMessage: 'O cadastro falhou!',
+      });
       return;
     }
 
     axios
       .post('http://localhost:3001/api/loginUsuario', { usu_email, usu_senha })
       .then((response) => {
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Login realizado com sucesso!',
+        });
         // Verificar a resposta do servidor e realizar as ações necessárias
         if (response.data.success) {
           // Login bem-sucedido
@@ -34,6 +45,8 @@ const Login = () => {
             usuarioNome,
             usuarioFoto,
             clienteID,
+            proDesc,
+            proCor,
           } = response.data;
           console.log(response.data.message);
           sessionStorage.setItem('usuarioLogado', 'true');
@@ -42,17 +55,17 @@ const Login = () => {
           sessionStorage.setItem('usuarioTipo', usuarioTipo);
           sessionStorage.setItem('usuarioFoto', usuarioFoto);
           sessionStorage.setItem('clienteID', clienteID);
-          // Redirecionar
-          navigate('/');
-          window.location.reload();
+          sessionStorage.setItem('proDesc', proDesc);
+          sessionStorage.setItem('proCor', proCor);
+          // Recarregar
         } else {
           // Login falhou
-          console.log(response.data.message);
+          setFeedback({
+            type: 'failure',
+            message: 'Falhou',
+            subMessage: 'Login não foi realizado!',
+          });
         }
-      })
-      .catch((error) => {
-        // Tratar erros na requisição
-        console.error('Erro ao fazer login:', error);
       });
   };
 
@@ -70,7 +83,7 @@ const Login = () => {
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
               <form action="" onSubmit={handleSubmit}>
-                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
+                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat uppercase">
                   Login
                 </h1>
 
@@ -108,14 +121,20 @@ const Login = () => {
                   />
                 </div>
 
-                {senhaInvalida && (
-                  <p className="flex justify-center font-face-montserrat text-red-500 ">
-                    As senhas não coincidem.
-                  </p>
-                )}
                 <div className="flex justify-center mt-12">
                   <ButtonPadrao texto="Entrar" tipo="submit" />
                 </div>
+                {feedback.message && (
+                  <MensagemFeedback
+                    type={feedback.type as 'failure' | 'success'}
+                    message={feedback.message}
+                    subMessage={feedback.subMessage}
+                    onClose={() =>
+                      setFeedback({ type: '', message: '', subMessage: '' })
+                    }
+                    redirectTo="/"
+                  />
+                )}
               </form>
             </div>
           </div>

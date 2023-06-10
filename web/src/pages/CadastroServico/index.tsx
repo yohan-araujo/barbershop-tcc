@@ -54,7 +54,7 @@ const CadastroServico = () => {
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
               <form action="" onSubmit={handleSubmit}>
-                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
+                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat uppercase">
                   Cadastrar
                 </h1>
 

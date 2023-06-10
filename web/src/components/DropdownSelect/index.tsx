@@ -44,7 +44,7 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative z-50" ref={dropdownRef}>
       <div
         className={`flex items-center cursor-pointer ${
           estaAberto ? 'open' : ''
@@ -54,18 +54,23 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
         <IconSetaPraBaixo className="text-white" />
       </div>
       {estaAberto && (
-        <ul className="absolute left-0 w-18 mt-2 p-0 bg-white shadow">
+        <ul className="absolute left-0 w-48 mt-2 p-0 bg-white shadow roud">
           {options.map((option) => (
             <li
               key={option.value}
-              className={`p-2 cursor-pointer transition-colors duration-200 ${
+              className={`p-3 cursor-pointer transition-colors duration-200 border-b-2 ${
                 opcaoSelecionada === option ? 'bg-gray-200' : ''
               }`}
               onClick={() => handleOptionChange(option)}
             >
-              <Link to={option.to} className="flex items-center">
+              <Link
+                to={option.to}
+                className="flex items-center space-x-2 rounded-3xl"
+              >
                 {option.icon && <span className="mr-2">{option.icon}</span>}
-                <span className="font-face-montserrat">{option.label}</span>
+                <span className="font-face-montserrat font-medium text-xl">
+                  {option.label}
+                </span>
               </Link>
             </li>
           ))}
