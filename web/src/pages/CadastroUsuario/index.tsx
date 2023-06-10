@@ -2,39 +2,54 @@ import ButtonPadrao from 'components/ButtonPadrao';
 import InputPadrao from 'components/InputPadrao';
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import MensagemFeedback from 'components/MensagemFeedback';
 
 const CadastroUsuario = () => {
-  //useStates do Cadastro
   const [usu_nomeCompleto, setUsuNome] = useState('');
   const [usu_email, setUsuEmail] = useState('');
   const [usu_foto, setUsuFoto] = useState('');
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [cli_tel, setCliTel] = useState('');
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
-  //Outros
-  const [mensagemErro, setMensagemErro] = useState<Boolean>();
-  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
-      setMensagemErro(false);
+      setFeedback({
+        type: 'failure',
+        message: 'As senhas não correspondem!',
+        subMessage: 'O cadastro falhou!',
+      });
       return;
-    } else {
-      axios
-        .post('http://localhost:3001/api/insertUsuarioCliente', {
-          usu_nomeCompleto: usu_nomeCompleto,
-          usu_email: usu_email,
-          usu_senha: usu_senha,
-          usu_foto: usu_foto,
-          cli_tel: cli_tel,
-        })
-        .then((response) => {
-          setMensagemErro(true);
-          navigate('/login');
-        });
     }
+
+    axios
+      .post('http://localhost:3001/api/insertUsuarioCliente', {
+        usu_nomeCompleto: usu_nomeCompleto,
+        usu_email: usu_email,
+        usu_senha: usu_senha,
+        usu_foto: usu_foto,
+        cli_tel: cli_tel,
+      })
+      .then((response) => {
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Cadastro realizado com sucesso!',
+        });
+      })
+      .catch((error) => {
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Cadastro não foi realizado!',
+        });
+      });
 
     console.log('submit', {
       usu_nomeCompleto,
@@ -62,7 +77,6 @@ const CadastroUsuario = () => {
                 <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat">
                   Cadastro
                 </h1>
-
                 <div className="mt-12">
                   <InputPadrao
                     labelTexto="Nome"
@@ -96,7 +110,6 @@ const CadastroUsuario = () => {
                     }}
                   />
                 </div>
-
                 <div className="mt-4">
                   <InputPadrao
                     labelTexto="Telefone"
@@ -108,7 +121,6 @@ const CadastroUsuario = () => {
                     }}
                   />
                 </div>
-
                 <div className="mt-4">
                   <InputPadrao
                     labelTexto="Senha"
@@ -120,7 +132,6 @@ const CadastroUsuario = () => {
                     }}
                   />
                 </div>
-
                 <div className="mt-4">
                   <InputPadrao
                     labelTexto="Confirmar senha"
@@ -132,16 +143,17 @@ const CadastroUsuario = () => {
                     }}
                   />
                 </div>
-                {mensagemErro === false && (
-                  <p className="flex justify-center font-face-montserrat text-red-700">
-                    As senhas não coincidem.
-                  </p>
-                )}
 
-                {mensagemErro === true && (
-                  <p className="flex justify-center font-face-montserrat text-green-700">
-                    Usuário cadastrado com sucesso!
-                  </p>
+                {feedback.message && (
+                  <MensagemFeedback
+                    type={feedback.type as 'failure' | 'success'}
+                    message={feedback.message}
+                    subMessage={feedback.subMessage}
+                    onClose={() =>
+                      setFeedback({ type: '', message: '', subMessage: '' })
+                    }
+                    redirectTo="/login"
+                  />
                 )}
                 <div className="flex justify-center mt-12">
                   <ButtonPadrao texto="Cadastrar" tipo="submit" />

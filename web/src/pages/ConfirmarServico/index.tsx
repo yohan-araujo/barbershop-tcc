@@ -12,6 +12,11 @@ const ConfirmarServico = () => {
   const [agendamentosSelecionados, setAgendamentosSelecionados] = useState<
     number[]
   >([]);
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
   useEffect(() => {
     axios
@@ -42,11 +47,18 @@ const ConfirmarServico = () => {
         agendamentosSelecionados,
       })
       .then(() => {
-        console.log('Status dos agendamentos alterado com sucesso');
-        window.location.reload();
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Alteração de status realizado com sucesso!',
+        });
       })
       .catch((error) => {
-        console.error('Erro ao atualizar status dos agendamentos', error);
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Alteração de status não foi realizado!',
+        });
       });
   };
 

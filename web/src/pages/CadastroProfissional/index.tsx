@@ -1,5 +1,6 @@
 import ButtonPadrao from 'components/ButtonPadrao';
 import InputPadrao from 'components/InputPadrao';
+import MensagemFeedback from 'components/MensagemFeedback';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -11,8 +12,23 @@ const CadastroProfissional = () => {
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [pro_descricao, setProDescricao] = useState('');
   const [pro_cor, setProCor] = useState('');
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
-  const submitProfissional = () => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (usu_senha !== usu_confirmaSenha) {
+      setFeedback({
+        type: 'failure',
+        message: 'As senhas não correspondem!',
+        subMessage: 'O cadastro falhou!',
+      });
+      return;
+    }
+
     axios
       .post('http://localhost:3001/api/insertUsuarioProfissional', {
         usu_nomeCompleto: usu_nomeCompleto,
@@ -23,12 +39,20 @@ const CadastroProfissional = () => {
         pro_cor: pro_cor,
       })
       .then((response) => {
-        alert(response);
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Cadastro realizado com sucesso!',
+        });
+      })
+      .catch((error) => {
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Cadastro não foi realizado!',
+        });
       });
-  };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
     console.log('submit', {
       usu_nomeCompleto,
       usu_email,
@@ -40,7 +64,7 @@ const CadastroProfissional = () => {
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-gray-50">
+    <section className="flex items-center min-h-screen bg-gray-50 my-24">
       <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
@@ -137,13 +161,18 @@ const CadastroProfissional = () => {
                     }}
                   />
                 </div>
-
-                <div className="flex justify-center mt-12">
-                  <ButtonPadrao
-                    texto="Cadastrar"
-                    tipo="submit"
-                    onClick={submitProfissional}
+                {feedback.message && (
+                  <MensagemFeedback
+                    type={feedback.type as 'failure' | 'success'}
+                    message={feedback.message}
+                    subMessage={feedback.subMessage}
+                    onClose={() =>
+                      setFeedback({ type: '', message: '', subMessage: '' })
+                    }
                   />
+                )}
+                <div className="flex justify-center mt-12">
+                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
                 </div>
               </form>
             </div>

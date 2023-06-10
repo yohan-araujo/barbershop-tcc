@@ -1,22 +1,17 @@
 import axios from 'axios';
 import ButtonPadrao from 'components/ButtonPadrao';
 import InputPadrao from 'components/InputPadrao';
+import MensagemFeedback from 'components/MensagemFeedback';
 import { useState } from 'react';
 
 const CadastroServico = () => {
   const [tipo, setTipo] = useState('');
   const [preco, setPreco] = useState('');
-
-  const submitServico = () => {
-    axios
-      .post('http://localhost:3001/api/insertServico', {
-        tipo: tipo,
-        preco: preco,
-      })
-      .then((response) => {
-        alert(response);
-      });
-  };
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,7 +19,27 @@ const CadastroServico = () => {
       tipo,
       preco,
     });
+    axios
+      .post('http://localhost:3001/api/insertServico', {
+        tipo: tipo,
+        preco: preco,
+      })
+      .then((response) => {
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Cadastro realizado com sucesso!',
+        });
+      })
+      .catch((error) => {
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Cadastro não foi realizado!',
+        });
+      });
   };
+
   return (
     <section className="flex items-center min-h-screen bg-gray-50">
       <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
@@ -65,13 +80,18 @@ const CadastroServico = () => {
                     }}
                   />
                 </div>
-
-                <div className="flex justify-center mt-12">
-                  <ButtonPadrao
-                    texto="Cadastrar"
-                    tipo="submit"
-                    onClick={submitServico}
+                {feedback.message && (
+                  <MensagemFeedback
+                    type={feedback.type as 'failure' | 'success'}
+                    message={feedback.message}
+                    subMessage={feedback.subMessage}
+                    onClose={() =>
+                      setFeedback({ type: '', message: '', subMessage: '' })
+                    }
                   />
+                )}
+                <div className="flex justify-center mt-12">
+                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
                 </div>
               </form>
             </div>

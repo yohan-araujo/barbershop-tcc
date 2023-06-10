@@ -12,6 +12,7 @@ import TimePicker from 'react-time-picker';
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-time-picker/dist/TimePicker.css';
+import MensagemFeedback from 'components/MensagemFeedback';
 
 const Agendamento = () => {
   // useStates ou Variaveis
@@ -27,6 +28,11 @@ const Agendamento = () => {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
   const [etapaAtual, setEtapaAtual] = useState(1);
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
 
   //Trazendo informação do banco
   useEffect(() => {
@@ -97,10 +103,18 @@ const Agendamento = () => {
           clienteID: sessionStorage.getItem('clienteID'),
         })
         .then((response) => {
-          console.log('Agendamento inserido com sucesso!');
+          setFeedback({
+            type: 'success',
+            message: 'Sucesso',
+            subMessage: 'Agendamento realizado com sucesso!',
+          });
         })
         .catch((error) => {
-          console.error('Erro ao inserir agendamento:', error);
+          setFeedback({
+            type: 'failure',
+            message: 'Falhou',
+            subMessage: 'Cadastro não foi realizado!',
+          });
         });
     }
   };
@@ -176,6 +190,16 @@ const Agendamento = () => {
               />
               <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
               <ButtonPadrao texto="Agendar!" tipo="submit" />
+              {feedback.message && (
+                <MensagemFeedback
+                  type={feedback.type as 'failure' | 'success'}
+                  message={feedback.message}
+                  subMessage={feedback.subMessage}
+                  onClose={() =>
+                    setFeedback({ type: '', message: '', subMessage: '' })
+                  }
+                />
+              )}
             </>
           )}
         </form>
