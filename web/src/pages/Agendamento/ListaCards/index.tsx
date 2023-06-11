@@ -14,6 +14,9 @@ const ListaCards = ({
   const [cardSelecionadoID, setCardSelecionadoID] = useState<number | null>(
     null
   );
+
+  const isMultipleUsers = profissionais.length > 3;
+
   const handleCardClick = (id: number) => {
     setCardSelecionadoID((cardSelecionadoAntigo) => {
       const novoCardSelecionado = cardSelecionadoAntigo === id ? null : id;
@@ -32,7 +35,7 @@ const ListaCards = ({
   };
 
   return (
-    <div className="flex justify-around mt-8 flex-wrap">
+    <div className="flex flex-wrap gap-[63px] max-w-5xl mx-auto justify-center">
       {profissionais.map((profissional) => (
         <Card
           key={profissional.pro_id}

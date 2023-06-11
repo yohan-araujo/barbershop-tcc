@@ -94,7 +94,7 @@ const Agendamento = () => {
           hora: horaSelecionada,
           profissionalID: profissionalSelecionado.pro_id,
           servicoID: servicoSelecionado.ser_id,
-          clienteID: sessionStorage.getItem('clienteID'),
+          clienteID: sessionStorage.getItem("clienteID"),
         })
         .then((response) => {
           console.log("Agendamento inserido com sucesso!");
@@ -107,9 +107,8 @@ const Agendamento = () => {
 
   return (
     <section className="bg-age">
-      
       <div>
-        <div className="flex justify-start items-start p-4 gap-3 mb-8">
+        <div className="flex justify-start items-start p-4 gap-3 mr-[21px] mb-[28px]">
           <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
             <div
               className={`w-8 h-8 rounded-full ${
@@ -134,23 +133,64 @@ const Agendamento = () => {
           </div>
         </div>
 
-        <div className="flex justify-center w-screen">
-          <form
-            onSubmit={handleSubmit}
-            className="flex ite rounded-3xl container h-[38rem] 
-            w-[82rem] mb-10  bg-slate-400"
-          >
+        <form onSubmit={handleSubmit} className="flex justify-center w-screen">
+          <div className="">
             {etapaAtual === 1 && (
               <>
-                <ListaCards
-                  profissionais={listaProfissionais}
-                  onProfissionalSelecionado={handleProfissionalSelecionado}
-                />
+                <div className="bg-[#828282] p-4 mb-4 rounded-[20px]">
+                  <div className="flex text-white items-center justify-center">
+                    <h1 className="font-face-montserrat font-normal text-[96px] text-center">
+                      Profissionais
+                    </h1>
+                  </div>
 
-                <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                  <div className="w-[1112px] h-[64px] mt-[63px] mb-[58px] bg-white shadow-md rounded-[24px] flex p-4">
+                    <div className="flex items-center gap-x-16 px-5">
+                      <div className="flex items-center gap-1">
+                        <div className="w-10 h-10 bg-[#D9D9D9] maquinabarbear-svg rounded-full"></div>
+                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
+                          Barba
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-10 h-10 bg-[#D9D9D9]  pincelcabelo-svg rounded-full"></div>
+                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
+                          Pintura
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-10 h-10 bg-[#D9D9D9] cortecabelo-svg rounded-full"></div>
+                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
+                          Corte
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-10 h-10 bg-[#D9D9D9] sobrancelhas-svg rounded-full"></div>
+                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
+                          Sobrancelha
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-10 h-10 bg-[#D9D9D9] crianca-svg rounded-full"></div>
+                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
+                          Atende Crianças
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 ">
+                    <ListaCards
+                      profissionais={listaProfissionais}
+                      onProfissionalSelecionado={handleProfissionalSelecionado}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-center mt-[89px] mb-[80px]">
+                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                </div>
               </>
             )}
-
             {etapaAtual === 2 && (
               <>
                 <TabelaServicos
@@ -181,10 +221,9 @@ const Agendamento = () => {
                 <ButtonPadrao texto="Agendar!" tipo="submit" />
               </>
             )}
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-      
     </section>
   );
 };
