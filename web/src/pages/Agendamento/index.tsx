@@ -193,12 +193,30 @@ const Agendamento = () => {
             )}
             {etapaAtual === 2 && (
               <>
-                <TabelaServicos
-                  servicos={listaServicos}
-                  onServicoSelecionado={handleServicoSelecionado}
-                />
-                <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                <div className="bg-[#828282] w-[567px] h-[752px] p-4 mb-4 rounded-[20px]">
+                  <div className="flex text-white items-center justify-center">
+                    <h1 className="font-face-montserrat font-normal text-[96px] text-center mt-[31px] mb-[78px] mx-[82px]">
+                      Serviços
+                    </h1>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <TabelaServicos
+                      servicos={listaServicos}
+                      onServicoSelecionado={handleServicoSelecionado}
+                    />
+                  </div>
+                  <div className="flex justify-center gap-5">
+                    <ButtonPadrao
+                      texto="Voltar"
+                      onClick={handleEtapaAnterior}
+                    />
+                    <ButtonPadrao
+                      texto="Proximo"
+                      onClick={handleProximaEtapa}
+                    />
+                  </div>
+                </div>
               </>
             )}
 

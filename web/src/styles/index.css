@@ -44,10 +44,6 @@ body {
   min-height: 100vh;
 }
 
-footer{
-  
-}
-
 .bg-age {
   top: 60px; /* Altura da navbar */
   left: 0;
@@ -91,4 +87,12 @@ footer{
   background-position: center ;
   background-repeat: no-repeat;
   padding: 24px;
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-lato {
+  font-family: 'Lato', sans-serif;
 }
