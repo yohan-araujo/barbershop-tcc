@@ -120,89 +120,94 @@ const Agendamento = () => {
   };
 
   return (
-    <section className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto bg-slate-300">
-        <div className="flex items-center justify-between mb-4">
-          <div className="text-sm">Etapa {etapaAtual} de 3</div>
+    <section className="bg-age">
+      <div>
+        <div className="flex justify-start items-start p-4 gap-3 mb-8">
+          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+            <div
+              className={`w-8 h-8 rounded-full ${
+                etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
+              }`}
+            ></div>
+          </div>
+
+          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+            <div
+              className={`w-8 h-8 rounded-full ${
+                etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
+              }`}
+            ></div>
+          </div>
+          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+            <div
+              className={`w-8 h-8 rounded-full ${
+                etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
+              }`}
+            ></div>
+          </div>
         </div>
 
-        <div className="flex justify-between mb-8">
-          <div
-            className={`w-1/3 h-4 rounded-full ${
-              etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
-            }`}
-          ></div>
-          <div
-            className={`w-1/3 h-4 rounded-full ${
-              etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
-            }`}
-          ></div>
-          <div
-            className={`w-1/3 h-4 rounded-full ${
-              etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
-            }`}
-          ></div>
-        </div>
+        <div className="flex justify-center w-screen">
+          <form onSubmit={handleSubmit} className="flex flex-col">
+            {etapaAtual === 1 && (
+              <>
+                {listaProfissionais.length > 0 ? (
+                  <div className="my-12">
+                    <ListaCards
+                      profissionais={listaProfissionais}
+                      onProfissionalSelecionado={handleProfissionalSelecionado}
+                    />
+                  </div>
+                ) : (
+                  <p>Nenhum profissional registrado.</p>
+                )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          {etapaAtual === 1 && (
-            <>
-              {listaProfissionais.length > 0 ? (
-                <div className="my-12">
-                  <ListaCards
-                    profissionais={listaProfissionais}
-                    onProfissionalSelecionado={handleProfissionalSelecionado}
-                  />
-                </div>
-              ) : (
-                <p>Nenhum profissional registrado.</p>
-              )}
+                <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+              </>
+            )}
 
-              <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
-            </>
-          )}
-
-          {etapaAtual === 2 && (
-            <>
-              <TabelaServicos
-                servicos={listaServicos}
-                onServicoSelecionado={handleServicoSelecionado}
-              />
-              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-              <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
-            </>
-          )}
-
-          {etapaAtual === 3 && (
-            <>
-              <label>Data</label>
-              <DatePicker
-                selected={dataSelecionada}
-                onChange={handleDateChange}
-                dateFormat="dd/MM/yyyy"
-              />
-
-              <label>Hora:</label>
-              <TimePicker
-                value={horaSelecionada}
-                onChange={handleTimeChange}
-                disableClock={true}
-              />
-              <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-              <ButtonPadrao texto="Agendar!" tipo="submit" />
-              {feedback.message && (
-                <MensagemFeedback
-                  type={feedback.type as 'failure' | 'success'}
-                  message={feedback.message}
-                  subMessage={feedback.subMessage}
-                  onClose={() =>
-                    setFeedback({ type: '', message: '', subMessage: '' })
-                  }
+            {etapaAtual === 2 && (
+              <>
+                <TabelaServicos
+                  servicos={listaServicos}
+                  onServicoSelecionado={handleServicoSelecionado}
                 />
-              )}
-            </>
-          )}
-        </form>
+                <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+              </>
+            )}
+
+            {etapaAtual === 3 && (
+              <>
+                <label>Data</label>
+                <DatePicker
+                  selected={dataSelecionada}
+                  onChange={handleDateChange}
+                  dateFormat="dd/MM/yyyy"
+                />
+
+                <label>Hora:</label>
+                <TimePicker
+                  value={horaSelecionada}
+                  onChange={handleTimeChange}
+                  disableClock={true}
+                />
+                <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                <ButtonPadrao texto="Agendar!" tipo="submit" />
+                {feedback.message && (
+                  <MensagemFeedback
+                    type={feedback.type as 'failure' | 'success'}
+                    message={feedback.message}
+                    subMessage={feedback.subMessage}
+                    onClose={() =>
+                      setFeedback({ type: '', message: '', subMessage: '' })
+                    }
+                  />
+                )}
+              </>
+            )}
+          </form>
+        </div>
       </div>
     </section>
   );

@@ -43,3 +43,17 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
+footer{
+  
+}
+
+.bg-age {
+  top: 60px; /* Altura da navbar */
+  left: 0;
+  right: 0;
+  bottom: 60px; /* Altura do footer */
+  background-image: url(../assets/bg-barbershop.svg);
+  background-position: center;
+  background-size: cover; /* Coloca o elemento de background atrás de tudo */
+}
