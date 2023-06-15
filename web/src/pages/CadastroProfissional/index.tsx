@@ -1,8 +1,10 @@
 import ButtonPadrao from 'components/ButtonPadrao';
 import InputPadrao from 'components/InputPadrao';
 import MensagemFeedback from 'components/MensagemFeedback';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ListaServicosSelect from './ListaServicosSelect';
+import { IServico } from 'types/IServico';
 
 const CadastroProfissional = () => {
   const [usu_nomeCompleto, setUsuNome] = useState('');
@@ -17,6 +19,14 @@ const CadastroProfissional = () => {
     message: '',
     subMessage: '',
   });
+  const [listaServicos, setListaServicos] = useState<IServico[]>([]);
+  const [servicosSelecionados, setServicosSelecionados] = useState<
+    IServico[] | null
+  >([]);
+
+  const handleServicosSelecionados = (servico: IServico[]) => {
+    setServicosSelecionados(servico);
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,11 +49,35 @@ const CadastroProfissional = () => {
         pro_cor: pro_cor,
       })
       .then((response) => {
-        setFeedback({
-          type: 'success',
-          message: 'Sucesso',
-          subMessage: 'Cadastro realizado com sucesso!',
-        });
+        const { pro_id } = response.data;
+        console.log(response.data.pro_id);
+
+        if (servicosSelecionados !== null) {
+          const selectedServices = servicosSelecionados.map((servico) => ({
+            pro_id: pro_id,
+            ser_id: servico.ser_id,
+          }));
+
+          axios
+            .post('http://localhost:3001/api/insertServicosProfissional', {
+              servicos: selectedServices,
+              pro_id: pro_id,
+            })
+            .then((response) => {
+              setFeedback({
+                type: 'success',
+                message: 'Sucesso',
+                subMessage: 'Cadastro realizado com sucesso!',
+              });
+            })
+            .catch((error) => {
+              setFeedback({
+                type: 'failure',
+                message: 'Falhou',
+                subMessage: 'Cadastro não foi realizado!',
+              });
+            });
+        }
       })
       .catch((error) => {
         setFeedback({
@@ -62,6 +96,14 @@ const CadastroProfissional = () => {
       pro_cor,
     });
   };
+
+  useEffect(() => {
+    axios
+      .get<IServico[]>('http://localhost:3001/api/getServicos')
+      .then((response) => {
+        setListaServicos(response.data);
+      });
+  }, []);
 
   return (
     <section className="flex items-center min-h-screen bg-gray-50 my-24">
@@ -171,6 +213,14 @@ const CadastroProfissional = () => {
                     }
                   />
                 )}
+                <div className="mt-4">
+                  <div className="mt-4">
+                    <ListaServicosSelect
+                      servicos={listaServicos}
+                      onServicoSelecionado={handleServicosSelecionados}
+                    />
+                  </div>
+                </div>
                 <div className="flex justify-center mt-12">
                   <ButtonPadrao texto="Cadastrar" tipo="submit" />
                 </div>

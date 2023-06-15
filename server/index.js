@@ -131,11 +131,32 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
             res.status(500).send(err);
             return;
           }
-          res.send('Usuário cadastrado com sucesso');
+
+          const pro_id = result.insertId; // Obtenha o pro_id do resultado da query
+          console.log([pro_id]);
+          res.send({ pro_id }); // Retorne o pro_id como parte da resposta
         }
       );
     }
   );
+});
+
+app.post('/api/insertServicosProfissional', (req, res) => {
+  const { servicos, pro_id } = req.body;
+
+  const insertServicosProfissional =
+    'INSERT INTO sp_servicoProfissional (pro_id, ser_id) VALUES ?';
+
+  const values = servicos.map((servico) => [pro_id, servico.ser_id]);
+
+  db.query(insertServicosProfissional, [values], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }
+    res.send('Serviços inseridos com sucesso');
+  });
 });
 
 app.get('/api/getProfissionais', (req, res) => {
@@ -231,8 +252,6 @@ app.post('/api/loginUsuario', (req, res) => {
       req.session.usuarioTipo = usuario.usu_tipo;
       req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
       req.session.usuarioFoto = usuario.usu_foto;
-    } else {
-      res.json({ success: false, message: 'Login falhou' });
     }
   });
 });

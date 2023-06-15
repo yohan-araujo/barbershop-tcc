@@ -55,7 +55,9 @@ const PerfilAdministrador = () => {
         <div className="flex flex-col">
           <div className="flex flex-col justify-center">
             <div className="flex m-auto mt-36">
-              <ButtonPadrao texto="Editar Agenda" />
+              <Link to="/cadastroProfissional" className="mt-2 ml-1">
+                <ButtonPadrao texto="Cadastrar Profissional" />
+              </Link>
             </div>
             <div className="flex m-auto my-11">
               <ButtonPadrao texto="Editar Agenda" />
