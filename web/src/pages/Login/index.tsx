@@ -45,18 +45,26 @@ const Login = () => {
             usuarioNome,
             usuarioFoto,
             clienteID,
+            proId,
             proDesc,
             proCor,
           } = response.data;
-          console.log(response.data.message);
+
+          //Logica da session
+          sessionStorage.setItem('usuarioTipo', usuarioTipo);
           sessionStorage.setItem('usuarioLogado', 'true');
           sessionStorage.setItem('usuarioId', usuarioId);
           sessionStorage.setItem('usuarioNome', usuarioNome);
-          sessionStorage.setItem('usuarioTipo', usuarioTipo);
           sessionStorage.setItem('usuarioFoto', usuarioFoto);
-          sessionStorage.setItem('clienteID', clienteID);
-          sessionStorage.setItem('proDesc', proDesc);
-          sessionStorage.setItem('proCor', proCor);
+
+          if (sessionStorage.getItem('usuarioTipo') === 'C') {
+            sessionStorage.setItem('clienteID', clienteID);
+          } else if (sessionStorage.getItem('usuarioTipo') === 'P') {
+            sessionStorage.setItem('proDesc', proDesc);
+            sessionStorage.setItem('proCor', proCor);
+            sessionStorage.setItem('proId', proId);
+          }
+
           // Recarregar
         } else {
           // Login falhou

@@ -1,5 +1,4 @@
 // Importacoes
-
 import ButtonPadrao from 'components/ButtonPadrao';
 import ListaCards from './ListaCards';
 import TabelaServicos from './TabelaServicos';
@@ -120,7 +119,7 @@ const Agendamento = () => {
   };
 
   return (
-    <section className="bg-age">
+    <section className="bg-age ">
       <div>
         <div className="flex justify-start items-start p-4 gap-3 mb-8">
           <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">

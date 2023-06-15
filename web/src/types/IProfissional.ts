@@ -1,3 +1,5 @@
+import { ISkill } from './ISkill';
+
 export interface IProfissional {
   usu_id: number;
   pro_id: number;
@@ -5,4 +7,5 @@ export interface IProfissional {
   usu_foto: string;
   pro_descricao: string;
   pro_cor: string;
+  skills: ISkill[];
 }

@@ -7,7 +7,7 @@ interface CardHorizontalProps {
 
 const CardHorizontal = ({ profissional }: CardHorizontalProps) => {
   return (
-    <div className="flex shadow-xl rounded">
+    <div className="flex shadow-xl rounded mb-24">
       <div className="flex-none w-48 relative">
         <img
           src={profissional.usu_foto}

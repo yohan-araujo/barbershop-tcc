@@ -1,22 +1,17 @@
 import {
   Instagram as InstagramIcon,
   Facebook as FacebookIcon,
-} from "lucide-react";
-import logoBarbershop from "assets/logo-barbershop.svg";
-import { Link } from "react-router-dom";
+} from 'lucide-react';
+import logoBarbershop from 'assets/logo-barbershop.svg';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#414141] text-white py-6">
+    <footer className="w-min-full bg-[#414141] text-white py-6">
       <div className="sm:px-6 lg:px-8 flex flex-col sm:flex-row">
         <div className="text-sm font-medium mb-2 sm:mb-0 ">
-<<<<<<< HEAD
-          <div className="flex flex-row ">
-            <div className="col-span-1 ">
-=======
           <div className="flex flex-row">
             <div className="col-span-1 p-3">
->>>>>>> branch-test
               <img src={logoBarbershop} alt="logo" />
             </div>
 
@@ -43,15 +38,9 @@ const Footer = () => {
 
       <div className="flex flex-grow justify-between px-5 mt-10">
         <div className="ml-4 flex-initial">
-<<<<<<< HEAD
-          <p className="font-normal text-xl w-96">
-            <sup className="font-face-montserrat">
+          <p className=" w-128">
+            <sup className="font-face-montserrat font-normal text-xl">
               © 2023 BarberShop. All rights reserved
-=======
-          <p className="font-face-montserrat font-normal text-xl w-96">
-            <sup>
-            Â© 2023 BarberShop. All rights reserved
->>>>>>> branch-test
             </sup>
           </p>
         </div>

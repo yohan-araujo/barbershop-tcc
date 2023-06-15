@@ -182,6 +182,21 @@ app.get('/api/getAgendamentos', (req, res) => {
   });
 });
 
+app.get('/api/getSkills/:pro_id', (req, res) => {
+  const pro_id = req.params.pro_id;
+  const query =
+    'SELECT sp_id, ser_tipo FROM sp_servicoProfissional JOIN ser_servicos ON sp_servicoProfissional.ser_id = ser_servicos.ser_id WHERE pro_id = ?;';
+
+  db.query(query, [pro_id], (error, results) => {
+    if (error) {
+      console.error('Error fetching services:', error);
+      res.status(500).json({ error: 'Error fetching services' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.put('/api/atualizarStatusAgendamentos', (req, res) => {
   const { agendamentosSelecionados } = req.body;
 
@@ -209,14 +224,15 @@ app.post('/api/loginUsuario', (req, res) => {
   const { usu_email, usu_senha } = req.body;
 
   const selectLogin = `
-  SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_foto, 
-    c.cli_id, a.adm_id, p.pro_descricao, p.pro_cor
-  FROM usu_usuarios u
-  LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
-  LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
-  LEFT JOIN pro_profissionais p ON p.usu_id = p.usu_id
-  WHERE u.usu_email = ? AND u.usu_senha = ?;
-`;
+    SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_foto, 
+      c.cli_id, a.adm_id, p.pro_descricao, p.pro_cor, p.pro_id
+    FROM usu_usuarios u
+    LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
+    LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
+    LEFT JOIN pro_profissionais p ON p.usu_id = u.usu_id
+    WHERE u.usu_email = ? AND u.usu_senha = ?;
+  `;
+
   db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
     if (err) {
       console.log(err);
@@ -237,6 +253,11 @@ app.post('/api/loginUsuario', (req, res) => {
         })
       );
 
+      req.session.usuarioId = usuario.usu_id;
+      req.session.usuarioTipo = usuario.usu_tipo;
+      req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
+      req.session.usuarioFoto = usuario.usu_foto;
+
       res.json({
         success: true,
         message: 'Login bem-sucedido',
@@ -244,14 +265,16 @@ app.post('/api/loginUsuario', (req, res) => {
         usuarioTipo: usuario.usu_tipo,
         usuarioNome: usuario.usu_nomeCompleto,
         usuarioFoto: usuario.usu_foto,
-        clienteID: usuario.cli_id,
-        proDesc: usuario.pro_descricao,
-        proCor: usuario.pro_cor,
+        clienteID: usuario.cli_id || null,
+        proDesc: usuario.pro_descricao || null,
+        proCor: usuario.pro_cor || null,
+        proId: usuario.pro_id || null,
       });
-      req.session.usuarioId = usuario.usu_id;
-      req.session.usuarioTipo = usuario.usu_tipo;
-      req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
-      req.session.usuarioFoto = usuario.usu_foto;
+    } else {
+      res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas',
+      });
     }
   });
 });

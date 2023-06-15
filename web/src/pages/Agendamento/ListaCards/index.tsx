@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import Card from 'components/Card';
 import { IProfissional } from 'types/IProfissional';
+import { ISkill } from 'types/ISkill';
+
+interface ProfissionalComSkills extends IProfissional {
+  skills: ISkill[];
+}
 
 interface ListaCardProps {
-  profissionais: IProfissional[];
+  profissionais: ProfissionalComSkills[];
   onProfissionalSelecionado: (profissional: IProfissional) => void;
 }
 
@@ -14,6 +19,7 @@ const ListaCards = ({
   const [cardSelecionadoID, setCardSelecionadoID] = useState<number | null>(
     null
   );
+
   const handleCardClick = (id: number) => {
     setCardSelecionadoID((cardSelecionadoAntigo) => {
       const novoCardSelecionado = cardSelecionadoAntigo === id ? null : id;
@@ -38,7 +44,7 @@ const ListaCards = ({
           key={profissional.pro_id}
           profissional={profissional}
           aoSelecionado={profissional.pro_id === cardSelecionadoID}
-          onClick={() => handleCardClick(profissional.pro_id)}
+          onClick={handleCardClick}
         />
       ))}
     </div>
