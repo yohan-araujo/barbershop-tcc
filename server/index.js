@@ -167,17 +167,34 @@ app.get('/api/getProfissionais', (req, res) => {
   });
 });
 
-app.get('/api/getServicos', (req, res) => {
-  const selectServicos = 'SELECT * FROM ser_servicos';
-  db.query(selectServicos, (err, result) => {
-    res.send(result);
+app.get('/api/getServicos/:profissionalID', (req, res) => {
+  const profissionalID = req.params.profissionalID;
+  const selectServicos = `
+    SELECT ser.*
+    FROM ser_servicos AS ser
+    INNER JOIN sp_servicoProfissional AS sp ON ser.ser_id = sp.ser_id
+    WHERE sp.pro_id = ?
+  `;
+  db.query(selectServicos, [profissionalID], (err, result) => {
+    if (err) {
+      console.error('Erro ao obter serviços:', err);
+      res.status(500).send('Erro ao obter serviços');
+    } else {
+      res.send(result);
+    }
   });
 });
 
-app.get('/api/getAgendamentos', (req, res) => {
-  const selectAgendamento =
-    'SELECT age.age_id, age.age_data, age.age_hora, usu.usu_nomeCompleto, ser.ser_tipo, age.age_status FROM age_agendamento  age JOIN cli_clientes  cli ON age.cli_id = cli.cli_id JOIN usu_usuarios  usu ON cli.usu_id = usu.usu_id JOIN ser_servicos  ser ON age.ser_id = ser.ser_id;';
-  db.query(selectAgendamento, (err, result) => {
+app.get('/api/getAgendamentos/:profissionalID', (req, res) => {
+  const profissionalID = req.params.profissionalID;
+  const selectAgendamento = `
+    SELECT a.age_id, a.age_data, a.age_hora, u.usu_nomeCompleto, s.ser_tipo, a.age_status, pro_id
+    FROM age_agendamento a
+    JOIN cli_clientes c ON a.cli_id = c.cli_id
+    JOIN usu_usuarios u ON c.usu_id = u.usu_id
+    JOIN ser_servicos s ON a.ser_id = s.ser_id
+    WHERE a.pro_id = ?;`;
+  db.query(selectAgendamento, [profissionalID], (err, result) => {
     res.send(result);
   });
 });
@@ -199,6 +216,12 @@ app.get('/api/getSkills/:pro_id', (req, res) => {
 
 app.put('/api/atualizarStatusAgendamentos', (req, res) => {
   const { agendamentosSelecionados } = req.body;
+
+  if (agendamentosSelecionados.length === 0) {
+    // Tratar caso o array esteja vazio
+    res.status(400).send('Nenhum agendamento selecionado.');
+    return;
+  }
 
   const updateStatusQuery = `
     UPDATE age_agendamento

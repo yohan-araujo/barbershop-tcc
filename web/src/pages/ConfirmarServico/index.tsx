@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ButtonPadrao from 'components/ButtonPadrao';
 import TabelaAgendamento from './TabelaAgendamento';
-import { useNavigate } from 'react-router-dom';
+import MensagemFeedback from 'components/MensagemFeedback';
 
 const ConfirmarServico = () => {
   const [listaAgendamentos, setListaAgendamentos] = useState<IAgendamento[]>(
@@ -20,7 +20,11 @@ const ConfirmarServico = () => {
 
   useEffect(() => {
     axios
-      .get<IAgendamento[]>('http://localhost:3001/api/getAgendamentos')
+      .get<IAgendamento[]>(
+        `http://localhost:3001/api/getAgendamentos/${sessionStorage.getItem(
+          'proId'
+        )}`
+      )
       .then((response) => {
         setListaAgendamentos(response.data);
       });
@@ -62,20 +66,34 @@ const ConfirmarServico = () => {
       });
   };
 
-  const navigate = useNavigate();
   return (
     <section>
       <div>
-        <ButtonPadrao texto="Voltar" onClick={() => navigate(-2)} />
-        <TabelaAgendamento
-          agendamentos={listaAgendamentos}
-          onAgendamentoSelecionado={handleAgendamentoSelecionado}
-          agendamentosSelecionados={agendamentosSelecionados}
-        />
+        {listaAgendamentos.length > 0 ? (
+          <TabelaAgendamento
+            agendamentos={listaAgendamentos}
+            onAgendamentoSelecionado={handleAgendamentoSelecionado}
+            agendamentosSelecionados={agendamentosSelecionados}
+          />
+        ) : (
+          <div>
+            <p className="flex justify-center font-bold font-face-montserrat text-4xl">
+              Nenhum agendamento registrado.
+            </p>
+          </div>
+        )}
       </div>
       <div>
         <ButtonPadrao texto="Alterar" onClick={handleAlterarStatus} />
       </div>
+      {feedback.message && (
+        <MensagemFeedback
+          type={feedback.type as 'failure' | 'success'}
+          message={feedback.message}
+          subMessage={feedback.subMessage}
+          onClose={() => setFeedback({ type: '', message: '', subMessage: '' })}
+        />
+      )}
     </section>
   );
 };

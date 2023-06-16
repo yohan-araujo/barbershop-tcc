@@ -6,17 +6,73 @@ import ListaCardsHorizontais from './ListaCardsHorizontais';
 import ButtonPadrao from 'components/ButtonPadrao';
 import LegendaServicos from 'components/LegendaServicos';
 import { Search, User2 } from 'lucide-react';
+import MensagemFeedback from 'components/MensagemFeedback';
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
+  const [nomeCompleto, setNomeCompleto] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [enderecoFoto, setEnderecoFoto] = useState('');
+  const [feedback, setFeedback] = useState({
+    type: '',
+    message: '',
+    subMessage: '',
+  });
+
   const imagens = [
     'https://picsum.photos/id/1003/1600/900',
     'https://picsum.photos/id/1004/1600/900',
     'https://picsum.photos/id/1005/1600/900',
     'https://picsum.photos/id/1006/1600/900',
   ];
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (senha !== confirmarSenha) {
+      setFeedback({
+        type: 'failure',
+        message: 'As senhas não correspondem!',
+        subMessage: 'O cadastro falhou!',
+      });
+      return;
+    }
+
+    axios
+      .post('http://localhost:3001/api/insertUsuarioCliente', {
+        usu_nomeCompleto: nomeCompleto,
+        usu_email: email,
+        usu_senha: senha,
+        usu_foto: enderecoFoto,
+        cli_tel: telefone,
+      })
+      .then((response) => {
+        setFeedback({
+          type: 'success',
+          message: 'Sucesso',
+          subMessage: 'Cadastro realizado com sucesso!',
+        });
+      })
+      .catch((error) => {
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Cadastro não foi realizado!',
+        });
+      });
+
+    console.log('submit', {
+      nomeCompleto,
+      email,
+      senha,
+      enderecoFoto,
+      telefone,
+    });
+  };
 
   useEffect(() => {
     axios
@@ -86,7 +142,7 @@ const Home = () => {
         </div>
 
         <div className="flex mx-auto my-24 bg-[#D9D9D9] rounded-2xl w-5/6">
-          <form className="grid grid-cols-2 gap-8 p-24">
+          <form className="grid grid-cols-2 gap-8 p-24" onSubmit={handleSubmit}>
             <div>
               <div className="flex flex-col mb-8">
                 <label className="font-face-montserrat text-2xl font-medium">
@@ -95,6 +151,9 @@ const Home = () => {
                 <input
                   type="text"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setNomeCompleto(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex flex-col mb-8">
@@ -102,8 +161,11 @@ const Home = () => {
                   E-mail
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex flex-col mb-8">
@@ -113,6 +175,9 @@ const Home = () => {
                 <input
                   type="password"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setSenha(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex flex-col mb-8">
@@ -122,15 +187,21 @@ const Home = () => {
                 <input
                   type="password"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setConfirmarSenha(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex flex-col mb-8">
                 <label className="font-face-montserrat text-2xl font-medium">
-                  Celular
+                  Telefone
                 </label>
                 <input
                   type="text"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setTelefone(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -158,6 +229,9 @@ const Home = () => {
                 <input
                   type="text"
                   className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
+                  onChange={(e) => {
+                    setEnderecoFoto(e.target.value);
+                  }}
                 />
               </div>
               <div className="relative left-64 mt-28">
@@ -168,6 +242,18 @@ const Home = () => {
                   CONFIRMAR
                 </button>
               </div>
+
+              {feedback.message && (
+                <MensagemFeedback
+                  type={feedback.type as 'failure' | 'success'}
+                  message={feedback.message}
+                  subMessage={feedback.subMessage}
+                  onClose={() =>
+                    setFeedback({ type: '', message: '', subMessage: '' })
+                  }
+                  redirectTo="/login"
+                />
+              )}
             </div>
           </form>
         </div>
