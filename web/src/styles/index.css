@@ -44,10 +44,6 @@ body {
   min-height: 100vh;
 }
 
-footer{
-  
-}
-
 .bg-age {
   top: 60px; /* Altura da navbar */
   left: 0;
@@ -56,4 +52,8 @@ footer{
   background-image: url(../assets/bg-barbershop.svg);
   background-position: center;
   background-size: cover; /* Coloca o elemento de background atrás de tudo */
+}
+
+.font-lato {
+  font-family: 'Lato', sans-serif;
 }

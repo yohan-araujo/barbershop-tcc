@@ -56,6 +56,7 @@ const ConfirmarServico = () => {
           message: 'Sucesso',
           subMessage: 'Alteração de status realizado com sucesso!',
         });
+        window.location.reload();
       })
       .catch((error) => {
         setFeedback({

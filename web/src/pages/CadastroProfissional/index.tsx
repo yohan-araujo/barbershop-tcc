@@ -99,7 +99,7 @@ const CadastroProfissional = () => {
 
   useEffect(() => {
     axios
-      .get<IServico[]>('http://localhost:3001/api/getServicos')
+      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
       .then((response) => {
         setListaServicos(response.data);
       });

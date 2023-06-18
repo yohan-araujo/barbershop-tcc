@@ -5,10 +5,8 @@ const Pagina404 = () => {
   return (
     <div className="grid items-center justify-center bg-[#414141]">
       <div className="flex relative">
-        <h1 className="text-[32rem] font-lato text-[#FFFFFF] z-10 font-face-montserrat">
-          404
-        </h1>
-        <h1 className="text-[32rem] font-lato text-[#535353] absolute top-2 left-6 font-face-montserrat">
+        <h1 className="text-[32rem] font-lato text-[#FFFFFF] z-10">404</h1>
+        <h1 className="text-[32rem] font-lato text-[#535353] absolute top-2 left-6">
           404
         </h1>
       </div>

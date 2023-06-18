@@ -167,6 +167,20 @@ app.get('/api/getProfissionais', (req, res) => {
   });
 });
 
+app.get('/api/getServicosCadastrados', (req, res) => {
+  const selectServicos = `
+    SELECT ser_id, ser_tipo FROM ser_servicos;
+  `;
+  db.query(selectServicos, (err, result) => {
+    if (err) {
+      console.error('Erro ao obter serviços:', err);
+      res.status(500).send('Erro ao obter serviços');
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 app.get('/api/getServicos/:profissionalID', (req, res) => {
   const profissionalID = req.params.profissionalID;
   const selectServicos = `
