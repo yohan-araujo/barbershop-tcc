@@ -7,12 +7,22 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IProfissional } from 'types/IProfissional';
 import { IServico } from 'types/IServico';
-import DatePicker from 'react-datepicker';
-import TimePicker from 'react-time-picker';
-import { format } from 'date-fns';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-time-picker/dist/TimePicker.css';
+import { Calendar } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import {
+  isSunday,
+  addDays,
+  format,
+  startOfMonth,
+  startOfWeek,
+  endOfMonth,
+  endOfYear,
+} from 'date-fns';
+
+import ptBR from 'date-fns/locale/pt-BR';
 import MensagemFeedback from 'components/MensagemFeedback';
+import SelectHorario from './SelectHorario';
 
 const Agendamento = () => {
   // useStates ou Variaveis
@@ -25,7 +35,9 @@ const Agendamento = () => {
   const [servicoSelecionado, setServicoSelecionado] = useState<IServico | null>(
     null
   );
-  const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
+  const [dataSelecionada, setDataSelecionada] = useState<Date | undefined>(
+    undefined
+  );
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
   const [etapaAtual, setEtapaAtual] = useState(1);
   const [feedback, setFeedback] = useState({
@@ -33,7 +45,6 @@ const Agendamento = () => {
     message: '',
     subMessage: '',
   });
-  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
 
   //Trazendo informação do banco
   useEffect(() => {
@@ -71,7 +82,7 @@ const Agendamento = () => {
 
   // Colocando a data e hora pra funcionar
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: Date | undefined) => {
     if (date) {
       setDataSelecionada(date);
     }
@@ -89,6 +100,31 @@ const Agendamento = () => {
 
   const handleEtapaAnterior = () => {
     setEtapaAtual((etapaAnterior) => etapaAnterior - 1);
+  };
+
+  const handleAlteracaoProfissional = () => {
+    setEtapaAtual(1);
+  };
+
+  const handleAlteracaoServico = () => {
+    setEtapaAtual(2);
+  };
+
+  const getDisabledDates = () => {
+    const disabledDates = [];
+    const currentDate = startOfWeek(startOfMonth(new Date()));
+    const endDate = endOfMonth(endOfYear(new Date()));
+
+    let currentDateCopy = currentDate;
+
+    while (currentDateCopy <= endDate) {
+      if (isSunday(currentDateCopy)) {
+        disabledDates.push(new Date(currentDateCopy));
+      }
+      currentDateCopy = addDays(currentDateCopy, 1);
+    }
+
+    return disabledDates;
   };
 
   // Submit no form todo
@@ -247,21 +283,56 @@ const Agendamento = () => {
 
             {etapaAtual === 3 && (
               <>
-                <label>Data</label>
-                <DatePicker
-                  selected={dataSelecionada}
-                  onChange={handleDateChange}
-                  dateFormat="dd/MM/yyyy"
-                />
-
-                <label>Hora:</label>
-                <TimePicker
-                  value={horaSelecionada}
-                  onChange={handleTimeChange}
-                  disableClock={true}
-                />
-                <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                <ButtonPadrao texto="Agendar!" tipo="submit" />
+                <div>
+                  <div className="grid grid-cols-3 gap-32">
+                    <div className="flex flex-col text-white">
+                      <label>Selecionados</label>
+                      <span>
+                        Profissional Selecionado:{' '}
+                        {profissionalSelecionado?.usu_nomeCompleto}
+                      </span>
+                      <span
+                        onClick={handleAlteracaoProfissional}
+                        className="cursor-pointer"
+                      >
+                        {' '}
+                        Alterar
+                      </span>
+                      <span>
+                        Servico Selecionado: {servicoSelecionado?.ser_tipo}, R${' '}
+                        {servicoSelecionado?.ser_preco.toFixed(2)},
+                      </span>
+                      <span
+                        onClick={handleAlteracaoServico}
+                        className="cursor-pointer"
+                      >
+                        {' '}
+                        Alterar
+                      </span>
+                    </div>
+                    <div className="flex flex-col">
+                      <label>Data</label>
+                      <Calendar
+                        date={dataSelecionada}
+                        onChange={handleDateChange}
+                        locale={ptBR}
+                        disabledDates={getDisabledDates()}
+                        className="rounded-xl"
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label>Hora:</label>
+                      <div>
+                        <SelectHorario
+                          horarioSelecionado={horaSelecionada}
+                          setHorarioSelecionado={handleTimeChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
+                  <ButtonPadrao texto="Agendar!" tipo="submit" />
+                </div>
                 {feedback.message && (
                   <MensagemFeedback
                     type={feedback.type as 'failure' | 'success'}
@@ -270,7 +341,6 @@ const Agendamento = () => {
                     onClose={() =>
                       setFeedback({ type: '', message: '', subMessage: '' })
                     }
-                    redirectTo="/login"
                   />
                 )}
               </>

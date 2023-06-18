@@ -2,7 +2,6 @@ import InputPadrao from 'components/InputPadrao';
 import ButtonPadrao from 'components/ButtonPadrao';
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import MensagemFeedback from 'components/MensagemFeedback';
 
 const Login = () => {
