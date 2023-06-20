@@ -7,7 +7,6 @@ import MensagemFeedback from 'components/MensagemFeedback';
 const Login = () => {
   const [usu_email, setUsuEmail] = useState('');
   const [usu_senha, setUsuSenha] = useState('');
-  const [usu_confirmaSenha, setUsuConfirmaSenha] = useState('');
   const [feedback, setFeedback] = useState({
     type: '',
     message: '',
@@ -16,16 +15,6 @@ const Login = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    // Verificacao para ver se as senhas coincidem, se nao ja retorna uma mensagem!
-    if (usu_senha !== usu_confirmaSenha) {
-      setFeedback({
-        type: 'failure',
-        message: 'As senhas não correspondem!',
-        subMessage: 'O cadastro falhou!',
-      });
-      return;
-    }
 
     axios
       .post('http://localhost:3001/api/loginUsuario', { usu_email, usu_senha })
@@ -63,16 +52,14 @@ const Login = () => {
             sessionStorage.setItem('proCor', proCor);
             sessionStorage.setItem('proId', proId);
           }
-
-          // Recarregar
-        } else {
-          // Login falhou
-          setFeedback({
-            type: 'failure',
-            message: 'Falhou',
-            subMessage: 'Login não foi realizado!',
-          });
         }
+      })
+      .catch((error) => {
+        setFeedback({
+          type: 'failure',
+          message: 'Falhou',
+          subMessage: 'Email ou senha incorretos!',
+        });
       });
   };
 
@@ -113,17 +100,6 @@ const Login = () => {
                     nome="usu_senha"
                     onChange={(e) => {
                       setUsuSenha(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <InputPadrao
-                    labelTexto="Confirmar senha"
-                    placeholder="Confirme sua senha..."
-                    tipo="password"
-                    nome="usuSenhaConfirma"
-                    onChange={(e) => {
-                      setUsuConfirmaSenha(e.target.value);
                     }}
                   />
                 </div>

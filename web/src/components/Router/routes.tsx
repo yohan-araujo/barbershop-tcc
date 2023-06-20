@@ -12,6 +12,7 @@ import PerfilAdministrador from '../../pages/PerfilAdministrador';
 import CadastroServico from '../../pages/CadastroServico';
 import ConfirmarServico from '../../pages/ConfirmarServico';
 import Pagina404 from '../../pages/Pagina404';
+import EditarAgendas from 'pages/EditarAgendas';
 
 export default function AppRouter() {
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
@@ -57,6 +58,10 @@ export default function AppRouter() {
           <Route
             path="cadastroServico"
             element={usuarioTipo === 'A' ? <CadastroServico /> : <Pagina404 />}
+          />
+          <Route
+            path="editarAgendas"
+            element={usuarioTipo === 'A' ? <EditarAgendas /> : <Pagina404 />}
           />
 
           {/* Rotas do Gerais */}

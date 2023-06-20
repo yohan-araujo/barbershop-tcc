@@ -69,23 +69,31 @@ const ConfirmarServico = () => {
 
   return (
     <section>
-      <div>
-        {listaAgendamentos.length > 0 ? (
-          <TabelaAgendamento
-            agendamentos={listaAgendamentos}
-            onAgendamentoSelecionado={handleAgendamentoSelecionado}
-            agendamentosSelecionados={agendamentosSelecionados}
-          />
-        ) : (
-          <div>
-            <p className="flex justify-center font-bold font-face-montserrat text-4xl">
-              Nenhum agendamento registrado.
-            </p>
+      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
+        <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
+          <span className="text-center text-white text-6xl font-bold font-face-montserrat my-12">
+            Confirmar Servico
+          </span>
+
+          <div className="p-12">
+            {listaAgendamentos.length > 0 ? (
+              <TabelaAgendamento
+                agendamentos={listaAgendamentos}
+                onAgendamentoSelecionado={handleAgendamentoSelecionado}
+                agendamentosSelecionados={agendamentosSelecionados}
+              />
+            ) : (
+              <div>
+                <p className="flex justify-center font-bold font-face-montserrat text-4xl">
+                  Nenhum agendamento registrado.
+                </p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div>
-        <ButtonPadrao texto="Alterar" onClick={handleAlterarStatus} />
+          <div className="flex mx-auto my-12">
+            <ButtonPadrao texto="CONFIRMAR" onClick={handleAlterarStatus} />
+          </div>
+        </div>
       </div>
       {feedback.message && (
         <MensagemFeedback

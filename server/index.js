@@ -167,6 +167,14 @@ app.get('/api/getProfissionais', (req, res) => {
   });
 });
 
+app.get('/api/getProfissionaisImagens', (req, res) => {
+  const selectProfissionais =
+    'SELECT p.pro_id, u.usu_foto FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ;';
+  db.query(selectProfissionais, (err, result) => {
+    res.send(result);
+  });
+});
+
 app.get('/api/getServicosCadastrados', (req, res) => {
   const selectServicos = `
     SELECT ser_id, ser_tipo FROM ser_servicos;
@@ -202,13 +210,40 @@ app.get('/api/getServicos/:profissionalID', (req, res) => {
 app.get('/api/getAgendamentos/:profissionalID', (req, res) => {
   const profissionalID = req.params.profissionalID;
   const selectAgendamento = `
-    SELECT a.age_id, a.age_data, a.age_hora, u.usu_nomeCompleto, s.ser_tipo, a.age_status, pro_id
-    FROM age_agendamento a
-    JOIN cli_clientes c ON a.cli_id = c.cli_id
-    JOIN usu_usuarios u ON c.usu_id = u.usu_id
-    JOIN ser_servicos s ON a.ser_id = s.ser_id
-    WHERE a.pro_id = ?;`;
+  SELECT a.age_id, a.age_data, a.age_hora, u.usu_nomeCompleto, s.ser_tipo, a.age_status, a.pro_id, p.pro_cor
+  FROM age_agendamento a
+  JOIN cli_clientes c ON a.cli_id = c.cli_id
+  JOIN usu_usuarios u ON c.usu_id = u.usu_id
+  JOIN ser_servicos s ON a.ser_id = s.ser_id
+  JOIN pro_profissionais p ON a.pro_id = p.pro_id
+  WHERE a.pro_id = ?;`;
   db.query(selectAgendamento, [profissionalID], (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get('/api/getAgendamentosAtivos/:clienteID', (req, res) => {
+  const clienteID = req.params.clienteID;
+  const selectAgendamento = `
+  SELECT age.age_id, age.age_data, age.age_hora, usu.usu_nomeCompleto AS nome_profissional
+  FROM age_agendamento AS age
+  JOIN pro_profissionais AS pro ON age.pro_id = pro.pro_id
+  JOIN usu_usuarios AS usu ON pro.usu_id = usu.usu_id
+  WHERE age.cli_id = ? AND age.age_status = FALSE;`;
+  db.query(selectAgendamento, [clienteID], (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get('/api/getAgendamentosInativos/:clienteID', (req, res) => {
+  const clienteID = req.params.clienteID;
+  const selectAgendamento = `
+  SELECT age.age_id, age.age_data, age.age_hora, usu.usu_nomeCompleto AS nome_profissional
+  FROM age_agendamento AS age
+  JOIN pro_profissionais AS pro ON age.pro_id = pro.pro_id
+  JOIN usu_usuarios AS usu ON pro.usu_id = usu.usu_id
+  WHERE age.cli_id = ? AND age.age_status = TRUE;`;
+  db.query(selectAgendamento, [clienteID], (err, result) => {
     res.send(result);
   });
 });

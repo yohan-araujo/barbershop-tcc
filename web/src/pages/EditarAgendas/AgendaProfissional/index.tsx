@@ -1,29 +1,23 @@
-import { useEffect } from 'react';
 import { IAgendamento } from 'types/IAgendamento';
+import { IProfissional } from 'types/IProfissional';
 
-interface TabelaAgendamentoProps {
+interface AgendaProfissionalProps {
   agendamentos: IAgendamento[];
-  agendamentosSelecionados: number[];
-  onAgendamentoSelecionado: (agendamento: IAgendamento) => void;
+  profissionalSelecionado?: IProfissional;
 }
 
-const TabelaAgendamento = ({
+const AgendaProfissional = ({
   agendamentos,
-  onAgendamentoSelecionado,
-  agendamentosSelecionados,
-}: TabelaAgendamentoProps) => {
-  useEffect(() => {
-    console.log(agendamentosSelecionados);
-  }, [agendamentosSelecionados]);
-
-  const handleAgendamentoSelecionado = (agendamento: IAgendamento) => {
-    onAgendamentoSelecionado(agendamento);
-  };
-
+  profissionalSelecionado,
+}: AgendaProfissionalProps) => {
+  console.log(
+    'cor do profissional selecionado ',
+    profissionalSelecionado?.pro_cor
+  );
   return (
     <table className="w-full border-collapse">
       <thead>
-        <tr className="bg-blue-900">
+        <tr style={{ backgroundColor: profissionalSelecionado?.pro_cor }}>
           <th className="border p-2 text-center text-white font-face-montserrat">
             Data
           </th>
@@ -42,11 +36,13 @@ const TabelaAgendamento = ({
           <th className="border p-2 text-center text-white font-face-montserrat">
             Selecionar
           </th>
+          <th className="border p-2 text-center text-white font-face-montserrat">
+            Acoes
+          </th>
         </tr>
-      </thead>
-      <tbody>
+
         {agendamentos.map((agendamento) => (
-          <tr key={agendamento.age_id} className="hover:bg-blue-950">
+          <tr key={agendamento.age_id}>
             <td className="border p-2 text-center text-white font-face-montserrat">
               {new Date(agendamento.age_data).toLocaleDateString('pt-BR')}
             </td>
@@ -63,18 +59,17 @@ const TabelaAgendamento = ({
               {agendamento.age_status ? 'Completo' : 'Incompleto'}
             </td>
             <td className="border p-2 text-center text-white font-face-montserrat">
-              <input
-                type="checkbox"
-                value={agendamento.age_id}
-                checked={agendamentosSelecionados.includes(agendamento.age_id)}
-                onChange={() => handleAgendamentoSelecionado(agendamento)}
-              />
+              <input type="checkbox" value={agendamento.age_id} />
+            </td>
+            <td className="border p-2 text-center text-white font-face-montserrat space-x-2">
+              <span>Excluir</span>
+              <span>Alterar</span>
             </td>
           </tr>
         ))}
-      </tbody>
+      </thead>
     </table>
   );
 };
 
-export default TabelaAgendamento;
+export default AgendaProfissional;
