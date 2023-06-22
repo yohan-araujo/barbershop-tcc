@@ -5,15 +5,15 @@ import { useState } from 'react';
 import { IAgendamento } from 'types/IAgendamento';
 import { IProfissional } from 'types/IProfissional';
 
-interface AgendaProfissionalProps {
+interface TabelaAgendaProps {
   agendamentos: IAgendamento[];
   profissionalSelecionado?: IProfissional;
 }
 
-const AgendaProfissional = ({
+const TabelaAgenda = ({
   agendamentos,
   profissionalSelecionado,
-}: AgendaProfissionalProps) => {
+}: TabelaAgendaProps) => {
   const [linhasSelecionadas, setLinhasSelecionadas] = useState<number[]>([]);
   const [feedback, setFeedback] = useState({
     type: '',
@@ -101,7 +101,7 @@ const AgendaProfissional = ({
             Selecionar
           </th>
           <th className="border p-2 text-center text-white font-face-montserrat">
-            Acoes
+            Ações
           </th>
         </tr>
 
@@ -157,4 +157,4 @@ const AgendaProfissional = ({
   );
 };
 
-export default AgendaProfissional;
+export default TabelaAgenda;

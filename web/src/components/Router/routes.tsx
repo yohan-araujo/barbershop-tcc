@@ -15,9 +15,9 @@ import PerfilCliente from '../../pages/PerfilCliente';
 import PerfilProfissional from '../../pages/PerfilProfissional';
 import PerfilAdministrador from '../../pages/PerfilAdministrador';
 import CadastroServico from '../../pages/CadastroServico';
-import ConfirmarServico from '../../pages/ConfirmarServico';
 import Pagina404 from '../../pages/Pagina404';
 import EditarAgendas from 'pages/EditarAgendas';
+import AgendaProfissional from '../../pages/AgendaProfissional';
 
 interface ProtegidoProps {
   component: React.ComponentType<any>;
@@ -56,8 +56,10 @@ export default function AppRouter() {
             }
           />
           <Route
-            path="confirmarServico"
-            element={usuarioTipo === 'P' ? <ConfirmarServico /> : <Pagina404 />}
+            path="agendaProfissional"
+            element={
+              usuarioTipo === 'P' ? <AgendaProfissional /> : <Pagina404 />
+            }
           />
 
           {/* Rotas do Administrador */}

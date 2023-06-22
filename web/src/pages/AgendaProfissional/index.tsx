@@ -5,7 +5,7 @@ import ButtonPadrao from 'components/ButtonPadrao';
 import TabelaAgendamento from './TabelaAgendamento';
 import MensagemFeedback from 'components/MensagemFeedback';
 
-const ConfirmarServico = () => {
+const AgendaProfissional = () => {
   const [listaAgendamentos, setListaAgendamentos] = useState<IAgendamento[]>(
     []
   );
@@ -72,7 +72,7 @@ const ConfirmarServico = () => {
       <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
         <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
           <span className="text-center text-white text-6xl font-bold font-face-montserrat my-24">
-            Confirmar Servico
+            Agenda
           </span>
 
           <div className="p-12">
@@ -84,7 +84,7 @@ const ConfirmarServico = () => {
               />
             ) : (
               <div>
-                <p className="flex justify-center font-bold font-face-montserrat text-4xl">
+                <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white">
                   Nenhum agendamento registrado.
                 </p>
               </div>
@@ -107,4 +107,4 @@ const ConfirmarServico = () => {
   );
 };
 
-export default ConfirmarServico;
+export default AgendaProfissional;

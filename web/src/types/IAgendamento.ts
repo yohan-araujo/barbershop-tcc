@@ -6,4 +6,5 @@ export interface IAgendamento {
   pro_id: number;
   ser_tipo: string;
   age_status: boolean;
+  ser_preco: number;
 }

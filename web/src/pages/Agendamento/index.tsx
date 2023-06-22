@@ -308,9 +308,9 @@ const Agendamento = () => {
                           />
                         </div>
                         <span className="font-bold font-face-montserrat text-3xl mt-12">
-                          Servico Selecionado: <br />
+                          Serviço Selecionado: <br />
                         </span>
-                        <div className="flex flex-row gap-12 mt-6">
+                        <div className="flex flex-row gap-6 mt-6 px-2">
                           <span className="font-face-montserrat text-3xl mt-1">
                             {servicoSelecionado?.ser_tipo}
                           </span>

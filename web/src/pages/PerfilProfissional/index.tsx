@@ -85,19 +85,16 @@ const PerfilProfissional = () => {
           </div>
           <div className="flex flex-col">
             <div className="flex flex-col justify-center">
-              <div className="flex m-auto mt-36">
-                <ButtonPadrao texto="Editar Agenda" />
-              </div>
-              <div className="flex m-auto my-11">
+              <div className="flex m-auto my-32">
                 {' '}
-                <Link to="/confirmarServico" className="mt-2 ml-1">
-                  <ButtonPadrao texto="Confirmar Horario" />
+                <Link to="/agendaProfissional" className="mt-6 ml-1">
+                  <ButtonPadrao texto="minha agenda" />
                 </Link>
               </div>
             </div>
             <div className="mt-20">
               <span className="text-white text-4xl font-semibold font-face-montserrat">
-                Desempenho mensal
+                Desempenho
               </span>
               <div className="flex justify-center p-5 my-8">
                 <img

@@ -6,8 +6,8 @@ import {
   UserCircle,
   UserPlus,
   FilePlus,
-  CheckCircle,
   Edit,
+  CalendarDays,
 } from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
@@ -78,9 +78,9 @@ const Navbar = () => {
         },
         {
           value: '2',
-          label: 'Confirmar Servico',
-          to: '/confirmarServico',
-          icon: <CheckCircle />,
+          label: 'Agenda',
+          to: '/agendaProfissional',
+          icon: <CalendarDays />,
         },
       ];
     } else if (usuarioTipo === 'A') {

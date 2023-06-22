@@ -3,7 +3,7 @@ import ProfissionaisSelect from './ProfissionaisSelect';
 import { IProfissional } from 'types/IProfissional';
 import axios from 'axios';
 import { IAgendamento } from 'types/IAgendamento';
-import AgendaProfissional from './AgendaProfissional';
+import AgendaProfissional from './TabelaAgenda';
 
 const EditarAgendas = () => {
   const [profissionais, setProfissionais] = useState<IProfissional[]>([]);
@@ -46,7 +46,7 @@ const EditarAgendas = () => {
               onProfissionalSelect={handleProfissionalSelecionado}
             />
           </div>
-
+          w
           <div className="flex-auto mt-16 p-5">
             {profissionalSelecionado ? (
               <AgendaProfissional

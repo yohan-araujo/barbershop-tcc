@@ -1,10 +1,11 @@
 import ButtonPadrao from 'components/ButtonPadrao';
-import { Scissors, X } from 'lucide-react';
+import { Edit, Scissors, X } from 'lucide-react';
 import ListaHorariosAtivos from './ListaHorariosAtivos';
 import { useEffect, useState } from 'react';
 import { IAgendamento } from 'types/IAgendamento';
 import axios from 'axios';
 import ListaHorariosInativos from './ListaHorariosInativos';
+import { Link } from 'react-router-dom';
 
 const PerfilCliente = () => {
   const [listaAgendamentosAtivos, setListaAgendamentosAtivos] = useState<
@@ -61,11 +62,18 @@ const PerfilCliente = () => {
           <div className="flex flex-col my-36">
             {' '}
             <div className="flex flex-col ml-12">
-              <span className="text-white text-4xl font-semibold font-face-montserrat">
-                Horários ativos
-              </span>
-              <div className="flex mt-12 ml-32">
-                <div className="flex mt-12">
+              <div className="flex flex-row">
+                <span className="text-white text-4xl font-semibold font-face-montserrat">
+                  Horários ativos
+                </span>
+                <div className="w-10 h-10 rounded-full bg-zinc-600 flex justify-center mt-1 ml-3 text-white">
+                  <Link to="#" className="mt-2 ml-1">
+                    <Edit />
+                  </Link>
+                </div>
+              </div>
+              <div className="flex mt-12 ml-">
+                <div className="flex ">
                   {listaAgendamentosAtivos.length > 0 ? (
                     <ListaHorariosAtivos
                       agendamentos={listaAgendamentosAtivos}
@@ -85,8 +93,8 @@ const PerfilCliente = () => {
                 <span className="text-white text-4xl font-semibold font-face-montserrat">
                   Histórico
                 </span>
-                <div className="flex flex-col mt-12 ml-32">
-                  <div className="flex mt-12">
+                <div className="flex flex-col mt-12 ml-4">
+                  <div className="flex">
                     {listaAgendamentosInativos.length > 0 ? (
                       <ListaHorariosInativos
                         agendamentos={listaAgendamentosInativos}
