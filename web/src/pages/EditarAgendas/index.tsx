@@ -34,7 +34,7 @@ const EditarAgendas = () => {
   };
 
   return (
-    <section>
+    <section className="flex bg-age">
       <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
         <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
           <span className="text-center text-white text-6xl font-bold font-face-montserrat my-12">
@@ -48,11 +48,17 @@ const EditarAgendas = () => {
           </div>
 
           <div className="flex-auto mt-16 p-5">
-            {profissionalSelecionado && (
+            {profissionalSelecionado ? (
               <AgendaProfissional
                 agendamentos={agenda}
                 profissionalSelecionado={profissionalSelecionado}
               />
+            ) : (
+              <div>
+                <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white my-12">
+                  Nenhum profissional selecionado.
+                </p>
+              </div>
             )}
           </div>
         </div>

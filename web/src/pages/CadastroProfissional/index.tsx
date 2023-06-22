@@ -106,8 +106,8 @@ const CadastroProfissional = () => {
   }, []);
 
   return (
-    <section className="flex items-center min-h-screen bg-gray-50 my-24">
-      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
+    <section className="flex items-center min-h-screen bg-age ">
+      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl my-12">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img

@@ -57,3 +57,38 @@ body {
 .font-lato {
   font-family: 'Lato', sans-serif;
 }
+
+.maquinabarbear-svg {
+  background-image: url('../assets/barbeador-eletrico.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.pincelcabelo-svg {
+  background-image: url('../assets/escova-de-tintura-de-cabelo.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.crianca-svg {
+  background-image: url('../assets/feliz.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.sobrancelhas-svg {
+  background-image: url('../assets/sobrancelha.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.cortecabelo-svg {
+  background-image: url('../assets/tesouras.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}

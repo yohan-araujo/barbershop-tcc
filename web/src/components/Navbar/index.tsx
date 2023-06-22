@@ -2,7 +2,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 import DropdownSelect from 'components/DropdownSelect';
-import { UserCircle, UserPlus, FilePlus, CheckCircle } from 'lucide-react';
+import {
+  UserCircle,
+  UserPlus,
+  FilePlus,
+  CheckCircle,
+  Edit,
+} from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
 
@@ -97,6 +103,12 @@ const Navbar = () => {
           to: '/cadastroServico',
           icon: <FilePlus />,
         },
+        {
+          value: '4',
+          label: 'Editar Agendas',
+          to: '/editarAgendas',
+          icon: <Edit />,
+        },
       ];
     }
 
@@ -116,7 +128,7 @@ const Navbar = () => {
           <li key={index} className="list-none mr-6">
             <Link
               to={rota.to}
-              className="text-white text-2xl font-medium no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat"
+              className="text-white text-2xl font-semibold no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat uppercase"
             >
               {rota.label}
             </Link>

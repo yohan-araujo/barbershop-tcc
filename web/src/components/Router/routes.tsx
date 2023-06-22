@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import Home from '../../pages/Home';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
@@ -14,9 +19,22 @@ import ConfirmarServico from '../../pages/ConfirmarServico';
 import Pagina404 from '../../pages/Pagina404';
 import EditarAgendas from 'pages/EditarAgendas';
 
+interface ProtegidoProps {
+  component: React.ComponentType<any>;
+}
+
+function Protegido({ component: Component, ...props }: ProtegidoProps) {
+  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
+
+  if (!usuarioLogado) {
+    return <Navigate to="/login" />; // Redirecionar para a página de login
+  }
+
+  return <Component {...props} />;
+}
+
 export default function AppRouter() {
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
-  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
 
   return (
     <Router>
@@ -66,11 +84,11 @@ export default function AppRouter() {
 
           {/* Rotas do Gerais */}
           <Route path="cadastroUsuario" element={<CadastroUsuario />} />
-          <Route path="agendamento" element={<Agendamento />} />
           <Route
-            path="login"
-            element={usuarioLogado ? <Pagina404 /> : <Login />}
+            path="agendamento"
+            element={<Protegido component={Agendamento} />}
           />
+          <Route path="login" element={<Login />} />
           <Route path="sobre" element={<Sobre />} />
           <Route path="*" element={<Pagina404 />} />
         </Route>

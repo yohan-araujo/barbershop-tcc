@@ -38,13 +38,14 @@ const Login = () => {
             proCor,
           } = response.data;
 
-          //Logica da session
+          //Armazenando na session os valores que vem do back end
           sessionStorage.setItem('usuarioTipo', usuarioTipo);
           sessionStorage.setItem('usuarioLogado', 'true');
           sessionStorage.setItem('usuarioId', usuarioId);
           sessionStorage.setItem('usuarioNome', usuarioNome);
           sessionStorage.setItem('usuarioFoto', usuarioFoto);
 
+          //Verificando o armazenamento pelo tipo de usuario
           if (sessionStorage.getItem('usuarioTipo') === 'C') {
             sessionStorage.setItem('clienteID', clienteID);
           } else if (sessionStorage.getItem('usuarioTipo') === 'P') {
@@ -64,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-gray-50">
+    <section className="flex items-center min-h-screen bg-age">
       <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">

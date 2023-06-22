@@ -19,7 +19,6 @@ import {
   endOfMonth,
   endOfYear,
 } from 'date-fns';
-
 import ptBR from 'date-fns/locale/pt-BR';
 import MensagemFeedback from 'components/MensagemFeedback';
 import SelectHorario from './SelectHorario';
@@ -102,6 +101,7 @@ const Agendamento = () => {
     setEtapaAtual((etapaAnterior) => etapaAnterior - 1);
   };
 
+  // Alteracao na hora da selecao de data e hora
   const handleAlteracaoProfissional = () => {
     setEtapaAtual(1);
   };
@@ -110,6 +110,7 @@ const Agendamento = () => {
     setEtapaAtual(2);
   };
 
+  // Desativando domingos
   const getDisabledDates = () => {
     const disabledDates = [];
     const currentDate = startOfWeek(startOfMonth(new Date()));
@@ -200,7 +201,7 @@ const Agendamento = () => {
               <>
                 <div className="bg-[#828282] p-4 mb-4 rounded-[20px]">
                   <div className="flex text-white items-center justify-center">
-                    <h1 className="font-face-montserrat font-normal text-[96px] text-center">
+                    <h1 className="font-face-montserrat font-semibold text-[96px] text-center">
                       Profissionais
                     </h1>
                   </div>
@@ -240,7 +241,7 @@ const Agendamento = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-4 ">
+                  <div className="flex gap-4 my-24">
                     <ListaCards
                       profissionais={listaProfissionais}
                       onProfissionalSelecionado={handleProfissionalSelecionado}
@@ -248,7 +249,7 @@ const Agendamento = () => {
                   </div>
                 </div>
                 <div className="flex justify-center mt-[89px] mb-[80px]">
-                  <ButtonPadrao texto="Proximo" onClick={handleProximaEtapa} />
+                  <ButtonPadrao texto="Próximo" onClick={handleProximaEtapa} />
                 </div>
               </>
             )}
@@ -256,7 +257,7 @@ const Agendamento = () => {
               <>
                 <div className="bg-[#828282] w-[32rem] h-[48rem] p-4 mb-4 rounded-3xl">
                   <div className="flex text-white items-center justify-center">
-                    <h1 className="font-face-montserrat font-normal text-[96px] text-center mt-[31px] mb-[78px] mx-[82px]">
+                    <h1 className="font-face-montserrat font-semibold text-[96px] text-center mt-[31px] mb-[78px] mx-[82px]">
                       Serviços
                     </h1>
                   </div>
@@ -273,7 +274,7 @@ const Agendamento = () => {
                       onClick={handleEtapaAnterior}
                     />
                     <ButtonPadrao
-                      texto="Proximo"
+                      texto="Próximo"
                       onClick={handleProximaEtapa}
                     />
                   </div>
@@ -283,55 +284,78 @@ const Agendamento = () => {
 
             {etapaAtual === 3 && (
               <>
-                <div>
+                <div className=" bg-[#828282] p-12 rounded-3xl my-24 mx-24 justify-center">
+                  <h1 className="text-white font-face-montserrat font-semibold text-7xl text-center mb-16">
+                    Agendamento
+                  </h1>
+
                   <div className="grid grid-cols-3 gap-32">
-                    <div className="flex flex-col text-white">
-                      <label>Selecionados</label>
-                      <span>
-                        Profissional Selecionado:{' '}
-                        {profissionalSelecionado?.usu_nomeCompleto}
+                    <div className="flex flex-col border-4 shadow-inner rounded-2xl">
+                      <span className="text-center font-semibold text-[2rem] text-white font-face-montserrat mt-12">
+                        Selecionados:
                       </span>
-                      <span
-                        onClick={handleAlteracaoProfissional}
-                        className="cursor-pointer"
-                      >
-                        {' '}
-                        Alterar
-                      </span>
-                      <span>
-                        Servico Selecionado: {servicoSelecionado?.ser_tipo}, R${' '}
-                        {servicoSelecionado?.ser_preco.toFixed(2)},
-                      </span>
-                      <span
-                        onClick={handleAlteracaoServico}
-                        className="cursor-pointer"
-                      >
-                        {' '}
-                        Alterar
-                      </span>
+                      <div className="flex flex-col text-white my-6 items-center">
+                        <span className="font-bold font-face-montserrat text-3xl">
+                          Profissional Selecionado: <br />
+                        </span>
+                        <div className="flex flex-row gap-12 mt-6">
+                          <span className="font-face-montserrat text-3xl mt-1">
+                            {profissionalSelecionado?.usu_nomeCompleto}
+                          </span>
+                          <ButtonPadrao
+                            texto="ALTERAR"
+                            onClick={handleAlteracaoProfissional}
+                          />
+                        </div>
+                        <span className="font-bold font-face-montserrat text-3xl mt-12">
+                          Servico Selecionado: <br />
+                        </span>
+                        <div className="flex flex-row gap-12 mt-6">
+                          <span className="font-face-montserrat text-3xl mt-1">
+                            {servicoSelecionado?.ser_tipo}
+                          </span>
+                          <ButtonPadrao
+                            texto="ALTERAR"
+                            onClick={handleAlteracaoServico}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <label>Data</label>
-                      <Calendar
-                        date={dataSelecionada}
-                        onChange={handleDateChange}
-                        locale={ptBR}
-                        disabledDates={getDisabledDates()}
-                        className="rounded-xl"
-                      />
+                    <div>
+                      <div className="flex flex-col">
+                        <span className="text-center text-white font-semibold font-face-montserrat text-[2rem]  ">
+                          Selecione a Data:
+                        </span>
+                        <div className="mt-6">
+                          <Calendar
+                            date={dataSelecionada}
+                            onChange={handleDateChange}
+                            locale={ptBR}
+                            showMonthAndYearPickers={false}
+                            disabledDates={getDisabledDates()}
+                            className="rounded-xl font-normal text-black text-sm p-[1rem]"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <label>Hora:</label>
-                      <div>
-                        <SelectHorario
-                          horarioSelecionado={horaSelecionada}
-                          setHorarioSelecionado={handleTimeChange}
-                        />
+                    <div>
+                      <div className="flex flex-col items-center">
+                        <label className="flex text-white font-semibold font-face-montserrat text-[2rem] justify-center">
+                          Hora:
+                        </label>
+                        <div className="my-12">
+                          <SelectHorario
+                            horarioSelecionado={horaSelecionada}
+                            setHorarioSelecionado={handleTimeChange}
+                          />
+                        </div>
+
+                        <div className="my-4">
+                          <ButtonPadrao texto="AGENDAR" tipo="submit" />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <ButtonPadrao texto="Voltar" onClick={handleEtapaAnterior} />
-                  <ButtonPadrao texto="Agendar!" tipo="submit" />
                 </div>
                 {feedback.message && (
                   <MensagemFeedback

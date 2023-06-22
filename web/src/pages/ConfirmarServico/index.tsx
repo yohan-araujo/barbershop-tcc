@@ -68,10 +68,10 @@ const ConfirmarServico = () => {
   };
 
   return (
-    <section>
+    <section className="flex bg-age">
       <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
         <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
-          <span className="text-center text-white text-6xl font-bold font-face-montserrat my-12">
+          <span className="text-center text-white text-6xl font-bold font-face-montserrat my-24">
             Confirmar Servico
           </span>
 

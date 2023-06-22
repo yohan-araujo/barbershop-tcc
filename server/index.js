@@ -290,6 +290,25 @@ app.put('/api/atualizarStatusAgendamentos', (req, res) => {
   });
 });
 
+app.delete('/api/deleteAgendamentos', (req, res) => {
+  const { agendamentosSelecionados } = req.body;
+
+  const deleteAgendamentosQuery = `
+    DELETE FROM age_agendamento
+    WHERE age_id IN (${agendamentosSelecionados.join(',')});
+  `;
+
+  db.query(deleteAgendamentosQuery, (err, result) => {
+    if (err) {
+      // Tratar o erro de exclusão
+      console.error(err);
+      res.status(500).send('Erro ao excluir os agendamentos.');
+    } else {
+      // Agendamentos excluídos com sucesso
+      res.status(200).send('Agendamentos excluídos com sucesso.');
+    }
+  });
+});
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {
@@ -345,7 +364,6 @@ app.post('/api/loginUsuario', (req, res) => {
     } else {
       res.status(401).json({
         success: false,
-        message: 'Credenciais inválidas',
       });
     }
   });

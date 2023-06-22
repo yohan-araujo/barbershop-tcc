@@ -38,18 +38,9 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
           {profissional.pro_descricao}
         </p>
         <div className="flex justify-center space-x-4 mt-5">
-          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center">
-            <FacebookIcon className="mt-1" />
-          </div>
-          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center">
-            <FacebookIcon className="mt-1" />
-          </div>
-          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center">
-            <FacebookIcon className="mt-1" />
-          </div>
-          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center">
-            <FacebookIcon className="mt-1" />
-          </div>
+          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center pincelcabelo-svg"></div>
+          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center maquinabarbear-svg"></div>
+          <div className="w-8 h-8 rounded-full bg-[#D9D9D9] flex justify-center cortecabelo-svg"></div>
         </div>
       </div>
     </div>

@@ -50,18 +50,10 @@ const CadastroUsuario = () => {
           subMessage: 'Cadastro não foi realizado!',
         });
       });
-
-    console.log('submit', {
-      usu_nomeCompleto,
-      usu_email,
-      usu_senha,
-      usu_foto,
-      cli_tel,
-    });
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-gray-50">
+    <section className="flex items-center min-h-screen bg-age">
       <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">

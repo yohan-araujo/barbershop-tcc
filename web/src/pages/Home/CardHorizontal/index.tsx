@@ -25,29 +25,19 @@ const CardHorizontal = ({ profissional }: CardHorizontalProps) => {
         <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
           <div className="space-x-2 flex text-sm">
             <label>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                <Scissors />
-              </div>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white cortecabelo-svg"></div>
             </label>
             <label>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                <Scissors />
-              </div>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white maquinabarbear-svg"></div>
             </label>
             <label>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                <Scissors />
-              </div>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white pincelcabelo-svg"></div>
             </label>
             <label>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                <Scissors />
-              </div>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white sobrancelhas-svg"></div>
             </label>
             <label>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white">
-                <Scissors />
-              </div>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-700 peer-checked:font-semibold peer-checked:bg-slate-900 peer-checked:text-white crianca-svg"></div>
             </label>
           </div>
         </div>
