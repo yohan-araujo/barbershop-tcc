@@ -24,14 +24,20 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
   const { usu_nomeCompleto, usu_email, usu_senha, usu_foto, cli_tel } =
     req.body;
   const usu_tipo = 'C';
+
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto
+    .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
+    .toString('hex');
+
   const insertUsuario =
-    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
+    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
   const insertUsuarioCliente =
     'INSERT INTO cli_clientes (usu_id, cli_tel) VALUES (?,?)';
 
   db.query(
     insertUsuario,
-    [usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo],
+    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -42,6 +48,44 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
       const usu_id = result.insertId;
 
       db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send(err);
+          return;
+        }
+        res.send('Usuário cadastrado com sucesso');
+      });
+    }
+  );
+});
+
+app.post('/api/insertUsuarioAdministrador', (req, res) => {
+  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto } = req.body;
+  const usu_tipo = 'A';
+
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto
+    .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
+    .toString('hex');
+
+  const insertUsuario =
+    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
+  const insertUsuarioAdministrador =
+    'INSERT INTO adm_administradores (usu_id) VALUES (?)';
+
+  db.query(
+    insertUsuario,
+    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+
+      const usu_id = result.insertId;
+
+      db.query(insertUsuarioAdministrador, [usu_id], (err, result) => {
         if (err) {
           console.log(err);
           res.status(500).send(err);
@@ -105,14 +149,19 @@ app.post('/api/insertUsuarioProfissional', (req, res) => {
   } = req.body;
   usu_tipo = 'P';
 
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto
+    .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
+    .toString('hex');
+
   const insertUsuario =
-    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo) VALUES (?,?,?,?,?)';
+    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
   const insertUsuarioProfissional =
     'INSERT INTO pro_profissionais (usu_id, pro_descricao, pro_cor) VALUES (?,?,?)';
 
   db.query(
     insertUsuario,
-    [usu_nomeCompleto, usu_email, usu_senha, usu_foto, usu_tipo],
+    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -317,16 +366,16 @@ app.post('/api/loginUsuario', (req, res) => {
   const { usu_email, usu_senha } = req.body;
 
   const selectLogin = `
-    SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_foto, 
+    SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_senha,u.usu_salt, u.usu_foto, 
       c.cli_id, a.adm_id, p.pro_descricao, p.pro_cor, p.pro_id
     FROM usu_usuarios u
     LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
     LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
     LEFT JOIN pro_profissionais p ON p.usu_id = u.usu_id
-    WHERE u.usu_email = ? AND u.usu_senha = ?;
+    WHERE u.usu_email = ?;
   `;
 
-  db.query(selectLogin, [usu_email, usu_senha], (err, result) => {
+  db.query(selectLogin, [usu_email], (err, result) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
@@ -335,34 +384,43 @@ app.post('/api/loginUsuario', (req, res) => {
 
     if (result.length > 0) {
       const usuario = result[0];
+      const senhaArmazenada = usuario.usu_senha;
+      const salt = usuario.usu_salt;
 
-      const chaveAleatoria = gerarChaveAleatoria();
+      const hashSenhaFornecida = crypto
+        .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
+        .toString('hex');
 
-      app.use(
-        session({
-          secret: chaveAleatoria,
-          resave: false,
-          saveUninitialized: false,
-        })
-      );
+      if (hashSenhaFornecida === senhaArmazenada) {
+        const chaveAleatoria = gerarChaveAleatoria();
 
-      req.session.usuarioId = usuario.usu_id;
-      req.session.usuarioTipo = usuario.usu_tipo;
-      req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
-      req.session.usuarioFoto = usuario.usu_foto;
+        app.use(
+          session({
+            secret: chaveAleatoria,
+            resave: false,
+            saveUninitialized: false,
+          })
+        );
 
-      res.json({
-        success: true,
-        message: 'Login bem-sucedido',
-        usuarioId: usuario.usu_id,
-        usuarioTipo: usuario.usu_tipo,
-        usuarioNome: usuario.usu_nomeCompleto,
-        usuarioFoto: usuario.usu_foto,
-        clienteID: usuario.cli_id || null,
-        proDesc: usuario.pro_descricao || null,
-        proCor: usuario.pro_cor || null,
-        proId: usuario.pro_id || null,
-      });
+        req.session.usuarioId = usuario.usu_id;
+        req.session.usuarioTipo = usuario.usu_tipo;
+        req.session.usuarioNomeCompleto = usuario.usu_nomeCompleto;
+        req.session.usuarioFoto = usuario.usu_foto;
+
+        res.json({
+          success: true,
+          message: 'Login bem-sucedido',
+          usuarioId: usuario.usu_id,
+          usuarioTipo: usuario.usu_tipo,
+          usuarioNome: usuario.usu_nomeCompleto,
+          usuarioFoto: usuario.usu_foto,
+          clienteID: usuario.cli_id || null,
+          proDesc: usuario.pro_descricao || null,
+          proCor: usuario.pro_cor || null,
+          proId: usuario.pro_id || null,
+        });
+      }
+      // Senha correta
     } else {
       res.status(401).json({
         success: false,
