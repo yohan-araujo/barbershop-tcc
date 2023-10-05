@@ -360,6 +360,45 @@ app.delete('/api/deleteAgendamentos', (req, res) => {
     }
   });
 });
+
+app.get('/api/getFaturamento', (req, res) => {
+  const query = `
+  SELECT DATE(age_data) AS data, SUM(ser_preco) AS ganho_diario
+  FROM age_agendamento
+  JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+  WHERE age_status = 1
+  GROUP BY data
+  ORDER BY data;
+`;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res.status(500).json({ error: 'Erro ao recuperar faturamento' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get('/api/getProjecaoFaturamento', (req, res) => {
+  const query = `
+  SELECT DATE(age_data) AS data, SUM(ser_preco) AS ganho_diario
+  FROM age_agendamento
+  JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+  GROUP BY data
+  ORDER BY data;
+`;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res.status(500).json({ error: 'Erro ao recuperar faturamento' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {

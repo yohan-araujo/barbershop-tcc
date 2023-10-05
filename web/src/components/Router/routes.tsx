@@ -18,6 +18,7 @@ import CadastroServico from '../../pages/CadastroServico';
 import Pagina404 from '../../pages/Pagina404';
 import EditarAgendas from 'pages/EditarAgendas';
 import AgendaProfissional from '../../pages/AgendaProfissional';
+import CadastroAdministrador from 'pages/CadastroAdministrador';
 
 interface ProtegidoProps {
   component: React.ComponentType<any>;
@@ -86,6 +87,10 @@ export default function AppRouter() {
 
           {/* Rotas do Gerais */}
           <Route path="cadastroUsuario" element={<CadastroUsuario />} />
+          <Route
+            path="cadastroAdministrador"
+            element={<CadastroAdministrador />}
+          />
           <Route
             path="agendamento"
             element={<Protegido component={Agendamento} />}

@@ -1,10 +1,10 @@
 import ButtonPadrao from 'components/ButtonPadrao';
 import { Link } from 'react-router-dom';
-import { Edit } from 'lucide-react';
 import ListaProfissionais from './ListaProfissionais';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
 import axios from 'axios';
+import GraficoLine from './GraficoLine';
 
 const PerfilAdministrador = () => {
   const [listaProfissionaisImagens, setListaProfissionaisImagens] = useState<
@@ -79,9 +79,7 @@ const PerfilAdministrador = () => {
                 Faturamento
               </span>
               <div className="flex justify-center p-5 my-8">
-                <p className="text-white font-face-montserrat text-xl font-medium shadow-inner rounded-lg p-6">
-                  aqui vai o desempenho do estabelecimento
-                </p>
+                <GraficoLine />
               </div>
             </div>
           </div>
