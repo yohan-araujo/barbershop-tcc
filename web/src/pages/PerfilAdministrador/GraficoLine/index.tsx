@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { format } from 'date-fns';
+import { IDadosGrafico } from 'types/IDadosGrafico';
 
 ChartJS.register(
   CategoryScale,
@@ -56,11 +57,6 @@ export const options = {
     },
   },
 };
-
-interface FaturamentoData {
-  ganho_diario: number;
-  data: Date;
-}
 
 const GraficoLine = () => {
   const [faturamento, setFaturamento] = useState<{
@@ -111,7 +107,7 @@ const GraficoLine = () => {
 
   useEffect(() => {
     axios.get(`http://localhost:3001/api/getFaturamento`).then((response) => {
-      const dataFaturamento: FaturamentoData[] = response.data;
+      const dataFaturamento: IDadosGrafico[] = response.data;
 
       const datasFormatadas = dataFaturamento.map((item) =>
         format(new Date(item.data), 'dd/MM')
@@ -138,7 +134,7 @@ const GraficoLine = () => {
     axios
       .get(`http://localhost:3001/api/getProjecaoFaturamento`)
       .then((response) => {
-        const dataProjecao: FaturamentoData[] = response.data;
+        const dataProjecao: IDadosGrafico[] = response.data;
 
         const datasFormatadas = dataProjecao.map((item) =>
           format(new Date(item.data), 'dd/MM')

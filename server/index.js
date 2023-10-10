@@ -399,6 +399,26 @@ app.get('/api/getProjecaoFaturamento', (req, res) => {
     }
   });
 });
+
+app.get('/api/getServicosQtd', (req, res) => {
+  const query = `
+  SELECT ser_tipo, COUNT(*) as quantidade
+    FROM age_agendamento
+    INNER JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    GROUP BY ser_tipo;
+`;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res
+        .status(500)
+        .json({ error: 'Erro ao recuperar quantidade de servicos' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {

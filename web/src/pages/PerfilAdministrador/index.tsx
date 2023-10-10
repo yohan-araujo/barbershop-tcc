@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
 import axios from 'axios';
 import GraficoLine from './GraficoLine';
+import GraficoPie from './GraficoPie';
 
 const PerfilAdministrador = () => {
   const [listaProfissionaisImagens, setListaProfissionaisImagens] = useState<
@@ -79,7 +80,8 @@ const PerfilAdministrador = () => {
                 Faturamento
               </span>
               <div className="flex justify-center p-5 my-8">
-                <GraficoLine />
+                {/* <GraficoLine /> */}
+                <GraficoPie />
               </div>
             </div>
           </div>
