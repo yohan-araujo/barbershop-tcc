@@ -58,7 +58,9 @@ export const options = {
   },
 };
 
-const GraficoLine = () => {
+const GraficoLineProfissional = () => {
+  const proId = sessionStorage.getItem('proId');
+
   const [faturamento, setFaturamento] = useState<{
     labels: string[];
     datasets: {
@@ -106,28 +108,31 @@ const GraficoLine = () => {
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/getFaturamento`).then((response) => {
-      const dataFaturamento: IDadosGrafico[] = response.data;
+    axios
+      .get(`http://localhost:3001/api/getFaturamento/${proId}`)
+      .then((response) => {
+        const dataFaturamento: IDadosGrafico[] = response.data;
+        const datasFormatadas = dataFaturamento.map((item) =>
+          format(new Date(item.data), 'dd/MM')
+        );
 
-      const datasFormatadas = dataFaturamento.map((item) =>
-        format(new Date(item.data), 'dd/MM')
-      );
+        console.log(datasFormatadas);
 
-      // Atualize as labels e dados do faturamento.
-      const newDataFaturamento = {
-        labels: datasFormatadas,
-        datasets: [
-          {
-            label: 'Faturamento',
-            data: dataFaturamento.map((item) => item.ganho_diario),
-            borderColor: '#0064B1',
-            backgroundColor: '#0064B1',
-            borderWidth: 2,
-          },
-        ],
-      };
-      setFaturamento(newDataFaturamento);
-    });
+        // Atualize as labels e dados do faturamento.
+        const newDataFaturamento = {
+          labels: datasFormatadas,
+          datasets: [
+            {
+              label: 'Faturamento',
+              data: dataFaturamento.map((item) => item.ganho_diario),
+              borderColor: '#0064B1',
+              backgroundColor: '#0064B1',
+              borderWidth: 2,
+            },
+          ],
+        };
+        setFaturamento(newDataFaturamento);
+      });
   }, []);
 
   useEffect(() => {
@@ -159,14 +164,16 @@ const GraficoLine = () => {
   }, []);
 
   return (
-    <Line
-      options={options}
-      data={{
-        labels: faturamento.labels, // Use as labels do faturamento
-        datasets: [...faturamento.datasets, ...projecao.datasets], // Combine os datasets
-      }}
-    />
+    <div className="h-[16rem] w-[32rem]">
+      <Line
+        options={options}
+        data={{
+          labels: faturamento.labels, // Use as labels do faturamento
+          datasets: [...faturamento.datasets, ...projecao.datasets], // Combine os datasets
+        }}
+      />
+    </div>
   );
 };
 
-export default GraficoLine;
+export default GraficoLineProfissional;

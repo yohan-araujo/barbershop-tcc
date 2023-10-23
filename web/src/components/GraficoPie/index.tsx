@@ -48,7 +48,7 @@ const GraficoPie = () => {
   }
 
   return (
-    <div className="h-[24rem] w-[24rem]">
+    <div className="">
       {' '}
       <Pie data={data} options={options} />
     </div>

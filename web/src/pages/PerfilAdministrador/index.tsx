@@ -4,8 +4,9 @@ import ListaProfissionais from './ListaProfissionais';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
 import axios from 'axios';
-import GraficoLine from './GraficoLine';
-import GraficoPie from './GraficoPie';
+import GraficoLine from '../../components/GraficoLine';
+import CarroselGrafico from '../../components/CarroselGrafico';
+import GraficoPie from 'components/GraficoPie';
 
 const PerfilAdministrador = () => {
   const [listaProfissionaisImagens, setListaProfissionaisImagens] = useState<
@@ -21,6 +22,8 @@ const PerfilAdministrador = () => {
         setListaProfissionaisImagens(response.data);
       });
   }, []);
+
+  const charts = [<GraficoLine />, <GraficoPie />];
 
   return (
     <section className="flex bg-age">
@@ -80,8 +83,7 @@ const PerfilAdministrador = () => {
                 Faturamento
               </span>
               <div className="flex justify-center p-5 my-8">
-                {/* <GraficoLine /> */}
-                <GraficoPie />
+                <CarroselGrafico charts={charts} />
               </div>
             </div>
           </div>

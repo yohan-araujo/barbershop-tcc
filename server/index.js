@@ -34,29 +34,64 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
     'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
   const insertUsuarioCliente =
     'INSERT INTO cli_clientes (usu_id, cli_tel) VALUES (?,?)';
+  const insertCartaoFidelidade =
+    'INSERT INTO cf_cartoesFidelidade (cli_id, cf_pontos) VALUES (?, 0)';
 
-  db.query(
-    insertUsuario,
-    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-        return;
-      }
+  db.beginTransaction((err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }
 
-      const usu_id = result.insertId;
-
-      db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
+    db.query(
+      insertUsuario,
+      [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
+      (err, result) => {
         if (err) {
           console.log(err);
-          res.status(500).send(err);
-          return;
+          return db.rollback(() => {
+            res.status(500).send(err);
+          });
         }
-        res.send('Usuário cadastrado com sucesso');
-      });
-    }
-  );
+
+        const usu_id = result.insertId;
+
+        db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
+          if (err) {
+            console.log(err);
+            return db.rollback(() => {
+              res.status(500).send(err);
+            });
+          }
+
+          const cli_id = result.insertId;
+
+          // Inserir na tabela cf_cartoesFidelidade após a inserção bem-sucedida em cli_clientes
+          db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
+            if (err) {
+              console.log(err);
+              return db.rollback(() => {
+                res.status(500).send(err);
+              });
+            }
+
+            // Commit a transação se todas as inserções foram bem-sucedidas
+            db.commit((err) => {
+              if (err) {
+                console.log(err);
+                return db.rollback(() => {
+                  res.status(500).send(err);
+                });
+              }
+
+              res.send('Usuário cadastrado com sucesso');
+            });
+          });
+        });
+      }
+    );
+  });
 });
 
 app.post('/api/insertUsuarioAdministrador', (req, res) => {
@@ -314,14 +349,23 @@ app.get('/api/getSkills/:pro_id', (req, res) => {
   });
 });
 
+app.get('/api/getPontosCartao/:cli_id', (req, res) => {
+  const cli_id = req.params.cli_id;
+  const query =
+    'SELECT cf_id, cf_pontos FROM cf_cartoesFidelidade WHERE cli_id = ?;';
+
+  db.query(query, [cli_id], (error, results) => {
+    if (error) {
+      console.error('Error fetching services:', error);
+      res.status(500).json({ error: 'Error fetching services' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.put('/api/atualizarStatusAgendamentos', (req, res) => {
   const { agendamentosSelecionados } = req.body;
-
-  if (agendamentosSelecionados.length === 0) {
-    // Tratar caso o array esteja vazio
-    res.status(400).send('Nenhum agendamento selecionado.');
-    return;
-  }
 
   const updateStatusQuery = `
     UPDATE age_agendamento
@@ -381,6 +425,48 @@ app.get('/api/getFaturamento', (req, res) => {
   });
 });
 
+app.get('/api/getFaturamento/:pro_id', (req, res) => {
+  const pro_id = req.params.pro_id;
+  const query = `
+  SELECT DATE(age_data) AS data, SUM(ser_preco) AS ganho_diario
+  FROM age_agendamento
+  JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+  WHERE age_status = 1 AND pro_id = ?
+  GROUP BY data
+  ORDER BY data;
+`;
+
+  db.query(query, [pro_id], (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res.status(500).json({ error: 'Erro ao recuperar faturamento' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get('/api/getProjecaoFaturamento/:pro_id', (req, res) => {
+  const pro_id = req.params.pro_id;
+  const query = `
+  SELECT p.pro_id, p.pro_descricao, SUM(s.ser_preco) AS faturamento_profissional
+  FROM age_agendamento a
+  JOIN pro_profissionais p ON a.pro_id = p.pro_id
+  JOIN ser_servicos s ON a.ser_id = s.ser_id
+  WHERE a.pro_id = ?
+  GROUP BY p.pro_id, p.pro_descricao;
+`;
+
+  db.query(query, [pro_id], (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res.status(500).json({ error: 'Erro ao recuperar faturamento' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.get('/api/getProjecaoFaturamento', (req, res) => {
   const query = `
   SELECT DATE(age_data) AS data, SUM(ser_preco) AS ganho_diario
@@ -419,6 +505,30 @@ app.get('/api/getServicosQtd', (req, res) => {
     }
   });
 });
+app.get('/api/getServicosQtd/:pro_id', (req, res) => {
+  const pro_id = req.params.pro_id;
+  const query = `
+  SELECT p.pro_id, p.pro_descricao, s.ser_tipo, COUNT(*) as quantidade
+  FROM age_agendamento a
+  INNER JOIN pro_profissionais p ON a.pro_id = p.pro_id
+  INNER JOIN ser_servicos s ON a.ser_id = s.ser_id
+  WHERE p.pro_id = ?
+  GROUP BY p.pro_id, p.pro_descricao, s.ser_tipo
+  ORDER BY p.pro_id, quantidade DESC;
+`;
+
+  db.query(query, [pro_id], (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res
+        .status(500)
+        .json({ error: 'Erro ao recuperar quantidade de servicos' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {

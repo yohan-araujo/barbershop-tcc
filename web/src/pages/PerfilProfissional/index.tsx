@@ -5,6 +5,9 @@ import Skills from './Skills';
 import { useState, useEffect } from 'react';
 import { ISkill } from 'types/ISkill';
 import axios from 'axios';
+import GraficoPieProfissional from 'components/GraficoPieProfissional';
+import CarrosselGraficoProfissional from 'components/CarroselGraficoProfissional';
+import GraficoLineProfissional from 'components/GraficoLineProfissional';
 
 const PerfilProfissional = () => {
   const [skills, setSkills] = useState<ISkill[]>([]);
@@ -17,8 +20,9 @@ const PerfilProfissional = () => {
     backgroundColor: proCor,
   };
 
+  const charts = [<GraficoLineProfissional />, <GraficoPieProfissional />];
+
   const proId = sessionStorage.getItem('proId');
-  console.log(sessionStorage.getItem('proId'));
 
   useEffect(() => {
     axios
@@ -97,10 +101,7 @@ const PerfilProfissional = () => {
                 Desempenho
               </span>
               <div className="flex justify-center p-5 my-8">
-                <img
-                  src="https://source.unsplash.com/user/erondu/400x300"
-                  alt="imagem da onde fica o grafico"
-                />
+                <CarrosselGraficoProfissional charts={charts} />
               </div>
             </div>
           </div>
