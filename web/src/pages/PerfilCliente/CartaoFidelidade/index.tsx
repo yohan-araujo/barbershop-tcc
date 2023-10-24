@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
 
 interface CartaoProps {
@@ -6,6 +7,12 @@ interface CartaoProps {
 
 const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
   const MAX_BOLINHAS = 7;
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/agendamento');
+  };
 
   return (
     <div className="bg-zinc-600 rounded-xl">
@@ -20,7 +27,10 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
       </div>
       <div className="flex justify-center p-8 mt-6">
         {cartoes[0].cf_pontos >= MAX_BOLINHAS && (
-          <button className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase">
+          <button
+            className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase"
+            onClick={handleClick}
+          >
             Resgatar
           </button>
         )}

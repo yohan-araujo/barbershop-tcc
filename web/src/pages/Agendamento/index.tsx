@@ -44,6 +44,7 @@ const Agendamento = () => {
     message: '',
     subMessage: '',
   });
+  const [cartaoResgatavel, setCartaoResgatavel] = useState(false);
 
   //Trazendo informação do banco
   useEffect(() => {
@@ -68,6 +69,18 @@ const Agendamento = () => {
         });
     }
   }, [profissionalSelecionado]);
+
+  useEffect(() => {
+    axios
+      .get<boolean>(
+        `http://localhost:3001/api/getCartaoResgatavel/${sessionStorage.getItem(
+          'clienteID'
+        )}`
+      )
+      .then((response) => {
+        setCartaoResgatavel(response.data);
+      });
+  }, []);
 
   // Selecao de profissional e de servico
 
@@ -164,6 +177,41 @@ const Agendamento = () => {
     }
   };
 
+  const handleResgate = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (
+      dataSelecionada &&
+      horaSelecionada &&
+      profissionalSelecionado &&
+      servicoSelecionado
+    ) {
+      const dataFormatada = format(dataSelecionada, 'yyyy-MM-dd');
+      axios
+        .post('http://localhost:3001/api/insertAgendamento', {
+          data: dataFormatada,
+          hora: horaSelecionada,
+          profissionalID: profissionalSelecionado.pro_id,
+          servicoID: servicoSelecionado.ser_id,
+          clienteID: sessionStorage.getItem('clienteID'),
+        })
+        .then((response) => {
+          setFeedback({
+            type: 'success',
+            message: 'Sucesso',
+            subMessage: 'Agendamento realizado com sucesso!',
+          });
+        })
+        .catch((error) => {
+          setFeedback({
+            type: 'failure',
+            message: 'Falhou',
+            subMessage: 'Cadastro não foi realizado!',
+          });
+        });
+    }
+  };
+
   return (
     <section className="bg-age">
       <div>
@@ -193,7 +241,7 @@ const Agendamento = () => {
         </div>
 
         <form
-          onSubmit={handleSubmit}
+          onSubmit={cartaoResgatavel ? handleResgate : handleSubmit}
           className="flex justify-center max-w-screen"
         >
           <div className="">
@@ -351,7 +399,12 @@ const Agendamento = () => {
                         </div>
 
                         <div className="my-4">
-                          <ButtonPadrao texto="AGENDAR" tipo="submit" />
+                          <ButtonPadrao
+                            texto={
+                              cartaoResgatavel ? 'AGENDAR GRATIS' : 'AGENDAR'
+                            }
+                            tipo="submit"
+                          />
                         </div>
                       </div>
                     </div>
@@ -365,6 +418,7 @@ const Agendamento = () => {
                     onClose={() =>
                       setFeedback({ type: '', message: '', subMessage: '' })
                     }
+                    redirectTo="/perfilCliente"
                   />
                 )}
               </>

@@ -153,6 +153,22 @@ app.post('/api/insertAgendamento', (req, res) => {
         .json({ success: true, message: 'Agendamento inserido com sucesso!' });
     }
   );
+
+  db.query(
+    insertAgendamento,
+    [data, hora, clienteID, profissionalID, servicoID, false],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+
+      res
+        .status(200)
+        .json({ success: true, message: 'Agendamento inserido com sucesso!' });
+    }
+  );
 });
 
 app.post('/api/insertServico', (req, res) => {
@@ -367,21 +383,61 @@ app.get('/api/getPontosCartao/:cli_id', (req, res) => {
 app.put('/api/atualizarStatusAgendamentos', (req, res) => {
   const { agendamentosSelecionados } = req.body;
 
-  const updateStatusQuery = `
-    UPDATE age_agendamento
-    SET age_status = true
+  // Passo 1: Consulte o cli_id a partir do agendamento selecionado
+  const getClienteIdQuery = `
+    SELECT cli_id FROM age_agendamento
     WHERE age_id IN (${agendamentosSelecionados.join(',')});
   `;
 
-  db.query(updateStatusQuery, (err, result) => {
+  db.query(getClienteIdQuery, (err, results) => {
     if (err) {
-      // Tratar o erro de atualização
       console.error(err);
-      res.status(500).send('Erro ao atualizar o status dos agendamentos.');
-    } else {
-      // Agendamentos atualizados com sucesso
-      res.status(200).send('Status dos agendamentos atualizado com sucesso.');
+      res.status(500).send('Erro ao obter o ID do cliente.');
+      return;
     }
+
+    if (results.length === 0) {
+      res.status(400).send('Nenhum agendamento encontrado.');
+      return;
+    }
+
+    const clienteId = results[0].cli_id;
+
+    // Passo 2: Atualize cf_pontos na tabela cf_cartoesFidelidade
+    const updatePontosQuery = `
+      UPDATE cf_cartoesFidelidade
+      SET cf_pontos = cf_pontos + 1
+      WHERE cli_id = ${clienteId};
+    `;
+
+    db.query(updatePontosQuery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Erro ao atualizar os pontos de fidelidade.');
+      } else {
+        // Passo 3: Atualize o status dos agendamentos
+        const updateStatusQuery = `
+          UPDATE age_agendamento
+          SET age_status = true
+          WHERE age_id IN (${agendamentosSelecionados.join(',')});
+        `;
+
+        db.query(updateStatusQuery, (err, result) => {
+          if (err) {
+            console.error(err);
+            res
+              .status(500)
+              .send('Erro ao atualizar o status dos agendamentos.');
+          } else {
+            res
+              .status(200)
+              .send(
+                'Status dos agendamentos e pontos de fidelidade atualizados com sucesso.'
+              );
+          }
+        });
+      }
+    });
   });
 });
 
@@ -518,11 +574,28 @@ app.get('/api/getServicosQtd/:pro_id', (req, res) => {
 `;
 
   db.query(query, [pro_id], (error, results) => {
+    const pro_id = req.params.pro_id;
     if (error) {
       console.error('Erro: ', error);
       res
         .status(500)
         .json({ error: 'Erro ao recuperar quantidade de servicos' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+// Exemplo em Node.js com Express.js
+
+app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
+  const cli_id = req.params.cli_id;
+  const query =
+    'SELECT cf_resgatavel FROM cf_cartoesFidelidade WHERE cli_id = ?';
+
+  db.query(query, [cli_id], (error, results) => {
+    if (error) {
+      console.error('Error fetching services:', error);
+      res.status(500).json({ error: 'Error fetching services' });
     } else {
       res.json(results);
     }
