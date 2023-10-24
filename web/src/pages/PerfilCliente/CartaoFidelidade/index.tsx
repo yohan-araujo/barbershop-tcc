@@ -25,10 +25,10 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
           Cartão Fidelidade
         </div>
       </div>
-      <div className="flex justify-center p-8 mt-6">
+      <div className="flex justify-center p-2">
         {cartoes[0].cf_pontos >= MAX_BOLINHAS && (
           <button
-            className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase"
+            className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase mt-12"
             onClick={handleClick}
           >
             Resgatar
@@ -42,10 +42,12 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
               {Array.from({ length: MAX_BOLINHAS }).map((_, index) => (
                 <div
                   key={index}
-                  className={`w-12 h-12 rounded-full mr-2  ${
-                    index < cartao.cf_pontos ? 'cortecabelo-svg' : 'bg-gray-300'
-                  }`}
-                ></div>
+                  className={'w-12 h-12 rounded-full mr-2 bg-gray-300 '}
+                >
+                  {index < cartao.cf_pontos && (
+                    <div className="cortecabelo-svg font-white"> </div>
+                  )}
+                </div>
               ))}
             </div>
           )}

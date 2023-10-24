@@ -594,10 +594,16 @@ app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
 
   db.query(query, [cli_id], (error, results) => {
     if (error) {
-      console.error('Error fetching services:', error);
-      res.status(500).json({ error: 'Error fetching services' });
+      console.error('Error fetching cf_resgatavel:', error);
+      res.status(500).json({ error: 'Error fetching cf_resgatavel' });
     } else {
-      res.json(results);
+      if (results.length > 0) {
+        const cf_resgatavel = results[0].cf_resgatavel;
+        res.json({ cf_resgatavel });
+      } else {
+        // Cliente não encontrado, você pode retornar um valor padrão ou tratar isso de acordo com a lógica do seu aplicativo.
+        res.status(404).json({ error: 'Cliente not found' });
+      }
     }
   });
 });

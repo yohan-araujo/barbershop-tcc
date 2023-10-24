@@ -72,13 +72,24 @@ const Agendamento = () => {
 
   useEffect(() => {
     axios
-      .get<boolean>(
+      .get<{ cf_resgatavel: number }>(
         `http://localhost:3001/api/getCartaoResgatavel/${sessionStorage.getItem(
           'clienteID'
         )}`
       )
       .then((response) => {
-        setCartaoResgatavel(response.data);
+        if (response.data && response.data.cf_resgatavel === 1) {
+          // Se a resposta da API for verdadeira (cf_resgatavel igual a 1), defina cartaoResgatavel como verdadeiro
+          setCartaoResgatavel(true);
+        } else {
+          // Senão, mantenha cartaoResgatavel como falso
+          setCartaoResgatavel(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao obter cartaoResgatavel:', error);
+        // Aqui você pode lidar com erros, como definir cartaoResgatavel como falso se a solicitação falhar
+        setCartaoResgatavel(false);
       });
   }, []);
 
