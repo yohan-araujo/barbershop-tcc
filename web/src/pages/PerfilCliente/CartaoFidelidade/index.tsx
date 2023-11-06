@@ -6,7 +6,7 @@ interface CartaoProps {
 }
 
 const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
-  const MAX_BOLINHAS = 7;
+  const MAX_BOLINHAS = 10;
 
   const navigate = useNavigate();
 

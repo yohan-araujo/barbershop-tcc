@@ -429,7 +429,7 @@ const Agendamento = () => {
                     onClose={() =>
                       setFeedback({ type: '', message: '', subMessage: '' })
                     }
-                    redirectTo="/perfilCliente"
+
                   />
                 )}
               </>

@@ -154,21 +154,7 @@ app.post('/api/insertAgendamento', (req, res) => {
     }
   );
 
-  db.query(
-    insertAgendamento,
-    [data, hora, clienteID, profissionalID, servicoID, false],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-        return;
-      }
-
-      res
-        .status(200)
-        .json({ success: true, message: 'Agendamento inserido com sucesso!' });
-    }
-  );
+ 
 });
 
 app.post('/api/insertServico', (req, res) => {
