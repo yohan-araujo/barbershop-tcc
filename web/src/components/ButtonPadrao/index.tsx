@@ -2,12 +2,15 @@ interface PropsButton {
   texto: string;
   onClick?: () => void;
   tipo?: 'submit';
+  outline?: boolean;
 }
 
-const ButtonPadrao = ({ texto, onClick, tipo }: PropsButton) => {
+const ButtonPadrao = ({ texto, onClick, tipo, outline }: PropsButton) => {
   return (
     <button
-      className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat hover:bg-blue-300 border border-[#0064B1] focus:border-blue-950 uppercase"
+      className={` text-white font-medium text-[16px] py-2 px-4 font-face-montserrat ${
+        outline ? 'border border-[#E29C31]' : 'bg-[#E29C31] border-none'
+      } `}
       onClick={onClick}
       type={tipo}
     >

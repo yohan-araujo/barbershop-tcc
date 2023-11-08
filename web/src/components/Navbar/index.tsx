@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import barbershopLogo from 'assets/logo-barbershop.svg';
+import barbershopIcon from 'assets/barbershop-icon.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 import DropdownSelect from 'components/DropdownSelect';
 import {
@@ -27,6 +28,10 @@ const Navbar = () => {
     {
       label: 'Agendamento',
       to: '/agendamento',
+    },
+    {
+      label: 'Galeria',
+      to: '/galeria',
     },
   ];
 
@@ -116,19 +121,20 @@ const Navbar = () => {
   }, [usuarioTipo]);
 
   return (
-    <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
+    <nav className="flex items-center justify-between py-2 px-4 bg-black border-b border-b-[#E29C31]">
       <div className="flex items-center justify-start text-white">
-        <img src={barbershopLogo} alt="logo do barbershop" />
-        <p className="ml-7 font-face-playlist font-normal text-4xl">
-          Barbershop
-        </p>
+        <img
+          src={barbershopIcon}
+          alt="logo do barbershop"
+          className="w-14 h-14 ml-16"
+        />
       </div>
       <ul className="flex items-center justify-center flex-grow">
         {rotas.map((rota, index) => (
-          <li key={index} className="list-none mr-6">
+          <li key={index} className="list-none mx-12">
             <Link
               to={rota.to}
-              className="text-white text-2xl font-semibold no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat uppercase"
+              className="text-white text-[16px] font-medium no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat"
             >
               {rota.label}
             </Link>
@@ -154,16 +160,12 @@ const Navbar = () => {
             <ButtonPadrao texto="Sair" onClick={handleLogout} />
           </li>
         ) : (
-          <li className="list-none">
-            <Link to="/cadastroUsuario">
-              <button className=" text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat uppercase">
-                Cadastrar
-              </button>
-            </Link>
+          <li className="list-none flex space-x-4 mr-12">
             <Link to="/login">
-              <span className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full mr-2 font-face-montserrat uppercase">
-                Login
-              </span>
+              <ButtonPadrao texto="Login" />
+            </Link>
+            <Link to="/cadastroUsuario">
+              <ButtonPadrao texto="Cadastro" outline={true} />
             </Link>
           </li>
         )}
