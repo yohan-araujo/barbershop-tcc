@@ -1,4 +1,4 @@
-import CardHorizontal from '../CardHorizontal';
+import CardHorizontal from '../CardProfissional';
 import { IServico } from 'types/IServico';
 import CardServicos from '../CardServicos';
 
