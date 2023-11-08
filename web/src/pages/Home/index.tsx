@@ -1,73 +1,17 @@
 import axios from 'axios';
-import Carrosel from 'components/Carrosel';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
 import ListaCardsHorizontais from './ListaCardsHorizontais';
-import ButtonPadrao from 'components/ButtonPadrao';
-import LegendaServicos from 'components/LegendaServicos';
-import { Search, User2 } from 'lucide-react';
-import MensagemFeedback from 'components/MensagemFeedback';
+import barberhomeimg from 'assets/barberhome.svg';
+import imgbarbahora from 'assets/img/Rectangle78.jpg';
+import { IServico } from 'types/IServico';
+import ListaCardsServicos from './ListaCardsServicos';
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
-  const [nomeCompleto, setNomeCompleto] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [enderecoFoto, setEnderecoFoto] = useState('');
-  const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
-  });
-
-  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
-
-  const imagens = [
-    'https://picsum.photos/id/1003/1600/900',
-    'https://picsum.photos/id/1004/1600/900',
-    'https://picsum.photos/id/1005/1600/900',
-    'https://picsum.photos/id/1006/1600/900',
-  ];
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Nao vai recarregar apos o submit
-    // Verificacao se as senhas estao iguais
-    if (senha !== confirmarSenha) {
-      setFeedback({
-        type: 'failure',
-        message: 'As senhas não correspondem!',
-        subMessage: 'O cadastro falhou!',
-      });
-      return;
-    }
-
-    axios
-      .post('http://localhost:3001/api/insertUsuarioCliente', {
-        usu_nomeCompleto: nomeCompleto,
-        usu_email: email,
-        usu_senha: senha,
-        usu_foto: enderecoFoto,
-        cli_tel: telefone,
-      })
-      .then((response) => {
-        setFeedback({
-          type: 'success',
-          message: 'Sucesso',
-          subMessage: 'Cadastro realizado com sucesso!',
-        });
-      })
-      .catch((error) => {
-        setFeedback({
-          type: 'failure',
-          message: 'Falhou',
-          subMessage: 'Cadastro não foi realizado!',
-        });
-      });
-  };
+  const [listaServicos, setListaServicos] = useState<IServico[]>([]);
 
   useEffect(() => {
     axios
@@ -77,191 +21,188 @@ const Home = () => {
       });
   }, []);
 
-  return (
-    <section>
-      <Carrosel imagens={imagens} />
+  useEffect(() => {
+    axios
+      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
+      .then((response) => {
+        setListaServicos(response.data);
+      });
+  }, []);
 
-      <div className="flex flex-col my-24">
-        <div className="ml-16 border-l-2">
-          <h1 className="text-4xl font-bold ml-3 font-face-montserrat">
-            Sobre
-          </h1>
+  return (
+    <section className="bg-black">
+      <div className="bg-black w-max-screen px-8">
+        <div className="grid grid-cols-2 border-2 border-red-400">
+          <div className="flex justify-start lg:ml-36 ml-12">
+            <div className="flex flex-col p-12 justify-center gap-6 border-2 border-orange-400">
+              <div className="text-white text-5xl font-bold font-merriweather">
+                <span>CORTAMOS BEM</span>
+                <br />
+                <span>PARA CONTAR</span>
+                <br />
+                <span className="text-orange-400">SEMPRE!</span>
+              </div>
+
+              <div className="w-2/4 text-white text-base font-medium font-['Montserrat']">
+                Venha cortar em uma das melhores barbearias da cidade!
+              </div>
+
+              <div className="w-48 h-10 border-2 border-orange-400 flex justify-center items-center">
+                <span className="text-white font-semibold font-face-montserrat">
+                  Agendar Horário
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end lg:mr-36 mr-12">
+            <div className="max-w-lg border-2 border-blue-500">
+              <img src={barberhomeimg} alt="Fotos da barbearia" />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-row ">
+      </div>
+
+      <div className="bg-stone-900 p-14">
+        <div className="flex flex-row justify-between">
           <div className="w-1/2">
-            <p className="text-left font-face-montserrat text-2xl m-12">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-              provident mollitia dolorum numquam assumenda? Suscipit magnam
-              neque a officiis sint cumque fuga dolore laborum vitae! Fugiat
-              dolorem doloremque earum nemo. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Enim provident mollitia dolorum
-              numquam assumenda? Suscipit magnam neque a officiis sint cumque
-              fuga dolore laborum vitae! Fugiat dolorem doloremque earum nemo.
+            <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left ml-14">
+              Sobre nós
+            </h2>
+            <p className="text-justify font-medium font-face-montserrat text-xl m-12 text-white">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum. <br /> Contrary to popular belief, Lorem Ipsum is not
+              simply random text. It has roots in a piece of classical Latin
+              literature from 45 BC, making it over 2000 years old. Richard
+              McClintock, a Latin professor at Hampden-Sydney College in
+              Virginia, looked up one of the more obscure Latin words,
+              consectetur, from a Lorem Ipsum passage, and going through the
+              cites of the word in classical literature, discovered the
+              undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
+              1.10.33 of "de Finibus Bonorum et Malorum"
             </p>
           </div>
-          <div className="flex justify-center w-1/2 ">
+
+          <div className="flex flex-auto justify-center items-center">
             <img
-              src="https://source.unsplash.com/user/erondu/400x300"
+              src="https://source.unsplash.com/user/erondu/445x367"
               alt="foto do mapa"
-              className=""
+              className="m-2 md:w-[30rem] md:h-[30rem]"
             />
           </div>
         </div>
       </div>
 
-      <div className="my-24">
-        <LegendaServicos />
+      <section className=" p-14">
+        <div className="flex flex-col">
+          <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-center ml-14">
+            Nossos Servicos
+          </h2>
+          <p className="font-medium font-face-montserrat text-xl m-12 text-white text-center">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book.
+          </p>
+        </div>
+
+        {listaServicos.length > 0 ? (
+          <ListaCardsServicos servicos={listaServicos} />
+        ) : (
+          <div>
+            <p className="flex justify-center text-white font-bold font-face-montserrat text-4xl">
+              Nenhum Servico registrado.
+            </p>
+          </div>
+        )}
+      </section>
+
+      <div className="w-max-screen h-3/5 bg-stone-800">
+        <div className="flex flex-row items-center lg:mx-[12rem] md:mx-5 gap-12 md:gap-4">
+          <div className="flex flex-auto p-8">
+            <div className="relative">
+              <div className="lg:w-[35rem] md:w-[24rem] lg:h-[29rem] md:h-[20rem] absolute top-7 left-7 border-2 border-orange-400 border-solid border-opacity-50 bottom-0 right-0"></div>
+              <img
+                className="lg:w-[35rem] md:w-[25rem] relative z-10"
+                src={imgbarbahora}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col my-8 p-5 bg-black border border-orange-400 w-[30rem] h-[38rem]">
+            <div className="ml-5 mt-3">
+              <h3 className="w-[293px] h-[83px] mb-[7rem] text-orange-400 text-4xl font-bold font-['Merriweather']">
+                Horário de funcionamento
+              </h3>
+
+              <div className="flex flex-col gap-16">
+                <div className="flex flex-col items-center">
+                  <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      Segunda a sexta
+                    </div>
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      09:00 às 21:00
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      Sábado
+                    </div>
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      09:00 a 19:00
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      Domingo e Feriados
+                    </div>
+                    <div className="text-white text-base font-medium font-face-montserrat">
+                      Fechados
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="my-12">
+      <div className="py-28">
+        <div className="text-center p-5">
+          <h2 className="text-orange-400 text-4xl font-bold font-Merriweather my-5">
+            Conheça nossos funcionários
+          </h2>
+          <p className="text-white text-base font-semibold font-face-montserrat mx-64">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book.
+          </p>
+        </div>
+
         {listaProfissionais.length > 0 ? (
           <ListaCardsHorizontais profissionais={listaProfissionais} />
         ) : (
           <div>
-            <p className="flex justify-center font-bold font-face-montserrat text-4xl">
+            <p className="flex justify-center text-white font-bold font-face-montserrat text-4xl">
               Nenhum profissional registrado.
             </p>
           </div>
         )}
       </div>
-
-      {usuarioLogado ? (
-        <></>
-      ) : (
-        <>
-          <div className="flex justify-center my-12">
-            <ButtonPadrao texto="AGENDE SEU HORARIO" />
-          </div>
-
-          <div className="flex flex-col my-24">
-            <div className="ml-16 border-l-2">
-              <h1 className="text-4xl font-bold ml-3 font-face-montserrat">
-                Cadastro
-              </h1>
-            </div>
-
-            <div className="flex mx-auto my-24 bg-[#D9D9D9] rounded-2xl w-5/6">
-              <form
-                className="grid grid-cols-2 gap-8 p-24"
-                onSubmit={handleSubmit}
-              >
-                <div>
-                  <div className="flex flex-col mb-8">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      Nome Completo
-                    </label>
-                    <input
-                      type="text"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setNomeCompleto(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col mb-8">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      E-mail
-                    </label>
-                    <input
-                      type="email"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col mb-8">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      Senha
-                    </label>
-                    <input
-                      type="password"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setSenha(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col mb-8">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      Confirmar Senha
-                    </label>
-                    <input
-                      type="password"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setConfirmarSenha(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col mb-8">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      Telefone
-                    </label>
-                    <input
-                      type="text"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setTelefone(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col ml-80">
-                  <span className="font-face-montserrat text-2xl font-medium">
-                    Escolha uma foto
-                  </span>
-                  <div className="flex justify-center bg-white rounded-3xl p-12 my-2">
-                    <div>
-                      <User2 size={128} />
-                    </div>
-                  </div>
-                  <div className="relative bottom-12 left-72">
-                    <div className="w-12 h-12 rounded-full bg-[#414141] justify-center">
-                      <button className="mt-2 ml-2">
-                        <Search size={30} className="text-white" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex flex-col mb-2">
-                    <label className="font-face-montserrat text-2xl font-medium">
-                      Endereco da foto
-                    </label>
-                    <input
-                      type="text"
-                      className="font-face-montserrat text-2xl rounded-xl py-2 px-4 mt-2"
-                      onChange={(e) => {
-                        setEnderecoFoto(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="relative left-64 mt-28">
-                    <button
-                      type="submit"
-                      className="font-face-montserrat text-2xl bg-blue-500 hover:bg-blue-600 text-white rounded-full py-3 px-6"
-                    >
-                      CONFIRMAR
-                    </button>
-                  </div>
-
-                  {feedback.message && (
-                    <MensagemFeedback
-                      type={feedback.type as 'failure' | 'success'}
-                      message={feedback.message}
-                      subMessage={feedback.subMessage}
-                      onClose={() =>
-                        setFeedback({ type: '', message: '', subMessage: '' })
-                      }
-                      redirectTo="/login"
-                    />
-                  )}
-                </div>
-              </form>
-            </div>
-          </div>
-        </>
-      )}
     </section>
   );
 };

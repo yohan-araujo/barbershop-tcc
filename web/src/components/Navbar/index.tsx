@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import barbershopLogo from 'assets/logo-barbershop.svg';
 import barbershopIcon from 'assets/barbershop-icon.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 import DropdownSelect from 'components/DropdownSelect';
