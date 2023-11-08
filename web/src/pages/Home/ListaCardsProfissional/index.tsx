@@ -9,7 +9,7 @@ const ListaCardsProfissional = ({
   profissionais,
 }: ListaCardsProfissionalProps) => {
   return (
-    <div className="flex justify-between my-8 px-52 flex-wrap">
+    <div className="flex justify-center gap-12 my-8 px-52 flex-wrap">
       {profissionais.map((profissional) => (
         <CardProfissional
           key={profissional.pro_id}

@@ -8,7 +8,7 @@ interface ListaCardsServicos {
 
 const ListaCardsServicos = ({ servicos }: ListaCardsServicos) => {
   return (
-    <div className="flex justify-between my-8 px-52 flex-wrap">
+    <div className="flex justify-center gap-12 my-8 px-52 flex-wrap">
       {servicos.map((servico) => (
         <CardServicos key={servico.ser_id} servico={servico} />
       ))}

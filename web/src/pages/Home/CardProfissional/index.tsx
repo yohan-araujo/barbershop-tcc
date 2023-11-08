@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
+import NavalhaIcon from 'assets/navalha-icon.svg'
 
 interface CardProfissionalProps {
   profissional: IProfissional;
@@ -18,7 +19,7 @@ const CardProfissional = ({ profissional }: CardProfissionalProps) => {
 
   return (
     <div
-      className="w-full md:w-[15rem] p-4 md:mr-2"
+      className="w-full md:w-[20rem] p-4 md:mr-2"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -32,12 +33,12 @@ const CardProfissional = ({ profissional }: CardProfissionalProps) => {
           />
           {hovered && (
             <div className=" flex flex-col absolute inset-0 bg-black opacity-90  justify-center items-center text-white">
-              <p className="text-center font-bold text-opacity-100 font-face-montserrat text-orange-400">
+              <p className="text-center font-bold text-base text-opacity-100 font-face-montserrat text-orange-400">
                 Skills
               </p>
-              <div className="flex">
-                <img src="" alt="icone tesoura" />
-                <p className="font-face-montserrat uppercase">Barba</p>
+              <div className="flex flex-row items-start border-2">
+                <img src={NavalhaIcon} alt="icone tesoura" className='w-8 h-8'/>
+                <p className="text-xs font-face-montserrat">Barba</p>
               </div>
             </div>
           )}

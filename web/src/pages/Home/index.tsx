@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
-import ListaCardsHorizontais from './ListaCardsHorizontais';
+import ListaCardsHorizontais from './ListaCardsProfissional';
 import barberhomeimg from 'assets/barberhome.svg';
 import imgbarbahora from 'assets/img/Rectangle78.jpg';
 import { IServico } from 'types/IServico';
@@ -32,15 +32,15 @@ const Home = () => {
   return (
     <section className="bg-black">
       <div className="bg-black w-max-screen px-8">
-        <div className="grid grid-cols-2 border-2 border-red-400">
-          <div className="flex justify-start lg:ml-36 ml-12">
-            <div className="flex flex-col p-12 justify-center gap-6 border-2 border-orange-400">
-              <div className="text-white text-5xl font-bold font-merriweather">
-                <span>CORTAMOS BEM</span>
+        <div className="grid grid-cols-2">
+          <div className="flex justify-end lg:ml-36 ml-12">
+            <div className="flex flex-col p-12 justify-center gap-6 ">
+              <div className="text-white text-5xl font-bold">
+                <span className='uppercase font-merriweather'>CORTAMoS BEM</span>
                 <br />
-                <span>PARA CONTAR</span>
+                <span className='uppercase font-merriweather'>PARA CORTAR</span>
                 <br />
-                <span className="text-orange-400">SEMPRE!</span>
+                <span className="text-orange-400 font-merriweather">SEMPRE!</span>
               </div>
 
               <div className="w-2/4 text-white text-base font-medium font-['Montserrat']">
@@ -55,8 +55,8 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex justify-end lg:mr-36 mr-12">
-            <div className="max-w-lg border-2 border-blue-500">
+          <div className="flex justify-start lg:mr-36 mr-12">
+            <div className="max-w-lg">
               <img src={barberhomeimg} alt="Fotos da barbearia" />
             </div>
           </div>
@@ -101,12 +101,12 @@ const Home = () => {
         </div>
       </div>
 
-      <section className=" p-14">
+      <section className="p-14">
         <div className="flex flex-col">
-          <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-center ml-14">
+          <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-center">
             Nossos Servicos
           </h2>
-          <p className="font-medium font-face-montserrat text-xl m-12 text-white text-center">
+          <p className="font-medium font-face-montserrat text-base m-12 px-36 text-white text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -125,7 +125,7 @@ const Home = () => {
         )}
       </section>
 
-      <div className="w-max-screen h-3/5 bg-stone-800">
+      <div className="w-max-screen h-3/5 bg-stone-800 py-24">
         <div className="flex flex-row items-center lg:mx-[12rem] md:mx-5 gap-12 md:gap-4">
           <div className="flex flex-auto p-8">
             <div className="relative">
@@ -182,7 +182,7 @@ const Home = () => {
 
       <div className="py-28">
         <div className="text-center p-5">
-          <h2 className="text-orange-400 text-4xl font-bold font-Merriweather my-5">
+          <h2 className="text-[#E29C31] text-4xl font-bold font-merriweather my-5">
             Conheça nossos funcionários
           </h2>
           <p className="text-white text-base font-semibold font-face-montserrat mx-64">

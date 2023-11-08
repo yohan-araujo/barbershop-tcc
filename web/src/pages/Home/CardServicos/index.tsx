@@ -6,7 +6,7 @@ interface CardServicosProps {
 
 const CardServicos = ({ servico }: CardServicosProps) => {
   return (
-    <div className="w-full md:w-[15rem] p-4 md:mr-2">
+    <div className="w-full md:w-[20rem] p-4 md:mr-2">
       <div className="flex flex-col border border-orange-400 h-full">
         <div className="relative">
           <img
