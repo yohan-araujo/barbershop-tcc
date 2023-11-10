@@ -1,11 +1,12 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { IProfissional } from 'types/IProfissional';
-import ListaCardsHorizontais from './ListaCardsProfissional';
-import barberhomeimg from 'assets/barberhome.svg';
-import imgbarbahora from 'assets/img/Rectangle78.jpg';
-import { IServico } from 'types/IServico';
-import ListaCardsServicos from './ListaCardsServicos';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { IProfissional } from "types/IProfissional";
+import barberhomeimg from "assets/barberhome.svg";
+import imgbarbahora from "assets/img/Rectangle78.jpg";
+import { IServico } from "types/IServico";
+import ListaCardsServicos from "./ListaCardsServicos";
+import ListaCardsProfissional from "./ListaCardsProfissional";
+import ButtonPadrao from "components/ButtonPadrao";
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -15,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IProfissional[]>('http://localhost:3001/api/getProfissionais')
+      .get<IProfissional[]>("http://localhost:3001/api/getProfissionais")
       .then((response) => {
         setListaProfissionais(response.data);
       });
@@ -23,53 +24,63 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
+      .get<IServico[]>("http://localhost:3001/api/getServicosCadastrados")
       .then((response) => {
         setListaServicos(response.data);
       });
   }, []);
 
+  console.log(listaServicos);
+
   return (
     <section className="bg-black">
-      <div className="bg-black w-max-screen px-8">
-        <div className="grid grid-cols-2">
+      <div className="bg-black w-max-screen">
+        <div className="grid grid-cols-2 space-x-12">
           <div className="flex justify-end lg:ml-36 ml-12">
-            <div className="flex flex-col p-12 justify-center gap-6 ">
+            <div className="flex flex-col px-24 justify-center gap-12 ">
               <div className="text-white text-5xl font-bold">
-                <span className='uppercase font-merriweather'>CORTAMoS BEM</span>
+                <span className="uppercase text-7xl font-merriweather">
+                  CORTAMoS BEM
+                </span>
                 <br />
-                <span className='uppercase font-merriweather'>PARA CORTAR</span>
+                <span className="uppercase text-7xl font-merriweather">
+                  PARA CORTAR
+                </span>
                 <br />
-                <span className="text-orange-400 font-merriweather">SEMPRE!</span>
+                <span className="text-orange-400 text-7xl font-merriweather">
+                  SEMPRE!
+                </span>
               </div>
 
-              <div className="w-2/4 text-white text-base font-medium font-['Montserrat']">
+              <div className="w-3/4 text-white text-xl font-medium font-['Montserrat']">
                 Venha cortar em uma das melhores barbearias da cidade!
               </div>
 
-              <div className="w-48 h-10 border-2 border-orange-400 flex justify-center items-center">
-                <span className="text-white font-semibold font-face-montserrat">
-                  Agendar Horário
-                </span>
+              <div className="">
+                <ButtonPadrao texto="Agendar horário" outline={true} />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-start lg:mr-36 mr-12">
-            <div className="max-w-lg">
-              <img src={barberhomeimg} alt="Fotos da barbearia" />
+          <div className="flex justify-start">
+            <div className="">
+              <img
+                src={barberhomeimg}
+                alt="Fotos da barbearia"
+                className="w-[40rem]"
+              />
             </div>
           </div>
         </div>
       </div>
 
       <div className="bg-stone-900 p-14">
-        <div className="flex flex-row justify-between">
-          <div className="w-1/2">
-            <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left ml-14">
+        <div className="flex flex-row">
+          <div className="w-1/2 ml-36">
+            <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left">
               Sobre nós
             </h2>
-            <p className="text-justify font-medium font-face-montserrat text-xl m-12 text-white">
+            <p className="text-justify font-normal font-face-montserrat text-xl text-white my-12 pr-48">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
@@ -79,19 +90,11 @@ const Home = () => {
               popularised in the 1960s with the release of Letraset sheets
               containing Lorem Ipsum passages, and more recently with desktop
               publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum. <br /> Contrary to popular belief, Lorem Ipsum is not
-              simply random text. It has roots in a piece of classical Latin
-              literature from 45 BC, making it over 2000 years old. Richard
-              McClintock, a Latin professor at Hampden-Sydney College in
-              Virginia, looked up one of the more obscure Latin words,
-              consectetur, from a Lorem Ipsum passage, and going through the
-              cites of the word in classical literature, discovered the
-              undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
-              1.10.33 of "de Finibus Bonorum et Malorum"
+              Lorem Ipsum.
             </p>
           </div>
 
-          <div className="flex flex-auto justify-center items-center">
+          <div className="flex flex-auto justify-start items-center">
             <img
               src="https://source.unsplash.com/user/erondu/445x367"
               alt="foto do mapa"
@@ -101,12 +104,12 @@ const Home = () => {
         </div>
       </div>
 
-      <section className="p-14">
+      <section className="p-14 my-12">
         <div className="flex flex-col">
           <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-center">
             Nossos Servicos
           </h2>
-          <p className="font-medium font-face-montserrat text-base m-12 px-36 text-white text-center">
+          <p className="font-normal font-face-montserrat text-xl m-12 px-36 text-white text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -146,32 +149,32 @@ const Home = () => {
               <div className="flex flex-col gap-16">
                 <div className="flex flex-col items-center">
                   <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       Segunda a sexta
-                    </div>
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    </p>
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       09:00 às 21:00
-                    </div>
+                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       Sábado
-                    </div>
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    </p>
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       09:00 a 19:00
-                    </div>
+                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       Domingo e Feriados
-                    </div>
-                    <div className="text-white text-base font-medium font-face-montserrat">
+                    </p>
+                    <p className="text-white text-xl font-medium font-face-montserrat">
                       Fechados
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -185,7 +188,7 @@ const Home = () => {
           <h2 className="text-[#E29C31] text-4xl font-bold font-merriweather my-5">
             Conheça nossos funcionários
           </h2>
-          <p className="text-white text-base font-semibold font-face-montserrat mx-64">
+          <p className="text-white text-xl font-normal font-face-montserrat mx-64">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -194,7 +197,7 @@ const Home = () => {
         </div>
 
         {listaProfissionais.length > 0 ? (
-          <ListaCardsHorizontais profissionais={listaProfissionais} />
+          <ListaCardsProfissional profissionais={listaProfissionais} />
         ) : (
           <div>
             <p className="flex justify-center text-white font-bold font-face-montserrat text-4xl">

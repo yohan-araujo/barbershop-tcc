@@ -263,7 +263,7 @@ app.get('/api/getProfissionaisImagens', (req, res) => {
 
 app.get('/api/getServicosCadastrados', (req, res) => {
   const selectServicos = `
-    SELECT ser_id, ser_tipo FROM ser_servicos;
+    SELECT ser_id, ser_tipo, ser_preco FROM ser_servicos;
   `;
   db.query(selectServicos, (err, result) => {
     if (err) {

@@ -1,4 +1,4 @@
-import { IServico } from 'types/IServico';
+import { IServico } from "types/IServico";
 
 interface CardServicosProps {
   servico: IServico;
@@ -20,7 +20,9 @@ const CardServicos = ({ servico }: CardServicosProps) => {
           <h1 className="text-xl font-semibold text-white font-face-montserrat">
             {servico.ser_tipo}
           </h1>
-          <p className="text-white font-face-montserrat">Barbeiro</p>
+          <p className="text-white font-face-montserrat">
+            Preço: R$ {servico.ser_preco.toFixed(2)}
+          </p>
         </div>
       </div>
     </div>

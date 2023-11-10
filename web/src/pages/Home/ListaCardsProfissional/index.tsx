@@ -1,5 +1,5 @@
-import { IProfissional } from 'types/IProfissional';
-import CardProfissional from '../CardProfissional';
+import { IProfissional } from "types/IProfissional";
+import CardProfissional from "../CardProfissional";
 
 interface ListaCardsProfissionalProps {
   profissionais: IProfissional[];
