@@ -3,6 +3,8 @@ const session = require('express-session');
 const cors = require('cors');
 const db = require('./database');
 const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -18,6 +20,65 @@ app.use(
 function gerarChaveAleatoria() {
   return crypto.randomBytes(32).toString('hex');
 }
+app.use('/uploads', express.static('uploads'));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.get('/api/getImagens', (req, res) => {
+  const query = 'SELECT gal_nomeImagem FROM gal_galeria';
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.json({ Message: 'Erro' });
+    }
+    return res.json(result);
+  });
+});
+
+app.post('/api/uploadImagens', upload.array('images', 10), (req, res) => {
+  const imagens = req.files;
+
+  // Verifique se há imagens
+  if (!imagens || imagens.length === 0) {
+    return res.status(400).json({ Message: 'Nenhuma imagem enviada.' });
+  }
+
+  // Processar cada imagem
+  imagens.forEach((imagem) => {
+    const nomeImagem = imagem.originalname;
+    const caminhoImagem = imagem.path;
+    const proId = req.body.pro_id;
+
+    const sql = 'INSERT INTO gal_galeria SET ?';
+
+    const values = {
+      gal_nomeImagem: nomeImagem,
+      gal_caminhoImagem: caminhoImagem,
+      pro_id: proId,
+    };
+
+    db.query(sql, values, (error, result) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ Message: 'Erro ao processar imagens.' });
+      }
+    });
+  });
+
+  return res.json({
+    Status: 'success',
+    Message: 'Imagens cadastradas com sucesso.',
+  });
+});
 
 // Requisicoes
 app.post('/api/insertUsuarioCliente', (req, res) => {
@@ -153,8 +214,6 @@ app.post('/api/insertAgendamento', (req, res) => {
         .json({ success: true, message: 'Agendamento inserido com sucesso!' });
     }
   );
-
- 
 });
 
 app.post('/api/insertServico', (req, res) => {
@@ -590,6 +649,21 @@ app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
         // Cliente não encontrado, você pode retornar um valor padrão ou tratar isso de acordo com a lógica do seu aplicativo.
         res.status(404).json({ error: 'Cliente not found' });
       }
+    }
+  });
+});
+
+app.get('/api/getFotosGaleria', (req, res) => {
+  const query = 'SELECT gal_id, gal_imagem FROM gal_galeria'; // Modifique conforme necessário
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro: ', error);
+      res
+        .status(500)
+        .json({ error: 'Erro ao recuperar quantidade de servicos' });
+    } else {
+      res.json(results);
     }
   });
 });

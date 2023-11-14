@@ -54,11 +54,11 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
         <IconSetaPraBaixo className="text-white" />
       </div>
       {estaAberto && (
-        <ul className="absolute left-0 w-48 mt-2 p-0 bg-white shadow roud">
+        <ul className="absolute left-0 w-48 mt-2 p-0 bg-black shadow roud">
           {options.map((option) => (
             <li
               key={option.value}
-              className={`p-3 cursor-pointer transition-colors duration-200 border-b-2 ${
+              className={`p-3 cursor-pointer transition-colors duration-200 border-b-2 border-[#E29C31]${
                 opcaoSelecionada === option ? 'bg-gray-200' : ''
               }`}
               onClick={() => handleOptionChange(option)}
@@ -67,8 +67,10 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
                 to={option.to}
                 className="flex items-center space-x-2 rounded-3xl"
               >
-                {option.icon && <span className="mr-2">{option.icon}</span>}
-                <span className="font-face-montserrat font-medium text-xl">
+                {option.icon && (
+                  <span className="mr-2 text-[#E29C31]">{option.icon}</span>
+                )}
+                <span className="font-face-montserrat font-medium text-xl text-white">
                   {option.label}
                 </span>
               </Link>
