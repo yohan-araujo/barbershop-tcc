@@ -6,7 +6,6 @@ server/node_modules
 server/database.js
 web/build
 server/uploads
-server/database.js
 /.pnp
 .pnp.js
 # testing
