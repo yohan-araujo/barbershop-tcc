@@ -3,12 +3,10 @@ import {
   Facebook as FacebookIcon,
   PhoneCall as PhoneCallIcon,
   Mail as MailIcon,
-  MapPin as MapPinIcon,
-} from "lucide-react";
-import logoBarbershop from "assets/logo-barbershop.svg";
-import { Link } from "react-router-dom";
-import whatsappIcon from "assets/whatsapp.svg";
-import barbershopIcon from "assets/barbershop-icon.svg";
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import whatsappIcon from 'assets/whatsapp.svg';
+import barbershopIcon from 'assets/barbershop-icon.svg';
 
 const Footer = () => {
   return (

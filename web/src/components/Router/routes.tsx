@@ -19,6 +19,7 @@ import Pagina404 from '../../pages/Pagina404';
 import EditarAgendas from 'pages/EditarAgendas';
 import AgendaProfissional from '../../pages/AgendaProfissional';
 import Galeria from 'pages/Galeria';
+import CadastroGaleria from 'pages/CadastroGaleria';
 
 interface ProtegidoProps {
   component: React.ComponentType<any>;
@@ -61,6 +62,10 @@ export default function AppRouter() {
             element={
               usuarioTipo === 'P' ? <AgendaProfissional /> : <Pagina404 />
             }
+          />
+          <Route
+            path="cadastroGaleria"
+            element={usuarioTipo === 'P' ? <CadastroGaleria /> : <Pagina404 />}
           />
 
           {/* Rotas do Administrador */}

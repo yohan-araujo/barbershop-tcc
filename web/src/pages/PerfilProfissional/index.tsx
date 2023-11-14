@@ -94,6 +94,9 @@ const PerfilProfissional = () => {
                 <Link to="/agendaProfissional" className="mt-6 ml-1">
                   <ButtonPadrao texto="minha agenda" />
                 </Link>
+                <Link to="/cadastroGaleria" className="mt-6 ml-1">
+                  <ButtonPadrao texto="Adicionar foto na galeria" />
+                </Link>
               </div>
             </div>
             <div className="mt-20">

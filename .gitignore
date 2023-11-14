@@ -3,9 +3,9 @@
 # dependencies
 web/node_modules
 server/node_modules
-server/database.js
+/server/database.js
 web/build
-server/database.js
+server/uploads
 /.pnp
 .pnp.js
 # testing

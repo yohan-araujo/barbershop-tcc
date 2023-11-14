@@ -1,12 +1,12 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { IProfissional } from "types/IProfissional";
-import barberhomeimg from "assets/barberhome.svg";
-import imgbarbahora from "assets/img/Rectangle78.jpg";
-import { IServico } from "types/IServico";
-import ListaCardsServicos from "./ListaCardsServicos";
-import ListaCardsProfissional from "./ListaCardsProfissional";
-import ButtonPadrao from "components/ButtonPadrao";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { IProfissional } from 'types/IProfissional';
+import barberhomeimg from 'assets/barberhome.svg';
+import imgbarbahora from 'assets/img/Rectangle78.jpg';
+import { IServico } from 'types/IServico';
+import ListaCardsServicos from './ListaCardsServicos';
+import ListaCardsProfissional from './ListaCardsProfissional';
+import ButtonPadrao from 'components/ButtonPadrao';
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -16,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IProfissional[]>("http://localhost:3001/api/getProfissionais")
+      .get<IProfissional[]>('http://localhost:3001/api/getProfissionais')
       .then((response) => {
         setListaProfissionais(response.data);
       });
@@ -24,13 +24,11 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IServico[]>("http://localhost:3001/api/getServicosCadastrados")
+      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
       .then((response) => {
         setListaServicos(response.data);
       });
   }, []);
-
-  console.log(listaServicos);
 
   return (
     <section className="bg-black">
@@ -136,6 +134,7 @@ const Home = () => {
               <img
                 className="lg:w-[35rem] md:w-[25rem] relative z-10"
                 src={imgbarbahora}
+                alt="foto de um barbeiro"
               />
             </div>
           </div>
@@ -200,8 +199,8 @@ const Home = () => {
           <ListaCardsProfissional profissionais={listaProfissionais} />
         ) : (
           <div>
-            <p className="flex justify-center text-white font-bold font-face-montserrat text-4xl">
-              Nenhum profissional registrado.
+            <p className="flex justify-center text-[#E29C31] font-bold font-merriweather text-4xl mt-24">
+              Nenhum profissional cadastrado
             </p>
           </div>
         )}
