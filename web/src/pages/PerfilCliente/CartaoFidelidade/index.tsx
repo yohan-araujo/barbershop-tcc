@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
+import { useNavigate } from "react-router-dom";
+import { ICartaoFidelidade } from "types/ICartaoFidelidade";
+import CfFoto from "assets/img/CfFoto.jpg";
 
 interface CartaoProps {
   cartoes: ICartaoFidelidade[];
@@ -7,52 +8,60 @@ interface CartaoProps {
 
 const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
   const MAX_BOLINHAS = 10;
+  const POINTS_PER_LINE = 5; // Set the number of points per line
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/agendamento');
+    navigate("/agendamento");
   };
 
   return (
-    <div className="bg-zinc-600 rounded-xl">
-      <div
-        className={`bg-zinc-400 rounded-t-xl p-1 ${
-          cartoes[0].cf_pontos >= MAX_BOLINHAS ? 'pontos-maximos' : ''
-        }`}
-      >
-        <div className="text-2xl font-bold mb-4 font-face-montserrat text-white text-center mt-4">
-          Cartão Fidelidade
-        </div>
-      </div>
-      <div className="flex justify-center p-2">
-        {cartoes[0].cf_pontos >= MAX_BOLINHAS && (
-          <button
-            className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase mt-12"
-            onClick={handleClick}
-          >
-            Resgatar
-          </button>
-        )}
-      </div>
-      {cartoes.map((cartao) => (
-        <div key={cartao.cf_id} className="text-white mb-4 p-6">
-          {cartao.cf_pontos < MAX_BOLINHAS && (
-            <div className="flex">
-              {Array.from({ length: MAX_BOLINHAS }).map((_, index) => (
-                <div
-                  key={index}
-                  className={'w-12 h-12 rounded-full mr-2 bg-gray-300 '}
-                >
-                  {index < cartao.cf_pontos && (
-                    <div className="cortecabelo-svg font-white"> </div>
-                  )}
-                </div>
-              ))}
+    <div className="grid mx-12 p-6">
+      <div className="relative">
+        <div className="absolute top-7 left-16 h-[14rem] w-[33rem] border-2 border-[#E29C31]"></div>
+        <div className="bg-black relative z-10 p-7">
+          <p className="text-white font-face-montserrat text-xl">
+            Preencha para ganhar seu prêmio!
+          </p>
+          <div className="flex flex-row">
+            {cartoes.map((cartao) => (
+              <div key={cartao.cf_id} className="">
+                {cartao.cf_pontos < MAX_BOLINHAS && (
+                  <div className="flex flex-wrap">
+                    {Array.from({ length: MAX_BOLINHAS }).map((_, index) => (
+                      <div className="flex flex-wrap" key={index}>
+                        <div
+                          className={`w-12 h-12 rounded-full mb-4 mr-2 bg-[#E29C31] ${
+                            index < cartao.cf_pontos ? "bg-[#E29C31]" : ""
+                          }`}
+                        >
+                          {index < cartao.cf_pontos && (
+                            <div className="cficon-svg"> </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+            <div className="mt-6">
+              <img src={CfFoto} alt="" />
             </div>
-          )}
+          </div>
+          <div className="flex justify-center p-2">
+            {cartoes[0].cf_pontos >= MAX_BOLINHAS && (
+              <button
+                className="bg-green-500 text-white px-8 py-4 rounded-md font-face-montserrat font-bold uppercase mt-12"
+                onClick={handleClick}
+              >
+                Resgatar
+              </button>
+            )}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

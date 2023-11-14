@@ -97,3 +97,10 @@ body {
   background-repeat: no-repeat;
   padding: 24px;
 }
+
+.cficon-svg {
+  background-image: url('../assets/cf-icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
