@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ICartaoFidelidade } from "types/ICartaoFidelidade";
 import CfFoto from "assets/img/CfFoto.jpg";
+import CFicon from "assets/cf-icon.svg";
 
 interface CartaoProps {
   cartoes: ICartaoFidelidade[];
@@ -32,12 +33,19 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
                     {Array.from({ length: MAX_BOLINHAS }).map((_, index) => (
                       <div className="flex flex-wrap" key={index}>
                         <div
-                          className={`w-12 h-12 rounded-full mb-4 mr-2 bg-[#E29C31] ${
+                          className={`w-12 h-12 rounded-full mb-4 mr-2 bg-[#E29C31] flex items-center justify-center ${
                             index < cartao.cf_pontos ? "bg-[#E29C31]" : ""
                           }`}
                         >
                           {index < cartao.cf_pontos && (
-                            <div className="cficon-svg"> </div>
+                            <div className="">
+                              {" "}
+                              <img
+                                src={CFicon}
+                                className=""
+                                alt="Ponto Cartão Fidelidade"
+                              />{" "}
+                            </div>
                           )}
                         </div>
                       </div>

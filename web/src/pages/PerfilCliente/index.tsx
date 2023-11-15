@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import CartaoFidelidade from "./CartaoFidelidade";
 import { ICartaoFidelidade } from "types/ICartaoFidelidade";
 
+
 const PerfilCliente = () => {
   const [listaAgendamentosAtivos, setListaAgendamentosAtivos] = useState<
     IAgendamento[]
