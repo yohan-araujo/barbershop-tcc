@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [dropdownOptions, setDropdownOptions] = useState<IOption[]>([]);
+  const [fotoUsuario, setFotoUsuario] = useState('');
 
   const rotas = [
     {
@@ -37,7 +38,6 @@ const Navbar = () => {
 
   const usuarioLogado = sessionStorage.getItem('usuarioLogado') === 'true';
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
-  const usuarioFoto = sessionStorage.getItem('usuarioFoto');
   const usuarioNome = sessionStorage.getItem('usuarioNome');
   const navigate = useNavigate();
 
@@ -126,6 +126,24 @@ const Navbar = () => {
     setDropdownOptions(options);
   }, [usuarioTipo]);
 
+  useEffect(() => {
+    if (usuarioNome) {
+      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioNome}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter a foto do perfil');
+          }
+          return response.text();
+        })
+        .then((data) => {
+          setFotoUsuario(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [usuarioNome]);
+
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-black border-b border-b-[#E29C31]">
       <div className="flex items-center justify-start text-white">
@@ -158,7 +176,7 @@ const Navbar = () => {
               {usuarioNome}
             </p>
             <img
-              src={usuarioFoto ?? ''}
+              src={fotoUsuario}
               alt="Foto do usuário"
               className="w-12 h-12 rounded-full mr-2"
             />

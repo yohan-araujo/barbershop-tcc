@@ -5,6 +5,7 @@ const db = require('./database');
 const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
@@ -22,7 +23,7 @@ function gerarChaveAleatoria() {
 }
 app.use('/uploads', express.static('uploads'));
 
-const storage = multer.diskStorage({
+const storageGaleria = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads/');
   },
@@ -31,60 +32,66 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const storagePerfilClientes = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    try {
+      const nomeCliente = req.body.usu_nomeCompleto;
 
-app.get('/api/getImagens', (req, res) => {
-  const query = 'SELECT gal_nomeImagem FROM gal_galeria';
-  db.query(query, (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.json({ Message: 'Erro' });
-    }
-    return res.json(result);
-  });
-});
+      const folderPath = `./uploads/Clientes/${nomeCliente}/`;
 
-app.post('/api/uploadImagens', upload.array('images', 10), (req, res) => {
-  const imagens = req.files;
-
-  // Verifique se há imagens
-  if (!imagens || imagens.length === 0) {
-    return res.status(400).json({ Message: 'Nenhuma imagem enviada.' });
-  }
-
-  // Processar cada imagem
-  imagens.forEach((imagem) => {
-    const nomeImagem = imagem.originalname;
-    const caminhoImagem = imagem.path;
-    const proId = req.body.pro_id;
-
-    const sql = 'INSERT INTO gal_galeria SET ?';
-
-    const values = {
-      gal_nomeImagem: nomeImagem,
-      gal_caminhoImagem: caminhoImagem,
-      pro_id: proId,
-    };
-
-    db.query(sql, values, (error, result) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ Message: 'Erro ao processar imagens.' });
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
       }
-    });
-  });
 
-  return res.json({
-    Status: 'success',
-    Message: 'Imagens cadastradas com sucesso.',
-  });
+      cb(null, folderPath);
+    } catch (error) {
+      cb(error, '');
+    }
+  },
+
+  filename: function (req, file, cb) {
+    const fileName = file.originalname;
+    cb(null, fileName);
+  },
 });
+
+const storagePerfilProfissionais = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    try {
+      const nomeCliente = req.body.usu_nomeCompleto;
+
+      const folderPath = `./uploads/Profissionais/${nomeCliente}/`;
+
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+      }
+
+      cb(null, folderPath);
+    } catch (error) {
+      cb(error, '');
+    }
+  },
+
+  filename: function (req, file, cb) {
+    const fileName = file.originalname;
+    cb(null, fileName);
+  },
+});
+
+const uploadFotoCliente = multer({ storage: storagePerfilClientes }).single(
+  'usu_foto'
+);
+
+const uploadFotoProfissional = multer({
+  storage: storagePerfilProfissionais,
+}).single('usu_foto');
 
 // Requisicoes
-app.post('/api/insertUsuarioCliente', (req, res) => {
-  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto, cli_tel } =
-    req.body;
+app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
+  const { usu_nomeCompleto, usu_email, usu_senha, cli_tel } = req.body;
   const usu_tipo = 'C';
+  const usu_foto = req.file.filename;
+  const caminhoImagem = req.file.path;
 
   const salt = crypto.randomBytes(16).toString('hex');
   const hash = crypto
@@ -92,7 +99,7 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
     .toString('hex');
 
   const insertUsuario =
-    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
+    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_caminhoFoto, usu_tipo) VALUES (?,?,?,?,?,?,?)';
   const insertUsuarioCliente =
     'INSERT INTO cli_clientes (usu_id, cli_tel) VALUES (?,?)';
   const insertCartaoFidelidade =
@@ -107,7 +114,15 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
 
     db.query(
       insertUsuario,
-      [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
+      [
+        usu_nomeCompleto,
+        usu_email,
+        hash,
+        salt,
+        usu_foto,
+        caminhoImagem,
+        usu_tipo,
+      ],
       (err, result) => {
         if (err) {
           console.log(err);
@@ -128,7 +143,6 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
 
           const cli_id = result.insertId;
 
-          // Inserir na tabela cf_cartoesFidelidade após a inserção bem-sucedida em cli_clientes
           db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
             if (err) {
               console.log(err);
@@ -137,7 +151,6 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
               });
             }
 
-            // Commit a transação se todas as inserções foram bem-sucedidas
             db.commit((err) => {
               if (err) {
                 console.log(err);
@@ -152,6 +165,87 @@ app.post('/api/insertUsuarioCliente', (req, res) => {
         });
       }
     );
+  });
+});
+
+const uploadGaleria = multer({ storage: storageGaleria });
+
+app.get('/api/getImagens', (req, res) => {
+  const query = 'SELECT gal_nomeImagem FROM gal_galeria';
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.json({ Message: 'Erro' });
+    }
+    return res.json(result);
+  });
+});
+
+app.post(
+  '/api/uploadImagens',
+  uploadGaleria.array('images', 10),
+  (req, res) => {
+    const imagens = req.files;
+
+    // Verifique se há imagens
+    if (!imagens || imagens.length === 0) {
+      return res.status(400).json({ Message: 'Nenhuma imagem enviada.' });
+    }
+
+    // Processar cada imagem
+    imagens.forEach((imagem) => {
+      const nomeImagem = imagem.originalname;
+      const caminhoImagem = imagem.path;
+      const proId = req.body.pro_id;
+
+      const sql = 'INSERT INTO gal_galeria SET ?';
+
+      const values = {
+        gal_nomeImagem: nomeImagem,
+        gal_caminhoImagem: caminhoImagem,
+        pro_id: proId,
+      };
+
+      db.query(sql, values, (error, result) => {
+        if (error) {
+          console.error(error);
+          return res
+            .status(500)
+            .json({ Message: 'Erro ao processar imagens.' });
+        }
+      });
+    });
+
+    return res.json({
+      Status: 'success',
+      Message: 'Imagens cadastradas com sucesso.',
+    });
+  }
+);
+
+app.get('/api/getImagensPerfis/:usu_nomeCompleto', (req, res) => {
+  const nomeUsuario = req.params.usu_nomeCompleto;
+
+  const query =
+    'SELECT usu_foto, usu_caminhoFoto FROM usu_usuarios WHERE usu_nomeCompleto = ?';
+
+  db.query(query, [nomeUsuario], (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else {
+      if (result.length > 0) {
+        let caminhoFotoUsuario = result[0].usu_caminhoFoto;
+
+        caminhoFotoUsuario = caminhoFotoUsuario.replace(/\\/g, '/');
+
+        const urlCompleta = `http://localhost:3001/${caminhoFotoUsuario}`;
+
+        res.status(200).send(urlCompleta);
+      } else {
+        res.status(404).send('Usuário não encontrado');
+      }
+    }
   });
 });
 
@@ -234,57 +328,64 @@ app.post('/api/insertServico', (req, res) => {
   });
 });
 
-app.post('/api/insertUsuarioProfissional', (req, res) => {
-  const {
-    usu_nomeCompleto,
-    usu_email,
-    usu_senha,
-    usu_foto,
-    pro_descricao,
-    pro_cor,
-  } = req.body;
-  usu_tipo = 'P';
+app.post(
+  '/api/insertUsuarioProfissional',
+  uploadFotoProfissional,
+  (req, res) => {
+    const { usu_nomeCompleto, usu_email, usu_senha, pro_descricao } = req.body;
+    const usu_tipo = 'P';
 
-  const salt = crypto.randomBytes(16).toString('hex');
-  const hash = crypto
-    .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
-    .toString('hex');
+    const usu_foto = req.file.filename;
+    const caminhoImagem = req.file.path;
 
-  const insertUsuario =
-    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
-  const insertUsuarioProfissional =
-    'INSERT INTO pro_profissionais (usu_id, pro_descricao, pro_cor) VALUES (?,?,?)';
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto
+      .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
+      .toString('hex');
 
-  db.query(
-    insertUsuario,
-    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-        return;
-      }
+    const insertUsuario =
+      'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_caminhoFoto, usu_tipo) VALUES (?,?,?,?,?,?,?)';
+    const insertUsuarioProfissional =
+      'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?,?)';
 
-      const usu_id = result.insertId;
-
-      db.query(
-        insertUsuarioProfissional,
-        [usu_id, pro_descricao, pro_cor],
-        (err, result) => {
-          if (err) {
-            console.log(err);
-            res.status(500).send(err);
-            return;
-          }
-
-          const pro_id = result.insertId; // Obtenha o pro_id do resultado da query
-          console.log([pro_id]);
-          res.send({ pro_id }); // Retorne o pro_id como parte da resposta
+    db.query(
+      insertUsuario,
+      [
+        usu_nomeCompleto,
+        usu_email,
+        hash,
+        salt,
+        usu_foto,
+        caminhoImagem,
+        usu_tipo,
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send(err);
+          return;
         }
-      );
-    }
-  );
-});
+
+        const usu_id = result.insertId;
+
+        db.query(
+          insertUsuarioProfissional,
+          [usu_id, pro_descricao],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(500).send(err);
+              return;
+            }
+
+            const pro_id = result.insertId; // Obtenha o pro_id do resultado da query
+            res.send({ pro_id }); // Retorne o pro_id como parte da resposta
+          }
+        );
+      }
+    );
+  }
+);
 
 app.post('/api/insertServicosProfissional', (req, res) => {
   const { servicos, pro_id } = req.body;
@@ -649,21 +750,6 @@ app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
         // Cliente não encontrado, você pode retornar um valor padrão ou tratar isso de acordo com a lógica do seu aplicativo.
         res.status(404).json({ error: 'Cliente not found' });
       }
-    }
-  });
-});
-
-app.get('/api/getFotosGaleria', (req, res) => {
-  const query = 'SELECT gal_id, gal_imagem FROM gal_galeria'; // Modifique conforme necessário
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error('Erro: ', error);
-      res
-        .status(500)
-        .json({ error: 'Erro ao recuperar quantidade de servicos' });
-    } else {
-      res.json(results);
     }
   });
 });

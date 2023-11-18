@@ -1,56 +1,64 @@
-import ButtonPadrao from "components/ButtonPadrao";
-import InputPadrao from "components/InputPadrao";
-import { useState } from "react";
-import axios from "axios";
-import MensagemFeedback from "components/MensagemFeedback";
-import welcomeBarberCadas from "assets/img/barbercadas.svg";
+import ButtonPadrao from 'components/ButtonPadrao';
+import InputPadrao from 'components/InputPadrao';
+import { useState } from 'react';
+import axios from 'axios';
+import MensagemFeedback from 'components/MensagemFeedback';
+import welcomeBarberCadas from 'assets/img/barbercadas.svg';
 
 const CadastroUsuario = () => {
-  const [usu_nomeCompleto, setUsuNome] = useState("");
-  const [usu_email, setUsuEmail] = useState("");
-  const [usu_foto, setUsuFoto] = useState("");
-  const [usu_senha, setUsuSenha] = useState("");
-  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState("");
-  const [cli_tel, setCliTel] = useState("");
+  const [usu_nomeCompleto, setUsuNome] = useState('');
+  const [usu_email, setUsuEmail] = useState('');
+  const [usu_foto, setUsuFoto] = useState<File | null>(null);
+  const [usu_senha, setUsuSenha] = useState('');
+  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
+  const [cli_tel, setCliTel] = useState('');
   const [feedback, setFeedback] = useState({
-    type: "",
-    message: "",
-    subMessage: "",
+    type: '',
+    message: '',
+    subMessage: '',
   });
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
       setFeedback({
-        type: "failure",
-        message: "As senhas não correspondem!",
-        subMessage: "O cadastro falhou!",
+        type: 'failure',
+        message: 'As senhas não correspondem!',
+        subMessage: 'O cadastro falhou!',
       });
       return;
     }
 
-    axios
-      .post("http://localhost:3001/api/insertUsuarioCliente", {
-        usu_nomeCompleto: usu_nomeCompleto,
-        usu_email: usu_email,
-        usu_senha: usu_senha,
-        usu_foto: usu_foto,
-        cli_tel: cli_tel,
-      })
-      .then((response) => {
-        setFeedback({
-          type: "success",
-          message: "Sucesso",
-          subMessage: "Cadastro realizado com sucesso!",
-        });
-      })
-      .catch((error) => {
-        setFeedback({
-          type: "failure",
-          message: "Falhou",
-          subMessage: "Cadastro não foi realizado!",
-        });
+    const formData = new FormData();
+    formData.append('usu_nomeCompleto', usu_nomeCompleto);
+    formData.append('usu_email', usu_email);
+    formData.append('usu_senha', usu_senha);
+    if (usu_foto) formData.append('usu_foto', usu_foto);
+    formData.append('cli_tel', cli_tel);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/api/insertUsuarioCliente',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      setFeedback({
+        type: 'success',
+        message: 'Sucesso',
+        subMessage: 'Cadastro realizado com sucesso!',
       });
+    } catch (error) {
+      setFeedback({
+        type: 'failure',
+        message: 'Falhou',
+        subMessage: 'Cadastro não foi realizado!',
+      });
+    }
   };
 
   return (
@@ -98,20 +106,17 @@ const CadastroUsuario = () => {
                 </div>
                 <div className="flex flex-row mb-6">
                   <div className="flex flex-auto justify-between items-center">
-                    <div className="flex w-24 h-24 border-2 border-[#E29C31] text-white text-center">
-                      Aqui vai exibir a img
-                    </div>
-                    <div className="">
-                      <ButtonPadrao texto="Enviar foto" tipo="submit" />
-                    </div>
                     <div className="mb-6">
                       <InputPadrao
                         labelTexto="Endereço foto"
                         placeholder="Digite o endereço da sua foto"
-                        tipo="text"
+                        tipo="file"
                         nome="usuEnderecoFoto"
                         onChange={(e) => {
-                          setUsuFoto(e.target.value);
+                          const file = e.target.files && e.target.files[0];
+                          if (file) {
+                            setUsuFoto(file);
+                          }
                         }}
                       />
                     </div>
@@ -153,11 +158,11 @@ const CadastroUsuario = () => {
 
                 {feedback.message && (
                   <MensagemFeedback
-                    type={feedback.type as "failure" | "success"}
+                    type={feedback.type as 'failure' | 'success'}
                     message={feedback.message}
                     subMessage={feedback.subMessage}
                     onClose={() =>
-                      setFeedback({ type: "", message: "", subMessage: "" })
+                      setFeedback({ type: '', message: '', subMessage: '' })
                     }
                     redirectTo="/login"
                   />

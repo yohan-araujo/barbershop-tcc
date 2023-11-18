@@ -9,11 +9,10 @@ import { IServico } from 'types/IServico';
 const CadastroProfissional = () => {
   const [usu_nomeCompleto, setUsuNome] = useState('');
   const [usu_email, setUsuEmail] = useState('');
-  const [usu_foto, setUsuFoto] = useState('');
+  const [usu_foto, setUsuFoto] = useState<File | null>(null);
   const [usu_senha, setUsuSenha] = useState('');
   const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
   const [pro_descricao, setProDescricao] = useState('');
-  const [pro_cor, setProCor] = useState('');
   const [feedback, setFeedback] = useState({
     type: '',
     message: '',
@@ -28,7 +27,7 @@ const CadastroProfissional = () => {
     setServicosSelecionados(servico);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
       setFeedback({
@@ -39,62 +38,36 @@ const CadastroProfissional = () => {
       return;
     }
 
-    axios
-      .post('http://localhost:3001/api/insertUsuarioProfissional', {
-        usu_nomeCompleto: usu_nomeCompleto,
-        usu_email: usu_email,
-        usu_senha: usu_senha,
-        usu_foto: usu_foto,
-        pro_descricao: pro_descricao,
-        pro_cor: pro_cor,
-      })
-      .then((response) => {
-        const { pro_id } = response.data;
-        console.log(response.data.pro_id);
+    const formData = new FormData();
+    formData.append('usu_nomeCompleto', usu_nomeCompleto);
+    formData.append('usu_email', usu_email);
+    formData.append('usu_senha', usu_senha);
+    if (usu_foto) formData.append('usu_foto', usu_foto);
+    formData.append('pro_descricao', pro_descricao);
 
-        if (servicosSelecionados !== null) {
-          const selectedServices = servicosSelecionados.map((servico) => ({
-            pro_id: pro_id,
-            ser_id: servico.ser_id,
-          }));
-
-          axios
-            .post('http://localhost:3001/api/insertServicosProfissional', {
-              servicos: selectedServices,
-              pro_id: pro_id,
-            })
-            .then((response) => {
-              setFeedback({
-                type: 'success',
-                message: 'Sucesso',
-                subMessage: 'Cadastro realizado com sucesso!',
-              });
-            })
-            .catch((error) => {
-              setFeedback({
-                type: 'failure',
-                message: 'Falhou',
-                subMessage: 'Cadastro não foi realizado!',
-              });
-            });
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/api/insertUsuarioProfissional',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
-      })
-      .catch((error) => {
-        setFeedback({
-          type: 'failure',
-          message: 'Falhou',
-          subMessage: 'Cadastro não foi realizado!',
-        });
-      });
+      );
 
-    console.log('submit', {
-      usu_nomeCompleto,
-      usu_email,
-      usu_senha,
-      usu_foto,
-      pro_descricao,
-      pro_cor,
-    });
+      setFeedback({
+        type: 'success',
+        message: 'Sucesso',
+        subMessage: 'Cadastro realizado com sucesso!',
+      });
+    } catch (error) {
+      setFeedback({
+        type: 'failure',
+        message: 'Falhou',
+        subMessage: 'Cadastro não foi realizado!',
+      });
+    }
   };
 
   useEffect(() => {
@@ -147,12 +120,15 @@ const CadastroProfissional = () => {
                 </div>
                 <div className="mt-4">
                   <InputPadrao
-                    labelTexto="Foto"
-                    placeholder="Insira o endereço da foto"
-                    tipo="text"
-                    nome="usu_foto"
+                    labelTexto="Endereço foto"
+                    placeholder="Digite o endereço da sua foto"
+                    tipo="file"
+                    nome="usuEnderecoFoto"
                     onChange={(e) => {
-                      setUsuFoto(e.target.value);
+                      const file = e.target.files && e.target.files[0];
+                      if (file) {
+                        setUsuFoto(file);
+                      }
                     }}
                   />
                 </div>
@@ -168,18 +144,6 @@ const CadastroProfissional = () => {
                     }}
                   />
                 </div>
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Cor"
-                    placeholder="Digite aqui o codigo da cor.."
-                    tipo="text"
-                    nome="pro_cor"
-                    onChange={(e) => {
-                      setProCor(e.target.value);
-                    }}
-                  />
-                </div>
-
                 <div className="mt-4">
                   <InputPadrao
                     labelTexto="Senha"
