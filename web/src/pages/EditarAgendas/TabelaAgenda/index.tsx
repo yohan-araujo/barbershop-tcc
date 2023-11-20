@@ -81,7 +81,7 @@ const TabelaAgenda = ({
   return (
     <table className="w-full border-collapse">
       <thead>
-        <tr style={{ backgroundColor: profissionalSelecionado?.pro_cor }}>
+        <tr style={{ backgroundColor: profissionalSelecionado?.usu_foto }}>
           <th className="border p-2 text-center text-white font-face-montserrat">
             Data
           </th>

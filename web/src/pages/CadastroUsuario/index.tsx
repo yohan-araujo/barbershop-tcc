@@ -63,18 +63,18 @@ const CadastroUsuario = () => {
 
   return (
     <section className="flex items-center min-h-screen bg-black">
-      <div className="border-2 absolute right-[29.5rem] top-[16.5rem] w-[55rem] h-[59rem] border-[#E29C31]"></div>
-      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative z-10">
+      <div className="border-2 absolute right-[20rem] top-[16.5rem] w-[65rem] h-[65rem] border-[#E29C31]"></div>
+      <div className="flex flex-auto h-full max-w-6xl mx-auto bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative">
         <div className="flex flex-col md:flex-row">
-          <div className="h-32 md:h-auto md:w-1/2">
+          <div className="min-w-max border-r border-[#E29C31]">
             <img
-              className="object-cover w-full h-full"
+              className="object-cover h-full min-w-full"
               src={welcomeBarberCadas}
               alt="img"
             />
           </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-            <div className="w-full">
+          <div className="flex my-6 justify-center lg:px-12 sm:p-12 md:w-1/2">
+            <div className="max-w-full">
               <form action="" onSubmit={handleSubmit}>
                 <h1 className="mb-4 text-5xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
                   Cadastro
@@ -82,7 +82,7 @@ const CadastroUsuario = () => {
                 <h6 className="text-center text-white text-lg font-normal font-face-montserrat">
                   Insira suas informações!
                 </h6>
-                <div className="mt-12">
+                <div className="mt-12 mb-6">
                   <InputPadrao
                     labelTexto="Nome Completo"
                     placeholder="Insira seu nome!"
@@ -106,20 +106,20 @@ const CadastroUsuario = () => {
                 </div>
                 <div className="flex flex-row mb-6">
                   <div className="flex flex-auto justify-between items-center">
-                    <div className="mb-6">
-                      <InputPadrao
-                        labelTexto="Endereço foto"
-                        placeholder="Digite o endereço da sua foto"
-                        tipo="file"
-                        nome="usuEnderecoFoto"
-                        onChange={(e) => {
-                          const file = e.target.files && e.target.files[0];
-                          if (file) {
-                            setUsuFoto(file);
-                          }
-                        }}
-                      />
-                    </div>
+
+                    <InputPadrao
+                      labelTexto="Endereço foto"
+                      placeholder="Digite o endereço da sua foto"
+                      tipo="file"
+                      nome="usuEnderecoFoto"
+                      onChange={(e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                          setUsuFoto(file);
+                        }
+                      }}
+                    />
+
                   </div>
                 </div>
                 <div className="mb-6">
@@ -167,7 +167,12 @@ const CadastroUsuario = () => {
                     redirectTo="/login"
                   />
                 )}
-                <div className="flex justify-center mt-12">
+                <div className='flex justify-center mb-6'>
+                  <p className="text-white">
+                    <a href="login" className="text-center text-white text-base font-normal font-face-montserrat underline">Já possui conta?</a>
+                  </p>
+                </div>
+                <div className="flex justify-center">
                   <ButtonPadrao texto="Cadastrar" tipo="submit" />
                 </div>
               </form>

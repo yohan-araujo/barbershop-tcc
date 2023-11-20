@@ -26,7 +26,7 @@ const ProfissionaisSelect = ({
           className={`flex flex-row p-4 rounded-xl ${
             selectedProfissional === profissional ? 'bg-blue-500' : ''
           }`}
-          style={{ backgroundColor: profissional.pro_cor }}
+          style={{ backgroundColor: profissional.usu_foto }}
           onClick={() => handleProfissionalClick(profissional)}
         >
           <img

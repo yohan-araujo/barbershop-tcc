@@ -407,7 +407,7 @@ app.post('/api/insertServicosProfissional', (req, res) => {
 
 app.get('/api/getProfissionais', (req, res) => {
   const selectProfissionais =
-    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao, p.pro_cor FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
+    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
   db.query(selectProfissionais, (err, result) => {
     res.send(result);
   });
@@ -456,7 +456,7 @@ app.get('/api/getServicos/:profissionalID', (req, res) => {
 app.get('/api/getAgendamentos/:profissionalID', (req, res) => {
   const profissionalID = req.params.profissionalID;
   const selectAgendamento = `
-  SELECT a.age_id, a.age_data, a.age_hora, u.usu_nomeCompleto, s.ser_tipo, a.age_status, a.pro_id, p.pro_cor
+  SELECT a.age_id, a.age_data, a.age_hora, u.usu_nomeCompleto, s.ser_tipo, a.age_status, a.pro_id
   FROM age_agendamento a
   JOIN cli_clientes c ON a.cli_id = c.cli_id
   JOIN usu_usuarios u ON c.usu_id = u.usu_id
@@ -761,7 +761,7 @@ app.post('/api/loginUsuario', (req, res) => {
 
   const selectLogin = `
     SELECT u.usu_id, u.usu_tipo, u.usu_nomeCompleto, u.usu_senha,u.usu_salt, u.usu_foto, 
-      c.cli_id, a.adm_id, p.pro_descricao, p.pro_cor, p.pro_id
+      c.cli_id, a.adm_id, p.pro_descricao, p.pro_id
     FROM usu_usuarios u
     LEFT JOIN cli_clientes c ON c.usu_id = u.usu_id
     LEFT JOIN adm_administradores a ON a.usu_id = u.usu_id
