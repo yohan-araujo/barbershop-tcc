@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(cors());
@@ -85,6 +86,144 @@ const uploadFotoCliente = multer({ storage: storagePerfilClientes }).single(
 const uploadFotoProfissional = multer({
   storage: storagePerfilProfissionais,
 }).single('usu_foto');
+
+app.post('/api/redefinicaoDeSenha', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const query = 'SELECT usu_email FROM usu_usuarios WHERE usu_email = ?';
+
+    db.query(query, [email], (err, results) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        res
+          .status(500)
+          .json({ message: 'Ocorreu um erro ao verificar o e-mail.' });
+      } else {
+        if (results.length > 0) {
+          // O e-mail existe no banco de dados
+          const token = crypto.randomBytes(20).toString('hex');
+          const expiracaoToken = new Date(Date.now() + 3600000); // Data de expiração (1 hora)
+
+          // Salvar o token no banco de dados
+          salvarToken(email, token, expiracaoToken);
+
+          // Enviar e-mail com o link de redefinição de senha
+          enviarEmailRedefinicaoSenha(email, token);
+
+          res
+            .status(200)
+            .json({ message: 'Token gerado e e-mail enviado com sucesso.' });
+        } else {
+          res.status(404).json({ message: 'E-mail não encontrado.' });
+        }
+      }
+    });
+  } catch (error) {
+    console.log('Erro ao processar a solicitação:', error);
+    res
+      .status(500)
+      .json({ message: 'Ocorreu um erro ao processar a solicitação.' });
+  }
+});
+
+function salvarToken(email, token, expiracaoToken) {
+  const insertQuery =
+    'INSERT INTO tr_tokensReset (tr_email, tr_token, tr_expiracao) VALUES (?, ?, ?)';
+  db.query(insertQuery, [email, token, expiracaoToken], (err, result) => {
+    if (err) {
+      console.error('Erro ao salvar o token:', err);
+    } else {
+      console.log('Token salvo com sucesso:', result);
+    }
+  });
+}
+
+function enviarEmailRedefinicaoSenha(email, token) {
+  const transporter = nodemailer.createTransport({
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
+    auth: {
+      user: '8607378b1a20ca',
+      pass: '0791f186b8091b',
+    },
+  });
+
+  const opcoesEmail = {
+    from: 'contatobarbershopFatec@gmail.com',
+    to: email,
+    subject: 'Redefinição de senha',
+    html: `<h1>Olá ${email},</h1> <br> <h3>Para redefinir sua senha, clique no link abaixo:</h3> <br> <a href="http://localhost:3000/api/redefinicaoDeSenha?token=${token}">Redefinir senha</a>`,
+  };
+
+  transporter.sendMail(opcoesEmail, (error, info) => {
+    if (error) {
+      console.log('Erro ao enviar o e-mail:', error);
+    } else {
+      console.log('E-mail enviado:', info.response);
+    }
+  });
+}
+
+app.post('/api/definirNovaSenha', async (req, res) => {
+  const { token, novaSenha } = req.body;
+  try {
+    const query =
+      'SELECT tr_email, tr_expiracao FROM tr_tokensReset WHERE tr_token = ?';
+    db.query(query, [token], (err, results) => {
+      if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        res
+          .status(500)
+          .json({ message: 'Ocorreu um erro ao verificar o token.' });
+      } else {
+        if (results.length > 0) {
+          const { tr_email, tr_expiracao } = results[0];
+          const now = new Date();
+
+          if (tr_expiracao > now) {
+            // Criptografar a nova senha antes de atualizar no banco de dados
+            const salt = crypto.randomBytes(16).toString('hex');
+            const hash = crypto
+              .pbkdf2Sync(novaSenha, salt, 100000, 64, 'sha512')
+              .toString('hex');
+
+            // Token válido, atualizar a senha do usuário na tabela usu_usuarios
+            const updateQuery =
+              'UPDATE usu_usuarios SET usu_senha = ?, usu_salt = ? WHERE usu_email = ?';
+            db.query(updateQuery, [hash, salt, tr_email], (err, result) => {
+              if (err) {
+                console.error('Erro ao atualizar a senha:', err);
+                res
+                  .status(500)
+                  .json({ message: 'Ocorreu um erro ao atualizar a senha.' });
+              } else {
+                console.log('Senha atualizada com sucesso:', result);
+                res
+                  .status(200)
+                  .json({ message: 'Senha atualizada com sucesso.' });
+              }
+            });
+          } else {
+            res
+              .status(400)
+              .json({
+                message:
+                  'Token expirado. Solicite novamente a redefinição de senha.',
+              });
+          }
+        } else {
+          res.status(404).json({ message: 'Token inválido.' });
+        }
+      }
+    });
+  } catch (error) {
+    console.log('Erro ao processar a solicitação:', error);
+    res
+      .status(500)
+      .json({ message: 'Ocorreu um erro ao processar a solicitação.' });
+  }
+});
 
 // Requisicoes
 app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
@@ -707,6 +846,7 @@ app.get('/api/getServicosQtd', (req, res) => {
     }
   });
 });
+
 app.get('/api/getServicosQtd/:pro_id', (req, res) => {
   const pro_id = req.params.pro_id;
   const query = `
@@ -731,7 +871,6 @@ app.get('/api/getServicosQtd/:pro_id', (req, res) => {
     }
   });
 });
-// Exemplo em Node.js com Express.js
 
 app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
   const cli_id = req.params.cli_id;
