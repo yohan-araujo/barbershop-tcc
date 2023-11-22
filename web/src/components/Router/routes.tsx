@@ -5,7 +5,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Home from '../../pages/Home';
-import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
 import PaginaPadrao from '../PaginaPadrao';
 import Login from '../../pages/Login';
@@ -20,6 +19,9 @@ import EditarAgendas from 'pages/EditarAgendas';
 import AgendaProfissional from '../../pages/AgendaProfissional';
 import Galeria from 'pages/Galeria';
 import CadastroGaleria from 'pages/CadastroGaleria';
+import CadastroCliente from '../../pages/CadastroCliente';
+import RedefinirSenha from 'pages/EsqueciSenha';
+import DefinirNovaSenha from 'pages/DefinirNovaSenha';
 
 interface ProtegidoProps {
   component: React.ComponentType<any>;
@@ -91,11 +93,18 @@ export default function AppRouter() {
           />
 
           {/* Rotas do Gerais */}
-          <Route path="cadastroUsuario" element={<CadastroUsuario />} />
+          <Route path="cadastroCliente" element={<CadastroCliente />} />
           <Route
             path="agendamento"
             element={<Protegido component={Agendamento} />}
           />
+          <Route path="redefinirSenha" element={<RedefinirSenha />} />
+
+          <Route
+            path="/api/redefinicaoDeSenha"
+            element={<DefinirNovaSenha />}
+          />
+
           <Route path="galeria" element={<Galeria />} />
           <Route path="login" element={<Login />} />
           <Route path="sobre" element={<Sobre />} />

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import MensagemFeedback from 'components/MensagemFeedback';
 import welcomeBarberCadas from 'assets/img/barbercadas.svg';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [usu_email, setUsuEmail] = useState('');
@@ -36,7 +37,6 @@ const Login = () => {
             clienteID,
             proId,
             proDesc,
-            proCor,
           } = response.data;
 
           //Armazenando na session os valores que vem do back end
@@ -56,17 +56,28 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        setFeedback({
-          type: 'failure',
-          message: 'Falhou',
-          subMessage: 'Email ou senha incorretos!',
-        });
+        if (error.response && error.response.status === 401) {
+          // Credenciais inválidas
+          setFeedback({
+            type: 'failure',
+            message: 'Falhou',
+            subMessage: 'Email ou senha incorretos!',
+          });
+        } else {
+          // Outro tipo de erro
+          console.error('Erro na requisição:', error);
+          setFeedback({
+            type: 'failure',
+            message: 'Falhou',
+            subMessage: 'Ocorreu um erro na requisição.',
+          });
+        }
       });
   };
 
   return (
     <section className="flex items-center min-h-screen bg-black">
-      <div className="absolute w-[55rem] h-[48rem] border-2 right-[28.5rem] top-[15rem] border-orange-400" />
+      <div className="absolute w-[55rem] h-[48rem] border-2 right-[28.5rem] top-[15rem] border-[#E29C31]" />
       <div className="flex-1 my-32 h-full max-w-4xl mx-auto relative bg-[#1D1D1D] rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
@@ -113,14 +124,21 @@ const Login = () => {
                   <ButtonPadrao texto="Entrar" tipo="submit" />
                 </div>
 
-                <p className="text-white mt-8 text-center">
-                  <a href="login" className="text-center text-white text-base font-normal font-face-montserrat underline">Esqueceu a Senha?</a>
-                </p>
+                <Link to="/redefinirSenha">
+                  <p className="text-white mt-8 text-center text-base font-normal font-face-montserrat underline">
+                    Esqueceu a Senha?
+                  </p>
+                </Link>
+                <div className="mt-6 border border-[#E29C31]"></div>
 
-                <div className='mt-6 border border-[#E29C31]'></div>
-
-                <p className="text-center mt-4 text-white text-sm font-normal font-face-montserrat">
-                  Não possui conta? <a href="CadastroUsuario" className="text-[#E29C31] text-sm font-normal font-face-montserrat underline">Cadastrar</a>
+                <p className="flex justify-center mt-4 text-white text-sm font-normal font-face-montserrat">
+                  Não possui conta?{' '}
+                  <Link
+                    to="cadastroCliente"
+                    className="ml-1 text-[#E29C31] underline font-face-montserrat"
+                  >
+                    Cadastre-se!
+                  </Link>
                 </p>
 
                 {feedback.message && (

@@ -1,4 +1,3 @@
-import { FacebookIcon } from 'lucide-react';
 import { IProfissional } from 'types/IProfissional';
 
 interface CardProps {
@@ -16,7 +15,7 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
     <div className="w-72 rounded-b-2xl" onClick={handleClick}>
       <div
         className="rounded-t-2xl flex justify-center"
-        style={{ backgroundColor: profissional.usu_foto}}
+        style={{ backgroundColor: profissional.usu_foto }}
       >
         <img
           className="w-24 rounded-full relative bottom-[-3rem]"

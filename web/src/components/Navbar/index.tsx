@@ -188,7 +188,7 @@ const Navbar = () => {
             <Link to="/login">
               <ButtonPadrao texto="Login" />
             </Link>
-            <Link to="/cadastroUsuario">
+            <Link to="/cadastroCliente">
               <ButtonPadrao texto="Cadastro" outline={true} />
             </Link>
           </li>
