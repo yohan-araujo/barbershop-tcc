@@ -1,20 +1,20 @@
-import ButtonPadrao from 'components/ButtonPadrao';
-import { Link } from 'react-router-dom';
-import { Edit } from 'lucide-react';
-import Skills from './Skills';
-import { useState, useEffect } from 'react';
-import { ISkill } from 'types/ISkill';
-import axios from 'axios';
-import GraficoPieProfissional from 'components/GraficoPieProfissional';
-import CarrosselGraficoProfissional from 'components/CarroselGraficoProfissional';
-import GraficoLineProfissional from 'components/GraficoLineProfissional';
+import ButtonPadrao from "components/ButtonPadrao";
+import { Link } from "react-router-dom";
+import { Edit } from "lucide-react";
+import Skills from "./Skills";
+import { useState, useEffect } from "react";
+import { ISkill } from "types/ISkill";
+import axios from "axios";
+import GraficoPieProfissional from "components/GraficoPieProfissional";
+import CarrosselGraficoProfissional from "components/CarroselGraficoProfissional";
+import GraficoLineProfissional from "components/GraficoLineProfissional";
 
 const PerfilProfissional = () => {
   const [skills, setSkills] = useState<ISkill[]>([]);
-  const fotoUsuario = sessionStorage.getItem('usuarioFoto') ?? '';
-  const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
-  const proDesc = sessionStorage.getItem('proDesc') ?? '';
-  const proCor = sessionStorage.getItem('proCor') ?? '';
+  const fotoUsuario = sessionStorage.getItem("usuarioFoto") ?? "";
+  const nomeUsuario = sessionStorage.getItem("usuarioNome") ?? "";
+  const proDesc = sessionStorage.getItem("proDesc") ?? "";
+  const proCor = sessionStorage.getItem("proCor") ?? "";
 
   const containerStyle = {
     backgroundColor: proCor,
@@ -22,7 +22,7 @@ const PerfilProfissional = () => {
 
   const charts = [<GraficoLineProfissional />, <GraficoPieProfissional />];
 
-  const proId = sessionStorage.getItem('proId');
+  const proId = sessionStorage.getItem("proId");
 
   useEffect(() => {
     axios
@@ -53,7 +53,7 @@ const PerfilProfissional = () => {
         </div>
         <div className="grid grid-cols-2 bg-[#6E7781] rounded-b-xl">
           <div className="flex flex-col my-36">
-            {' '}
+            {" "}
             <div className="flex flex-row ml-12">
               <span className="text-white text-4xl font-semibold font-face-montserrat">
                 Skills
@@ -90,7 +90,7 @@ const PerfilProfissional = () => {
           <div className="flex flex-col">
             <div className="flex flex-col justify-center">
               <div className="flex m-auto my-32">
-                {' '}
+                {" "}
                 <Link to="/agendaProfissional" className="mt-6 ml-1">
                   <ButtonPadrao texto="minha agenda" />
                 </Link>

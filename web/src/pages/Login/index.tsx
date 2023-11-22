@@ -66,8 +66,8 @@ const Login = () => {
 
   return (
     <section className="flex items-center min-h-screen bg-black">
-      <div className="absolute w-[55rem] h-[48rem] border-2 right-[27rem] top-[12rem] border-orange-400" />
-      <div className="flex-1 h-full max-w-4xl mx-auto relative bg-[#1D1D1D] rounded-lg shadow-xl">
+      <div className="absolute w-[55rem] h-[48rem] border-2 right-[28.5rem] top-[15rem] border-orange-400" />
+      <div className="flex-1 my-32 h-full max-w-4xl mx-auto relative bg-[#1D1D1D] rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img
@@ -114,7 +114,7 @@ const Login = () => {
                 </div>
 
                 <p className="text-white mt-8 text-center">
-                  <a href="login" className="text-center text-[#FF0000] text-base font-normal font-face-montserrat">Já possui conta?</a>
+                  <a href="login" className="text-center text-white text-base font-normal font-face-montserrat underline">Esqueceu a Senha?</a>
                 </p>
 
                 <div className='mt-6 border border-[#E29C31]'></div>

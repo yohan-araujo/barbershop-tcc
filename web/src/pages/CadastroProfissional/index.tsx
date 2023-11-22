@@ -1,22 +1,22 @@
-import ButtonPadrao from 'components/ButtonPadrao';
-import InputPadrao from 'components/InputPadrao';
-import MensagemFeedback from 'components/MensagemFeedback';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ListaServicosSelect from './ListaServicosSelect';
-import { IServico } from 'types/IServico';
+import ButtonPadrao from "components/ButtonPadrao";
+import InputPadrao from "components/InputPadrao";
+import MensagemFeedback from "components/MensagemFeedback";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ListaServicosSelect from "./ListaServicosSelect";
+import { IServico } from "types/IServico";
 
 const CadastroProfissional = () => {
-  const [usu_nomeCompleto, setUsuNome] = useState('');
-  const [usu_email, setUsuEmail] = useState('');
+  const [usu_nomeCompleto, setUsuNome] = useState("");
+  const [usu_email, setUsuEmail] = useState("");
   const [usu_foto, setUsuFoto] = useState<File | null>(null);
-  const [usu_senha, setUsuSenha] = useState('');
-  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
-  const [pro_descricao, setProDescricao] = useState('');
+  const [usu_senha, setUsuSenha] = useState("");
+  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState("");
+  const [pro_descricao, setProDescricao] = useState("");
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
   const [listaServicos, setListaServicos] = useState<IServico[]>([]);
   const [servicosSelecionados, setServicosSelecionados] = useState<
@@ -31,48 +31,49 @@ const CadastroProfissional = () => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
       setFeedback({
-        type: 'failure',
-        message: 'As senhas não correspondem!',
-        subMessage: 'O cadastro falhou!',
+        type: "failure",
+        message: "As senhas não correspondem!",
+        subMessage: "O cadastro falhou!",
       });
       return;
     }
 
     const formData = new FormData();
-    formData.append('usu_nomeCompleto', usu_nomeCompleto);
-    formData.append('usu_email', usu_email);
-    formData.append('usu_senha', usu_senha);
-    if (usu_foto) formData.append('usu_foto', usu_foto);
-    formData.append('pro_descricao', pro_descricao);
+    formData.append("usu_nomeCompleto", usu_nomeCompleto);
+    formData.append("usu_email", usu_email);
+    formData.append("usu_senha", usu_senha);
+    if (usu_foto) formData.append("usu_foto", usu_foto);
+    formData.append("pro_descricao", pro_descricao);
+    formData.append("",servicosSelecionados)
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/insertUsuarioProfissional',
+        "http://localhost:3001/api/insertUsuarioProfissional",
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       setFeedback({
-        type: 'success',
-        message: 'Sucesso',
-        subMessage: 'Cadastro realizado com sucesso!',
+        type: "success",
+        message: "Sucesso",
+        subMessage: "Cadastro realizado com sucesso!",
       });
     } catch (error) {
       setFeedback({
-        type: 'failure',
-        message: 'Falhou',
-        subMessage: 'Cadastro não foi realizado!',
+        type: "failure",
+        message: "Falhou",
+        subMessage: "Cadastro não foi realizado!",
       });
     }
   };
 
   useEffect(() => {
     axios
-      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
+      .get<IServico[]>("http://localhost:3001/api/getServicosCadastrados")
       .then((response) => {
         setListaServicos(response.data);
       });
@@ -169,11 +170,11 @@ const CadastroProfissional = () => {
                 </div>
                 {feedback.message && (
                   <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
+                    type={feedback.type as "failure" | "success"}
                     message={feedback.message}
                     subMessage={feedback.subMessage}
                     onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
+                      setFeedback({ type: "", message: "", subMessage: "" })
                     }
                   />
                 )}
