@@ -346,7 +346,7 @@ app.post(
     const insertUsuario =
       'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_caminhoFoto, usu_tipo) VALUES (?,?,?,?,?,?,?)';
     const insertUsuarioProfissional =
-      'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?,?)';
+      'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?)';
 
     db.query(
       insertUsuario,

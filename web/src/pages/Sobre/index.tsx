@@ -1,5 +1,9 @@
 const Sobre = () => {
-  return <div>esse eh o sobre</div>;
+  return (
+    <div>
+      <span>Aqui eh a pagina de sobre</span>
+    </div>
+  );
 };
 
 export default Sobre;
