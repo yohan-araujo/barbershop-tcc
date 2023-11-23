@@ -222,7 +222,7 @@ const Agendamento = () => {
   };
 
   return (
-    <section className="bg-age">
+    <section className="bg-black">
       <div>
         <div className="flex justify-start items-start p-4 gap-3 mr-[21px] mb-[28px]">
           {cartaoResgatavel ? (
