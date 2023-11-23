@@ -31,7 +31,7 @@ const ListaCards = ({
   };
 
   return (
-    <div className="flex flex-wrap gap-12 max-w-5xl mx-auto justify-center">
+    <div className="flex flex-col gap-12 max-w-5xl mx-auto justify-center">
       {profissionais.map((profissional) => (
         <Card
           key={profissional.pro_id}

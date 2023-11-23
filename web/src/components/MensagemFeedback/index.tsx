@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { CheckCircle, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ButtonPadrao from 'components/ButtonPadrao';
+import IconSuccess from 'assets/iconSuccess.svg';
+import IconFailure from 'assets/iconFailure.svg';
 
 type MensagemFeedbackProps = {
   message: string;
@@ -29,43 +31,29 @@ const MensagemFeedback = ({
     }
   };
 
-  let backgroundColor = '';
-  let textColor = '';
-  let hoverColor = '';
-  let icon = null;
-
-  if (type === 'success') {
-    backgroundColor = 'bg-green-600';
-    textColor = 'text-green-600';
-    hoverColor = 'hover:bg-green-700';
-    icon = <CheckCircle size={108} />;
-  } else if (type === 'failure') {
-    backgroundColor = 'bg-red-500';
-    textColor = 'text-red-500';
-    hoverColor = 'hover:bg-red-700';
-    icon = <AlertCircle size={108} />;
-  }
+  const icon = type === 'success' ? IconSuccess : IconFailure;
 
   return (
     <>
       {isVisible && (
         <div
-          className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-12 rounded-md shadow bg-white`}
+          className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-12 rounded-md shadow bg-[#1D1D1D]`}
         >
           <div className="flex flex-col items-center mb-2 ">
-            {icon && <span className={`mr-2 ${textColor}`}>{icon}</span>}
-            <span className="font-face-montserrat text-4xl font-bold mt-12 uppercase">
+            <img src={icon} alt="" />
+            <span className="font-face-montserrat text-4xl font-bold mt-12 text-white">
               {message}
             </span>
-            <span className="font-face-montserrat text-2xl mt-2 text-gray-400 ">
+            <span className="font-face-montserrat text-2xl mt-2 text-[#E29C31] ">
               {subMessage}
             </span>
-            <button
-              className={`${backgroundColor} ${hoverColor} text-white text-2xl py-2 px-4 rounded font-face-montserrat mt-12 uppercase`}
-              onClick={handleClose}
-            >
-              Continuar
-            </button>
+            <div className="mt-12">
+              <ButtonPadrao
+                texto="Continuar"
+                outline={true}
+                onClick={handleClose}
+              />
+            </div>
           </div>
         </div>
       )}
