@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { ICartaoFidelidade } from "types/ICartaoFidelidade";
-import CfFoto from "assets/img/CfFoto.jpg";
-import CFicon from "assets/cf-icon.svg";
+import { useNavigate } from 'react-router-dom';
+import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
+import CfFoto from 'assets/img/CfFoto.jpg';
+import CFicon from 'assets/cf-icon.svg';
 
 interface CartaoProps {
   cartoes: ICartaoFidelidade[];
@@ -9,12 +9,11 @@ interface CartaoProps {
 
 const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
   const MAX_BOLINHAS = 10;
-  const POINTS_PER_LINE = 5; // Set the number of points per line
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/agendamento");
+    navigate('/agendamento');
   };
 
   return (
@@ -34,17 +33,17 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
                       <div className="flex flex-wrap" key={index}>
                         <div
                           className={`w-12 h-12 rounded-full mb-4 mr-2 bg-[#E29C31] flex items-center justify-center ${
-                            index < cartao.cf_pontos ? "bg-[#E29C31]" : ""
+                            index < cartao.cf_pontos ? 'bg-[#E29C31]' : ''
                           }`}
                         >
                           {index < cartao.cf_pontos && (
                             <div className="">
-                              {" "}
+                              {' '}
                               <img
                                 src={CFicon}
                                 className=""
                                 alt="Ponto Cartão Fidelidade"
-                              />{" "}
+                              />{' '}
                             </div>
                           )}
                         </div>

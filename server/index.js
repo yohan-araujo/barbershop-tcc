@@ -205,12 +205,10 @@ app.post('/api/definirNovaSenha', async (req, res) => {
               }
             });
           } else {
-            res
-              .status(400)
-              .json({
-                message:
-                  'Token expirado. Solicite novamente a redefinição de senha.',
-              });
+            res.status(400).json({
+              message:
+                'Token expirado. Solicite novamente a redefinição de senha.',
+            });
           }
         } else {
           res.status(404).json({ message: 'Token inválido.' });
@@ -242,7 +240,7 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
   const insertUsuarioCliente =
     'INSERT INTO cli_clientes (usu_id, cli_tel) VALUES (?,?)';
   const insertCartaoFidelidade =
-    'INSERT INTO cf_cartoesFidelidade (cli_id, cf_pontos) VALUES (?, 0)';
+    'INSERT INTO cf_cartoesFidelidade (cli_id, cf_pontos,cf_resgatavel) VALUES (?, 0, false)';
 
   db.beginTransaction((err) => {
     if (err) {
@@ -449,6 +447,81 @@ app.post('/api/insertAgendamento', (req, res) => {
   );
 });
 
+app.post('/api/insertAgendamentoGratuito', (req, res) => {
+  const { data, hora, profissionalID, clienteID } = req.body;
+
+  const selectServicoGratuitoQuery =
+    'SELECT ser_id FROM ser_servicos WHERE ser_tipo = ? AND ser_gratuito = ?';
+  const tipoServicoCorteCabelo = 'Corte de cabelo';
+  const isGratuito = true;
+
+  db.query(
+    selectServicoGratuitoQuery,
+    [tipoServicoCorteCabelo, isGratuito],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+
+      if (results.length > 0) {
+        const servicoCorteCabeloGratuitoId = results[0].ser_id;
+
+        const insertAgendamentoGratuito =
+          'INSERT INTO age_agendamento (age_data, age_hora, cli_id, pro_id, ser_id, age_status) VALUES (?,?,?,?,?,?)';
+
+        db.query(
+          insertAgendamentoGratuito,
+          [
+            data,
+            hora,
+            clienteID,
+            profissionalID,
+            servicoCorteCabeloGratuitoId,
+            false,
+          ],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(500).send(err);
+              return;
+            }
+
+            // Se o agendamento foi inserido com sucesso, então atualize os campos no cartão de fidelidade
+            const updateCartaoFidelidadeQuery =
+              'UPDATE cf_cartoesFidelidade SET cf_pontos = 0, cf_resgatavel = false WHERE cli_id = ?';
+
+            db.query(
+              updateCartaoFidelidadeQuery,
+              [clienteID],
+              (err, updateResult) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500).send(err);
+                  return;
+                }
+
+                // Envie uma resposta apenas depois de ambas as operações terem sido concluídas com sucesso
+                res.status(200).json({
+                  success: true,
+                  message:
+                    'Agendamento gratuito inserido com sucesso e campos atualizados no cartão de fidelidade!',
+                });
+              }
+            );
+          }
+        );
+      } else {
+        res.status(404).json({
+          success: false,
+          message: 'Serviço gratuito de corte de cabelo não encontrado!',
+        });
+      }
+    }
+  );
+});
+
 app.post('/api/insertServico', (req, res) => {
   const { tipo, preco } = req.body;
 
@@ -562,7 +635,7 @@ app.get('/api/getProfissionaisImagens', (req, res) => {
 
 app.get('/api/getServicosCadastrados', (req, res) => {
   const selectServicos = `
-    SELECT ser_id, ser_tipo, ser_preco FROM ser_servicos;
+    SELECT ser_id, ser_tipo, ser_preco FROM ser_servicos WHERE ser_gratuito = false;
   `;
   db.query(selectServicos, (err, result) => {
     if (err) {

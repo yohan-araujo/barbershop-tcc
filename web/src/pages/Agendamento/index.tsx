@@ -24,7 +24,6 @@ import MensagemFeedback from 'components/MensagemFeedback';
 import SelectHorario from './SelectHorario';
 
 const Agendamento = () => {
-  // useStates ou Variaveis
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
@@ -79,16 +78,13 @@ const Agendamento = () => {
       )
       .then((response) => {
         if (response.data && response.data.cf_resgatavel === 1) {
-          // Se a resposta da API for verdadeira (cf_resgatavel igual a 1), defina cartaoResgatavel como verdadeiro
           setCartaoResgatavel(true);
         } else {
-          // Senão, mantenha cartaoResgatavel como falso
           setCartaoResgatavel(false);
         }
       })
       .catch((error) => {
         console.error('Erro ao obter cartaoResgatavel:', error);
-        // Aqui você pode lidar com erros, como definir cartaoResgatavel como falso se a solicitação falhar
         setCartaoResgatavel(false);
       });
   }, []);
@@ -118,11 +114,19 @@ const Agendamento = () => {
   // Colocando o stepper para funcionar
 
   const handleProximaEtapa = () => {
-    setEtapaAtual((etapaAnterior) => etapaAnterior + 1);
+    if (!cartaoResgatavel) {
+      setEtapaAtual((etapaAnterior) => etapaAnterior + 1);
+    } else {
+      setEtapaAtual((etapaAnterior) => etapaAnterior + 2);
+    }
   };
 
   const handleEtapaAnterior = () => {
-    setEtapaAtual((etapaAnterior) => etapaAnterior - 1);
+    if (!cartaoResgatavel) {
+      setEtapaAtual((etapaAnterior) => etapaAnterior - 1);
+    } else {
+      setEtapaAtual((etapaAnterior) => etapaAnterior - 2);
+    }
   };
 
   // Alteracao na hora da selecao de data e hora
@@ -152,8 +156,7 @@ const Agendamento = () => {
     return disabledDates;
   };
 
-  // Submit no form todo
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmitSemCartao = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (
@@ -188,22 +191,17 @@ const Agendamento = () => {
     }
   };
 
-  const handleResgate = (event: React.FormEvent) => {
+  const handleSubmitComCartao = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (
-      dataSelecionada &&
-      horaSelecionada &&
-      profissionalSelecionado &&
-      servicoSelecionado
-    ) {
+    if (dataSelecionada && horaSelecionada && profissionalSelecionado) {
       const dataFormatada = format(dataSelecionada, 'yyyy-MM-dd');
+
       axios
-        .post('http://localhost:3001/api/insertAgendamento', {
+        .post('http://localhost:3001/api/insertAgendamentoGratuito', {
           data: dataFormatada,
           hora: horaSelecionada,
           profissionalID: profissionalSelecionado.pro_id,
-          servicoID: servicoSelecionado.ser_id,
           clienteID: sessionStorage.getItem('clienteID'),
         })
         .then((response) => {
@@ -227,32 +225,54 @@ const Agendamento = () => {
     <section className="bg-age">
       <div>
         <div className="flex justify-start items-start p-4 gap-3 mr-[21px] mb-[28px]">
-          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-            <div
-              className={`w-8 h-8 rounded-full ${
-                etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
-              }`}
-            ></div>
-          </div>
-
-          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-            <div
-              className={`w-8 h-8 rounded-full ${
-                etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
-              }`}
-            ></div>
-          </div>
-          <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-            <div
-              className={`w-8 h-8 rounded-full ${
-                etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
-              }`}
-            ></div>
-          </div>
+          {cartaoResgatavel ? (
+            <>
+              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+                <div
+                  className={`w-8 h-8 rounded-full ${
+                    etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+                <div
+                  className={`w-8 h-8 rounded-full ${
+                    etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+                <div
+                  className={`w-8 h-8 rounded-full ${
+                    etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+                <div
+                  className={`w-8 h-8 rounded-full ${
+                    etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
+                <div
+                  className={`w-8 h-8 rounded-full ${
+                    etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+            </>
+          )}
         </div>
 
         <form
-          onSubmit={cartaoResgatavel ? handleResgate : handleSubmit}
+          onSubmit={
+            cartaoResgatavel ? handleSubmitComCartao : handleSubmitSemCartao
+          }
           className="flex justify-center max-w-screen"
         >
           <div className="">
@@ -418,6 +438,10 @@ const Agendamento = () => {
                           />
                         </div>
                       </div>
+                      <ButtonPadrao
+                        texto="Voltar"
+                        onClick={handleEtapaAnterior}
+                      />
                     </div>
                   </div>
                 </div>
@@ -429,7 +453,7 @@ const Agendamento = () => {
                     onClose={() =>
                       setFeedback({ type: '', message: '', subMessage: '' })
                     }
-
+                    redirectTo="/perfilCliente"
                   />
                 )}
               </>
