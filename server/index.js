@@ -988,6 +988,14 @@ app.post('/api/loginUsuario', (req, res) => {
       return;
     }
 
+    if (result.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: 'O email não está registrado no sistema',
+      });
+      return;
+    }
+
     if (result.length > 0) {
       const usuario = result[0];
       const senhaArmazenada = usuario.usu_senha;
