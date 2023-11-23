@@ -1,57 +1,57 @@
-import InputPadrao from 'components/InputPadrao';
-import ButtonPadrao from 'components/ButtonPadrao';
-import { useState } from 'react';
-import MensagemFeedback from 'components/MensagemFeedback';
-import { useParams, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import InputPadrao from "components/InputPadrao";
+import ButtonPadrao from "components/ButtonPadrao";
+import { useState } from "react";
+import MensagemFeedback from "components/MensagemFeedback";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const DefinirNovaSenha = () => {
-  const [usu_senha, setUsuSenha] = useState('');
-  const [usu_confirmarSenha, setConfirmarSenha] = useState('');
+  const [usu_senha, setUsuSenha] = useState("");
+  const [usu_confirmarSenha, setConfirmarSenha] = useState("");
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
 
   const { search } = useLocation();
-  const token = new URLSearchParams(search).get('token');
+  const token = new URLSearchParams(search).get("token");
   console.log(token);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (usu_senha !== usu_confirmarSenha) {
       setFeedback({
-        type: 'failure',
-        message: 'Os e-mails não correspondem!',
-        subMessage: 'O envio falhou!',
+        type: "failure",
+        message: "Os e-mails não correspondem!",
+        subMessage: "O envio falhou!",
       });
       return;
     }
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/definirNovaSenha',
+        "http://localhost:3001/api/definirNovaSenha",
         {
           token: token,
           novaSenha: usu_senha,
         }
       );
       // Lógica para lidar com a resposta da chamada à API
-      console.log('Resposta da API:', response.data);
+      console.log("Resposta da API:", response.data);
       setFeedback({
-        type: 'success',
-        message: 'Senha redefinida com sucesso!',
-        subMessage: 'Tente acessar sua conta agora.',
+        type: "success",
+        message: "Senha redefinida com sucesso!",
+        subMessage: "Tente acessar sua conta agora.",
       });
     } catch (error) {
       // Lidar com erros
-      console.error('Erro ao redefinir a senha:', error);
+      console.error("Erro ao redefinir a senha:", error);
       // Exibir mensagem de erro para o usuário
       setFeedback({
-        type: 'failure',
-        message: 'Erro!',
-        subMessage: 'Ocorreu um erro ao redefinir a senha!',
+        type: "failure",
+        message: "Erro!",
+        subMessage: "Ocorreu um erro ao redefinir a senha!",
       });
     }
   };
@@ -99,11 +99,11 @@ const DefinirNovaSenha = () => {
                 </div>
                 {feedback.message && (
                   <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
+                    type={feedback.type as "failure" | "success"}
                     message={feedback.message}
                     subMessage={feedback.subMessage}
                     onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
+                      setFeedback({ type: "", message: "", subMessage: "" })
                     }
                     redirectTo="/login"
                   />

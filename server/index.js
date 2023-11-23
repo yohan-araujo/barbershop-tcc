@@ -144,8 +144,8 @@ function enviarEmailRedefinicaoSenha(email, token) {
     host: 'sandbox.smtp.mailtrap.io',
     port: 2525,
     auth: {
-      user: '8607378b1a20ca',
-      pass: '0791f186b8091b',
+      user: '11f8a7aa4afe19',
+      pass: 'b967d4a1fcc1e1',
     },
   });
 
