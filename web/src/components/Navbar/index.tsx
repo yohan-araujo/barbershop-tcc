@@ -1,13 +1,21 @@
 import { Link, useNavigate } from 'react-router-dom';
-import barbershopLogo from 'assets/logo-barbershop.svg';
+import barbershopIcon from 'assets/barbershop-icon.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
-import DropdownSelect from 'components/Select';
-import { UserCircle, UserPlus, FilePlus, CheckCircle } from 'lucide-react';
+import DropdownSelect from 'components/DropdownSelect';
+import {
+  UserCircle,
+  UserPlus,
+  FilePlus,
+  Edit,
+  CalendarDays,
+  Image,
+} from 'lucide-react';
 import { IOption } from 'types/IOptions';
 import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [dropdownOptions, setDropdownOptions] = useState<IOption[]>([]);
+  const [fotoUsuario, setFotoUsuario] = useState('');
 
   const rotas = [
     {
@@ -22,11 +30,14 @@ const Navbar = () => {
       label: 'Agendamento',
       to: '/agendamento',
     },
+    {
+      label: 'Galeria',
+      to: '/galeria',
+    },
   ];
 
   const usuarioLogado = sessionStorage.getItem('usuarioLogado') === 'true';
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
-  const usuarioFoto = sessionStorage.getItem('usuarioFoto');
   const usuarioNome = sessionStorage.getItem('usuarioNome');
   const navigate = useNavigate();
 
@@ -40,6 +51,7 @@ const Navbar = () => {
 
     // Redirecionar para a página de login ou qualquer outra página desejada após o logout
     navigate('/');
+    window.location.reload();
   };
 
   const handleOptionChange = (option: IOption | null) => {
@@ -71,9 +83,15 @@ const Navbar = () => {
         },
         {
           value: '2',
-          label: 'Confirmar Servico',
-          to: '/confirmarServico',
-          icon: <CheckCircle />,
+          label: 'Agenda',
+          to: '/agendaProfissional',
+          icon: <CalendarDays />,
+        },
+        {
+          value: '3',
+          label: 'Cadastro de foto',
+          to: '/cadastroGaleria',
+          icon: <Image />,
         },
       ];
     } else if (usuarioTipo === 'A') {
@@ -96,27 +114,51 @@ const Navbar = () => {
           to: '/cadastroServico',
           icon: <FilePlus />,
         },
+        {
+          value: '4',
+          label: 'Editar Agendas',
+          to: '/editarAgendas',
+          icon: <Edit />,
+        },
       ];
     }
 
     setDropdownOptions(options);
   }, [usuarioTipo]);
 
-  console.log(sessionStorage.getItem('usuarioTipo'));
+  useEffect(() => {
+    if (usuarioNome) {
+      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioNome}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter a foto do perfil');
+          }
+          return response.text();
+        })
+        .then((data) => {
+          setFotoUsuario(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [usuarioNome]);
+
   return (
-    <nav className="flex items-center justify-between py-2 px-4 bg-[#414141]">
+    <nav className="flex items-center justify-between py-2 px-4 bg-black border-b border-b-[#E29C31]">
       <div className="flex items-center justify-start text-white">
-        <img src={barbershopLogo} alt="logo do barbershop" />
-        <p className="ml-7 font-face-playlist font-normal text-4xl">
-          Barbershop
-        </p>
+        <img
+          src={barbershopIcon}
+          alt="logo do barbershop"
+          className="w-14 h-14 ml-16"
+        />
       </div>
       <ul className="flex items-center justify-center flex-grow">
         {rotas.map((rota, index) => (
-          <li key={index} className="list-none mr-6">
+          <li key={index} className="list-none mx-12">
             <Link
               to={rota.to}
-              className="text-white text-2xl font-medium no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat"
+              className="text-white text-xl font-medium no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat"
             >
               {rota.label}
             </Link>
@@ -130,11 +172,11 @@ const Navbar = () => {
               options={dropdownOptions}
               onChange={handleOptionChange}
             />
-            <p className="text-white text-2xl font-medium mr-2 font-face-montserrat">
+            <p className="text-white text-2xl font-medium mr-4 font-face-montserrat">
               {usuarioNome}
             </p>
             <img
-              src={usuarioFoto ?? ''}
+              src={fotoUsuario}
               alt="Foto do usuário"
               className="w-12 h-12 rounded-full mr-2"
             />
@@ -142,16 +184,12 @@ const Navbar = () => {
             <ButtonPadrao texto="Sair" onClick={handleLogout} />
           </li>
         ) : (
-          <li className="list-none">
+          <li className="list-none flex space-x-4 mr-12">
             <Link to="/login">
-              <button className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full mr-2 font-face-montserrat">
-                Login
-              </button>
+              <ButtonPadrao texto="Login" />
             </Link>
-            <Link to="/cadastroUsuario">
-              <button className="bg-[#0064B1] text-white font-medium text-2xl py-2 px-4 rounded-full font-face-montserrat">
-                Cadastrar
-              </button>
+            <Link to="/cadastroCliente">
+              <ButtonPadrao texto="Cadastro" outline={true} />
             </Link>
           </li>
         )}

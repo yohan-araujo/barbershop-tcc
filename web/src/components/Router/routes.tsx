@@ -5,7 +5,6 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Home from '../../pages/Home';
-import CadastroUsuario from '../../pages/CadastroUsuario';
 import Agendamento from '../../pages/Agendamento';
 import PaginaPadrao from '../PaginaPadrao';
 import Login from '../../pages/Login';
@@ -15,12 +14,31 @@ import PerfilCliente from '../../pages/PerfilCliente';
 import PerfilProfissional from '../../pages/PerfilProfissional';
 import PerfilAdministrador from '../../pages/PerfilAdministrador';
 import CadastroServico from '../../pages/CadastroServico';
-import ConfirmarServico from '../../pages/ConfirmarServico';
 import Pagina404 from '../../pages/Pagina404';
+import EditarAgendas from 'pages/EditarAgendas';
+import AgendaProfissional from '../../pages/AgendaProfissional';
+import Galeria from 'pages/Galeria';
+import CadastroGaleria from 'pages/CadastroGaleria';
+import CadastroCliente from '../../pages/CadastroCliente';
+import RedefinirSenha from 'pages/EsqueciSenha';
+import DefinirNovaSenha from 'pages/DefinirNovaSenha';
+
+interface ProtegidoProps {
+  component: React.ComponentType<any>;
+}
+
+function Protegido({ component: Component, ...props }: ProtegidoProps) {
+  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
+
+  if (!usuarioLogado) {
+    return <Navigate to="/login" />; // Redirecionar para a página de login
+  }
+
+  return <Component {...props} />;
+}
 
 export default function AppRouter() {
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
-  const usuarioLogado = sessionStorage.getItem('usuarioLogado');
 
   return (
     <Router>
@@ -42,8 +60,14 @@ export default function AppRouter() {
             }
           />
           <Route
-            path="confirmarServico"
-            element={usuarioTipo === 'P' ? <ConfirmarServico /> : <Pagina404 />}
+            path="agendaProfissional"
+            element={
+              usuarioTipo === 'P' ? <AgendaProfissional /> : <Pagina404 />
+            }
+          />
+          <Route
+            path="cadastroGaleria"
+            element={usuarioTipo === 'P' ? <CadastroGaleria /> : <Pagina404 />}
           />
 
           {/* Rotas do Administrador */}
@@ -63,10 +87,25 @@ export default function AppRouter() {
             path="cadastroServico"
             element={usuarioTipo === 'A' ? <CadastroServico /> : <Pagina404 />}
           />
+          <Route
+            path="editarAgendas"
+            element={usuarioTipo === 'A' ? <EditarAgendas /> : <Pagina404 />}
+          />
 
           {/* Rotas do Gerais */}
-          <Route path="cadastroUsuario" element={<CadastroUsuario />} />
-          <Route path="agendamento" element={<Agendamento />} />
+          <Route path="cadastroCliente" element={<CadastroCliente />} />
+          <Route
+            path="agendamento"
+            element={<Protegido component={Agendamento} />}
+          />
+          <Route path="redefinirSenha" element={<RedefinirSenha />} />
+
+          <Route
+            path="/api/redefinicaoDeSenha"
+            element={<DefinirNovaSenha />}
+          />
+
+          <Route path="galeria" element={<Galeria />} />
           <Route path="login" element={<Login />} />
           <Route path="sobre" element={<Sobre />} />
           <Route path="*" element={<Pagina404 />} />

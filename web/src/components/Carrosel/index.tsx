@@ -22,20 +22,12 @@ const Carrosel = ({ imagens }: CarroselProps) => {
 
   return (
     <div className="relative">
-      <div className="w-screen h-[28rem]">
+      <div className="max-w-screen">
         <img
           src={imagens[indexAtual]}
           alt="Carousel"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-          <div className="font-face-montserrat text-7xl font-bold mb-2">
-            BarberShop
-          </div>
-          <div className="text-lg font-face-montserrat">
-            Cortamos bem para cortar SEMPRE!
-          </div>
-        </div>
+          className="w-full h-full"
+        />        
         <div className="absolute top-1/2 left-0 transform -translate-y-1/2 flex items-center">
           <button
             onClick={handleAnterior}
@@ -58,7 +50,7 @@ const Carrosel = ({ imagens }: CarroselProps) => {
           <span
             key={index}
             className={`h-2 w-2 rounded-full mx-1 ${
-              index === indexAtual ? 'bg-white' : 'bg-gray-600'
+              index === indexAtual ? 'bg-orange-400' : 'bg-white'
             }`}
           />
         ))}

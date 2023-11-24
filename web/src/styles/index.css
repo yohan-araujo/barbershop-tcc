@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap');
 
 @font-face {
   font-family: 'Playlist';
@@ -25,6 +26,10 @@
   font-family: 'Montserrat';
 }
 
+.font-merriweather {
+  font-family: 'Merriweather';
+}
+
 html {
   font-family: 'Montserrat';
 }
@@ -42,4 +47,60 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.bg-age {
+  top: 60px; /* Altura da navbar */
+  left: 0;
+  right: 0;
+  bottom: 60px; /* Altura do footer */
+  background-image: url(../assets/bg-barbershop.svg);
+  background-position: center;
+  background-size: cover; /* Coloca o elemento de background atrás de tudo */
+}
+
+.font-lato {
+  font-family: 'Lato', sans-serif;
+}
+
+.maquinabarbear-svg {
+  background-image: url('../assets/barbeador-eletrico.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.pincelcabelo-svg {
+  background-image: url('../assets/escova-de-tintura-de-cabelo.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.crianca-svg {
+  background-image: url('../assets/feliz.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.sobrancelhas-svg {
+  background-image: url('../assets/sobrancelha.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.cortecabelo-svg {
+  background-image: url('../assets/tesouras.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px;
+}
+
+.cficon-svg {
+  background-image: url('../assets/cf-icon.svg');
+  background-repeat: no-repeat;
+  padding: 24px;
+  background-position: center;
 }

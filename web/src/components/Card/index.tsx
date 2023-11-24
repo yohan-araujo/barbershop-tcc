@@ -13,30 +13,18 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
 
   return (
     <div
-      className={`${
-        aoSelecionado ? 'bg-blue-100 border-2 border-green-500' : 'bg-gray-200'
-      } w-72 rounded-lg`}
+      className="flex flex-row w-[24rem] bg-black border-2 border-[#E29C31]"
       onClick={handleClick}
     >
-      <div
-        className={`${
-          aoSelecionado ? 'bg-green-500' : 'bg-gray-200'
-        } rounded-lg flex justify-center`}
-      >
-        <img
-          className="w-24 rounded-full relative bottom-[-3rem]"
-          src={profissional.usu_foto}
-          alt={profissional.usu_nomeCompleto}
-        />
+      <div className="w-1/3">
+        <img src="" alt="imagem profissional" />
       </div>
-      <div className="bg-white shadow-md rounded-sm pt-24 pb-10 text-center h-80">
-        <h4 className="text-lg font-medium text-blue-300 mb-2">
+      <div className="w-1/3">
+        <span className="text-white font-face-montserrat text-2xl font-bold">
           {profissional.usu_nomeCompleto}
-        </h4>
-        <p className="text-3xl font-medium text-black px-4 py-6">
-          {profissional.pro_descricao}
-        </p>
+        </span>
       </div>
+      <div>aqui vao os servicos</div>
     </div>
   );
 };

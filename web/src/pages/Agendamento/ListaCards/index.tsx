@@ -14,16 +14,15 @@ const ListaCards = ({
   const [cardSelecionadoID, setCardSelecionadoID] = useState<number | null>(
     null
   );
+
   const handleCardClick = (id: number) => {
     setCardSelecionadoID((cardSelecionadoAntigo) => {
       const novoCardSelecionado = cardSelecionadoAntigo === id ? null : id;
       const profissionalSelecionado = profissionais.find(
-        (profissional) => profissional.usu_id === novoCardSelecionado
+        (profissional) => profissional.pro_id === novoCardSelecionado
       );
       if (profissionalSelecionado === undefined) {
-        console.log('Profissional selecionado: Nenhum');
       } else {
-        console.log('Profissional selecionado:', profissionalSelecionado);
         onProfissionalSelecionado(profissionalSelecionado);
       }
 
@@ -32,13 +31,13 @@ const ListaCards = ({
   };
 
   return (
-    <div className="flex justify-around mt-8 flex-wrap">
+    <div className="flex flex-col gap-12 max-w-5xl mx-auto justify-center">
       {profissionais.map((profissional) => (
         <Card
           key={profissional.pro_id}
           profissional={profissional}
-          aoSelecionado={profissional.usu_id === cardSelecionadoID}
-          onClick={() => handleCardClick(profissional.usu_id)}
+          aoSelecionado={profissional.pro_id === cardSelecionadoID}
+          onClick={() => handleCardClick(profissional.pro_id)}
         />
       ))}
     </div>
