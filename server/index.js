@@ -57,15 +57,13 @@ const storagePerfilClientes = multer.diskStorage({
 const storagePerfilProfissionais = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
-      const nomeCliente = req.body.usu_nomeCompleto;
+      const diretorio = `./uploads/Profissionais/`;
 
-      const folderPath = `./uploads/Profissionais/${nomeCliente}/`;
-
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
+      if (!fs.existsSync(diretorio)) {
+        fs.mkdirSync(diretorio, { recursive: true });
       }
 
-      cb(null, folderPath);
+      cb(null, diretorio);
     } catch (error) {
       cb(error, '');
     }
@@ -377,13 +375,13 @@ app.post(
   }
 );
 
-app.get('/api/getImagensPerfis/:usu_nomeCompleto', (req, res) => {
-  const nomeUsuario = req.params.usu_nomeCompleto;
+app.get('/api/getImagensPerfis/:usu_id', (req, res) => {
+  const usuId = req.params.usu_id;
 
   const query =
-    'SELECT usu_foto, usu_caminhoFoto FROM usu_usuarios WHERE usu_nomeCompleto = ?';
+    'SELECT usu_foto, usu_caminhoFoto FROM usu_usuarios WHERE usu_id = ?';
 
-  db.query(query, [nomeUsuario], (err, result) => {
+  db.query(query, [usuId], (err, result) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
@@ -401,44 +399,6 @@ app.get('/api/getImagensPerfis/:usu_nomeCompleto', (req, res) => {
       }
     }
   });
-});
-
-app.post('/api/insertUsuarioAdministrador', (req, res) => {
-  const { usu_nomeCompleto, usu_email, usu_senha, usu_foto } = req.body;
-  const usu_tipo = 'A';
-
-  const salt = crypto.randomBytes(16).toString('hex');
-  const hash = crypto
-    .pbkdf2Sync(usu_senha, salt, 100000, 64, 'sha512')
-    .toString('hex');
-
-  const insertUsuario =
-    'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_tipo) VALUES (?,?,?,?,?,?)';
-  const insertUsuarioAdministrador =
-    'INSERT INTO adm_administradores (usu_id) VALUES (?)';
-
-  db.query(
-    insertUsuario,
-    [usu_nomeCompleto, usu_email, hash, salt, usu_foto, usu_tipo],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(err);
-        return;
-      }
-
-      const usu_id = result.insertId;
-
-      db.query(insertUsuarioAdministrador, [usu_id], (err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
-          return;
-        }
-        res.send('Usuário cadastrado com sucesso');
-      });
-    }
-  );
 });
 
 app.post('/api/insertAgendamento', (req, res) => {
@@ -563,7 +523,6 @@ app.post(
   (req, res) => {
     const { usu_nomeCompleto, usu_email, usu_senha, pro_descricao } = req.body;
     const usu_tipo = 'P';
-
     const usu_foto = req.file.filename;
     const caminhoImagem = req.file.path;
 
@@ -577,42 +536,78 @@ app.post(
     const insertUsuarioProfissional =
       'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?)';
 
-    db.query(
-      insertUsuario,
-      [
-        usu_nomeCompleto,
-        usu_email,
-        hash,
-        salt,
-        usu_foto,
-        caminhoImagem,
-        usu_tipo,
-      ],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
-          return;
-        }
+    db.beginTransaction((err) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
 
-        const usu_id = result.insertId;
+      db.query(
+        insertUsuario,
+        [
+          usu_nomeCompleto,
+          usu_email,
+          hash,
+          salt,
+          usu_foto,
+          '', // Empty usu_caminhoFoto for now
+          usu_tipo,
+        ],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return db.rollback(() => {
+              res.status(500).send(err);
+            });
+          }
 
-        db.query(
-          insertUsuarioProfissional,
-          [usu_id, pro_descricao],
-          (err, result) => {
+          const usu_id = result.insertId;
+          const diretorio = `uploads\\Profissionais\\${usu_id}`;
+
+          if (!fs.existsSync(diretorio)) {
+            fs.mkdirSync(diretorio, { recursive: true });
+          }
+
+          const newFilePath = `${diretorio}\\${usu_foto}`;
+
+          fs.rename(caminhoImagem, newFilePath, (err) => {
             if (err) {
               console.log(err);
-              res.status(500).send(err);
-              return;
+              return db.rollback(() => {
+                res.status(500).send(err);
+              });
             }
 
-            const pro_id = result.insertId; // Obtenha o pro_id do resultado da query
-            res.send({ pro_id }); // Retorne o pro_id como parte da resposta
-          }
-        );
-      }
-    );
+            db.query(
+              insertUsuarioProfissional,
+              [usu_id, pro_descricao],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                  return db.rollback(() => {
+                    res.status(500).send(err);
+                  });
+                }
+
+                const pro_id = result.insertId;
+
+                db.commit((err) => {
+                  if (err) {
+                    console.log(err);
+                    return db.rollback(() => {
+                      res.status(500).send(err);
+                    });
+                  }
+
+                  res.send({ pro_id });
+                });
+              }
+            );
+          });
+        }
+      );
+    });
   }
 );
 
@@ -636,15 +631,7 @@ app.post('/api/insertServicosProfissional', (req, res) => {
 
 app.get('/api/getProfissionais', (req, res) => {
   const selectProfissionais =
-    'SELECT p.pro_id, u.usu_nomeCompleto, u.usu_foto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
-  db.query(selectProfissionais, (err, result) => {
-    res.send(result);
-  });
-});
-
-app.get('/api/getProfissionaisImagens', (req, res) => {
-  const selectProfissionais =
-    'SELECT p.pro_id, u.usu_foto FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ;';
+    'SELECT p.pro_id, u.usu_id, u.usu_nomeCompleto, u.usu_foto, u.usu_caminhoFoto, p.pro_descricao FROM usu_usuarios u JOIN pro_profissionais p ON p.usu_id = u.usu_id; ';
   db.query(selectProfissionais, (err, result) => {
     res.send(result);
   });

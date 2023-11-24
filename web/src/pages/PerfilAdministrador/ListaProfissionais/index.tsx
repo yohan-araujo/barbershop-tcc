@@ -16,7 +16,7 @@ const ListaProfissionais = ({ profissionais }: ListaProfissionaisProps) => {
         >
           <img
             alt="foto do profissional"
-            src={profissional.usu_foto}
+            src={`http://localhost:3001/uploads/Profissionais/${profissional.usu_id}/${profissional.usu_foto}`}
             className="object-cover"
           />
         </div>

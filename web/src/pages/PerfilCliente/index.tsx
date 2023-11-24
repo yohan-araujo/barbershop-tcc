@@ -1,14 +1,13 @@
-import ButtonPadrao from "components/ButtonPadrao";
-import { Edit } from "lucide-react";
-import ListaHorariosAtivos from "./ListaHorariosAtivos";
-import { useEffect, useState } from "react";
-import { IAgendamento } from "types/IAgendamento";
-import axios from "axios";
-import ListaHorariosInativos from "./ListaHorariosInativos";
-import { Link } from "react-router-dom";
-import CartaoFidelidade from "./CartaoFidelidade";
-import { ICartaoFidelidade } from "types/ICartaoFidelidade";
-
+import ButtonPadrao from 'components/ButtonPadrao';
+import { Edit } from 'lucide-react';
+import ListaHorariosAtivos from './ListaHorariosAtivos';
+import { useEffect, useState } from 'react';
+import { IAgendamento } from 'types/IAgendamento';
+import axios from 'axios';
+import ListaHorariosInativos from './ListaHorariosInativos';
+import { Link } from 'react-router-dom';
+import CartaoFidelidade from './CartaoFidelidade';
+import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
 
 const PerfilCliente = () => {
   const [listaAgendamentosAtivos, setListaAgendamentosAtivos] = useState<
@@ -18,16 +17,17 @@ const PerfilCliente = () => {
     IAgendamento[]
   >([]);
   const [cartoes, setCartoes] = useState<ICartaoFidelidade[]>([]);
+  const [fotoUsuario, setFotoUsuario] = useState('');
 
-  const fotoUsuario = sessionStorage.getItem("usuarioFoto") ?? "";
-  const nomeUsuario = sessionStorage.getItem("usuarioNome") ?? "";
-  const clienteID = sessionStorage.getItem("clienteID") ?? "";
+  const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
+  const clienteID = sessionStorage.getItem('clienteID') ?? '';
+  const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
   useEffect(() => {
     axios
       .get<IAgendamento[]>(
         `http://localhost:3001/api/getAgendamentosAtivos/${sessionStorage.getItem(
-          "clienteID"
+          'clienteID'
         )}`
       )
       .then((response) => {
@@ -39,7 +39,7 @@ const PerfilCliente = () => {
     axios
       .get<IAgendamento[]>(
         `http://localhost:3001/api/getAgendamentosInativos/${sessionStorage.getItem(
-          "clienteID"
+          'clienteID'
         )}`
       )
       .then((response) => {
@@ -57,8 +57,26 @@ const PerfilCliente = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (usuarioId) {
+      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter a foto do perfil');
+          }
+          return response.text();
+        })
+        .then((data) => {
+          setFotoUsuario(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [usuarioId]);
+
   return (
-    <section className="flex bg-age">
+    <section className="flex bg-black">
       <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
         <div className="flex flex-row ml-32">
           <img
@@ -75,7 +93,7 @@ const PerfilCliente = () => {
         </div>
         <div className="grid grid-cols-2 bg-[#6E7781] rounded-b-xl">
           <div className="flex flex-col my-36">
-            {" "}
+            {' '}
             <div className="flex flex-col ml-12">
               <div className="flex flex-row">
                 <span className="text-white text-4xl font-semibold font-face-montserrat">

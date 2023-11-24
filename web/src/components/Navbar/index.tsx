@@ -39,6 +39,7 @@ const Navbar = () => {
   const usuarioLogado = sessionStorage.getItem('usuarioLogado') === 'true';
   const usuarioTipo = sessionStorage.getItem('usuarioTipo');
   const usuarioNome = sessionStorage.getItem('usuarioNome');
+  const usuarioId = sessionStorage.getItem('usuarioId');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -127,8 +128,8 @@ const Navbar = () => {
   }, [usuarioTipo]);
 
   useEffect(() => {
-    if (usuarioNome) {
-      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioNome}`)
+    if (usuarioId) {
+      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Erro ao obter a foto do perfil');
@@ -142,7 +143,7 @@ const Navbar = () => {
           console.error(error);
         });
     }
-  }, [usuarioNome]);
+  }, [usuarioId]);
 
   return (
     <nav className="flex items-center justify-between py-2 px-4 bg-black border-b border-b-[#E29C31]">

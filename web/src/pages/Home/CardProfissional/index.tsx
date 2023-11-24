@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { IProfissional } from "types/IProfissional";
-import NavalhaIcon from "assets/navalha-icon.svg";
-import TesouraIcon from "assets/tesoura-icon.svg";
-import SobrancelhaIcon from "assets/sobrancelha-icon.svg";
-import PincelIcon from "assets/pincel-icon.svg";
+import { useState } from 'react';
+import { IProfissional } from 'types/IProfissional';
+import NavalhaIcon from 'assets/navalha-icon.svg';
+import TesouraIcon from 'assets/tesoura-icon.svg';
+import SobrancelhaIcon from 'assets/sobrancelha-icon.svg';
+import PincelIcon from 'assets/pincel-icon.svg';
 
 interface CardProfissionalProps {
   profissional: IProfissional;
@@ -29,7 +29,7 @@ const CardProfissional = ({ profissional }: CardProfissionalProps) => {
       <div className="flex flex-col border border-orange-400 h-full">
         <div className="relative">
           <img
-            src={profissional.usu_foto}
+            src={`http://localhost:3001/uploads/Profissionais/${profissional.usu_id}/${profissional.usu_foto}`}
             alt="foto do profissional"
             className="w-full h-72 object-cover"
             loading="lazy"
@@ -86,7 +86,7 @@ const CardProfissional = ({ profissional }: CardProfissionalProps) => {
         </div>
         <div
           className={`flex flex-col text-white p-4 h-full text-center gap-6 ${
-            hovered ? "text-opacity-10" : ""
+            hovered ? 'text-opacity-10' : ''
           }`}
         >
           <h1 className="text-xl font-semibold  font-face-montserrat">
@@ -94,7 +94,7 @@ const CardProfissional = ({ profissional }: CardProfissionalProps) => {
           </h1>
           <p
             className={`text-white font-face-montserrat ${
-              hovered ? "text-opacity-10" : ""
+              hovered ? 'text-opacity-10' : ''
             }`}
           >
             Barbeiro

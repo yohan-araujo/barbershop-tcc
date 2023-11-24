@@ -23,14 +23,15 @@ const ProfissionaisSelect = ({
       {profissionais.map((profissional) => (
         <div
           key={profissional.pro_id}
-          className={`flex flex-row p-4 rounded-xl ${
-            selectedProfissional === profissional ? 'bg-blue-500' : ''
+          className={`flex flex-row p-4 rounded-xl  ${
+            selectedProfissional === profissional
+              ? 'bg-blue-500 border-2 border-blue-700'
+              : 'bg-[#E29C31]'
           }`}
-          style={{ backgroundColor: profissional.usu_foto }}
           onClick={() => handleProfissionalClick(profissional)}
         >
           <img
-            src={profissional.usu_foto}
+            src={`http://localhost:3001/uploads/Profissionais/${profissional.usu_id}/${profissional.usu_foto}`}
             alt="foto do profissional"
             className="w-24 rounded-full"
           />

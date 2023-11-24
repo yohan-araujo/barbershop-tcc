@@ -9,19 +9,38 @@ import CarroselGrafico from '../../components/CarroselGrafico';
 import GraficoPie from 'components/GraficoPie';
 
 const PerfilAdministrador = () => {
-  const [listaProfissionaisImagens, setListaProfissionaisImagens] = useState<
-    IProfissional[]
-  >([]);
-  const fotoUsuario = sessionStorage.getItem('usuarioFoto') ?? '';
+  const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
+    []
+  );
+  const [fotoUsuario, setFotoUsuario] = useState('');
   const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
+  const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
   useEffect(() => {
     axios
-      .get<IProfissional[]>(`http://localhost:3001/api/getProfissionaisImagens`)
+      .get<IProfissional[]>(`http://localhost:3001/api/getProfissionais`)
       .then((response) => {
-        setListaProfissionaisImagens(response.data);
+        setListaProfissionais(response.data);
       });
   }, []);
+
+  useEffect(() => {
+    if (usuarioId) {
+      fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter a foto do perfil');
+          }
+          return response.text();
+        })
+        .then((data) => {
+          setFotoUsuario(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [usuarioId]);
 
   const charts = [<GraficoLine />, <GraficoPie />];
 
@@ -50,7 +69,7 @@ const PerfilAdministrador = () => {
               </span>
             </div>
             <div className="flex ml-12 mt-12">
-              <ListaProfissionais profissionais={listaProfissionaisImagens} />
+              <ListaProfissionais profissionais={listaProfissionais} />
             </div>
             <div className="flex flex-col ml-12 mt-36">
               <div className="flex flex-row">
