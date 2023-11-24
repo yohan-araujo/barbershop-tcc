@@ -26,7 +26,7 @@ app.use('/uploads', express.static('uploads'));
 
 const storageGaleria = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/');
+    cb(null, './uploads/Galeria');
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -59,9 +59,9 @@ const storagePerfilClientes = multer.diskStorage({
 const storagePerfilProfissionais = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
-      const nomeCliente = req.body.usu_nomeCompleto;
+      const nomeProfissional = req.body.usu_nomeCompleto;
 
-      const folderPath = `./uploads/Profissionais/${nomeCliente}/`;
+      const folderPath = `./uploads/Profissionais/${nomeProfissional}/`;
 
       if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath, { recursive: true });
@@ -141,16 +141,16 @@ function salvarToken(email, token, expiracaoToken) {
 
 function enviarEmailRedefinicaoSenha(email, token) {
   const transporter = nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
+    host: 'smtp-mail.outlook.com',
+    port: 587,
     auth: {
-      user: '11f8a7aa4afe19',
-      pass: 'b967d4a1fcc1e1',
+      user: 'barbershopContato@outlook.com',
+      pass: 'barbershop123',
     },
   });
 
   const opcoesEmail = {
-    from: 'contatobarbershopFatec@gmail.com',
+    from: 'barbershopContato@outlook.com',
     to: email,
     subject: 'Redefinição de senha',
     html: `<h1>Olá ${email},</h1> <br> <h3>Para redefinir sua senha, clique no link abaixo:</h3> <br> <a href="http://localhost:3000/api/redefinicaoDeSenha?token=${token}">Redefinir senha</a>`,
@@ -242,6 +242,8 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
   const insertCartaoFidelidade =
     'INSERT INTO cf_cartoesFidelidade (cli_id, cf_pontos,cf_resgatavel) VALUES (?, 0, false)';
 
+  const updateCaminhoFoto = 'UPDATE usu_usuarios SET usu_caminhoFoto = ? WHERE usu_id = ?';
+
   db.beginTransaction((err) => {
     if (err) {
       console.log(err);
@@ -269,8 +271,13 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
         }
 
         const usu_id = result.insertId;
+        const diretorio = `uploads/Clientes/${usu_id}/`;
+        if (!fs.existsSync(diretorio)) {
+          fs.mkdirSync(diretorio, { recursive: true });
+        }
 
-        db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
+
+        db.query(updateCaminhoFoto, [diretorio.replace(/\//g, '\\'), usu_id], (err, result) => {
           if (err) {
             console.log(err);
             return db.rollback(() => {
@@ -278,9 +285,7 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
             });
           }
 
-          const cli_id = result.insertId;
-
-          db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
+          db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
             if (err) {
               console.log(err);
               return db.rollback(() => {
@@ -288,7 +293,9 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
               });
             }
 
-            db.commit((err) => {
+            const cli_id = result.insertId;
+
+            db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
               if (err) {
                 console.log(err);
                 return db.rollback(() => {
@@ -296,7 +303,16 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
                 });
               }
 
-              res.send('Usuário cadastrado com sucesso');
+              db.commit((err) => {
+                if (err) {
+                  console.log(err);
+                  return db.rollback(() => {
+                    res.status(500).send(err);
+                  });
+                }
+
+                res.send('Usuário cadastrado com sucesso');
+              });
             });
           });
         });
@@ -304,6 +320,8 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
     );
   });
 });
+
+
 
 const uploadGaleria = multer({ storage: storageGaleria });
 
