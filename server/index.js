@@ -26,7 +26,7 @@ app.use('/uploads', express.static('uploads'));
 
 const storageGaleria = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/Galeria');
+    cb(null, './uploads/');
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -36,15 +36,13 @@ const storageGaleria = multer.diskStorage({
 const storagePerfilClientes = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
-      const nomeCliente = req.body.usu_nomeCompleto;
+      const diretorio = 'uploads/Clientes/';
 
-      const folderPath = `./uploads/Clientes/${nomeCliente}/`;
-
-      if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath, { recursive: true });
+      if (!fs.existsSync(diretorio)) {
+        fs.mkdirSync(diretorio, { recursive: true });
       }
 
-      cb(null, folderPath);
+      cb(null, diretorio);
     } catch (error) {
       cb(error, '');
     }
@@ -59,9 +57,9 @@ const storagePerfilClientes = multer.diskStorage({
 const storagePerfilProfissionais = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
-      const nomeProfissional = req.body.usu_nomeCompleto;
+      const nomeCliente = req.body.usu_nomeCompleto;
 
-      const folderPath = `./uploads/Profissionais/${nomeProfissional}/`;
+      const folderPath = `./uploads/Profissionais/${nomeCliente}/`;
 
       if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath, { recursive: true });
@@ -141,16 +139,16 @@ function salvarToken(email, token, expiracaoToken) {
 
 function enviarEmailRedefinicaoSenha(email, token) {
   const transporter = nodemailer.createTransport({
-    host: 'smtp-mail.outlook.com',
-    port: 587,
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
     auth: {
-      user: 'barbershopContato@outlook.com',
-      pass: 'barbershop123',
+      user: '8607378b1a20ca',
+      pass: '0791f186b8091b',
     },
   });
 
   const opcoesEmail = {
-    from: 'barbershopContato@outlook.com',
+    from: 'contatobarbershopFatec@gmail.com',
     to: email,
     subject: 'Redefinição de senha',
     html: `<h1>Olá ${email},</h1> <br> <h3>Para redefinir sua senha, clique no link abaixo:</h3> <br> <a href="http://localhost:3000/api/redefinicaoDeSenha?token=${token}">Redefinir senha</a>`,
@@ -222,7 +220,6 @@ app.post('/api/definirNovaSenha', async (req, res) => {
       .json({ message: 'Ocorreu um erro ao processar a solicitação.' });
   }
 });
-
 // Requisicoes
 app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
   const { usu_nomeCompleto, usu_email, usu_senha, cli_tel } = req.body;
@@ -242,7 +239,8 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
   const insertCartaoFidelidade =
     'INSERT INTO cf_cartoesFidelidade (cli_id, cf_pontos,cf_resgatavel) VALUES (?, 0, false)';
 
-  const updateCaminhoFoto = 'UPDATE usu_usuarios SET usu_caminhoFoto = ? WHERE usu_id = ?';
+  const updateCaminhoFoto =
+    'UPDATE usu_usuarios SET usu_caminhoFoto = ? WHERE usu_id = ?';
 
   db.beginTransaction((err) => {
     if (err) {
@@ -253,15 +251,7 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
 
     db.query(
       insertUsuario,
-      [
-        usu_nomeCompleto,
-        usu_email,
-        hash,
-        salt,
-        usu_foto,
-        caminhoImagem,
-        usu_tipo,
-      ],
+      [usu_nomeCompleto, usu_email, hash, salt, usu_foto, '', usu_tipo],
       (err, result) => {
         if (err) {
           console.log(err);
@@ -271,13 +261,15 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
         }
 
         const usu_id = result.insertId;
-        const diretorio = `uploads/Clientes/${usu_id}/`;
+        const diretorio = `uploads\\Clientes\\${usu_id}`;
+
         if (!fs.existsSync(diretorio)) {
           fs.mkdirSync(diretorio, { recursive: true });
         }
 
+        const newFilePath = `${diretorio}\\${usu_foto}`;
 
-        db.query(updateCaminhoFoto, [diretorio.replace(/\//g, '\\'), usu_id], (err, result) => {
+        fs.rename(caminhoImagem, newFilePath, (err) => {
           if (err) {
             console.log(err);
             return db.rollback(() => {
@@ -285,7 +277,7 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
             });
           }
 
-          db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
+          db.query(updateCaminhoFoto, [newFilePath, usu_id], (err, result) => {
             if (err) {
               console.log(err);
               return db.rollback(() => {
@@ -293,9 +285,7 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
               });
             }
 
-            const cli_id = result.insertId;
-
-            db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
+            db.query(insertUsuarioCliente, [usu_id, cli_tel], (err, result) => {
               if (err) {
                 console.log(err);
                 return db.rollback(() => {
@@ -303,7 +293,9 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
                 });
               }
 
-              db.commit((err) => {
+              const cli_id = result.insertId;
+
+              db.query(insertCartaoFidelidade, [cli_id], (err, result) => {
                 if (err) {
                   console.log(err);
                   return db.rollback(() => {
@@ -311,7 +303,16 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
                   });
                 }
 
-                res.send('Usuário cadastrado com sucesso');
+                db.commit((err) => {
+                  if (err) {
+                    console.log(err);
+                    return db.rollback(() => {
+                      res.status(500).send(err);
+                    });
+                  }
+
+                  res.send('Usuário cadastrado com sucesso');
+                });
               });
             });
           });
@@ -320,8 +321,6 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
     );
   });
 });
-
-
 
 const uploadGaleria = multer({ storage: storageGaleria });
 
