@@ -51,57 +51,61 @@ const RedefinirSenha = () => {
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-black">
-      <div className="absolute w-[55rem] h-[48rem] border-2 right-[28.5rem] top-[15rem] border-[#E29C31]" />
-      <div className="flex my-32 h-full max-w-2xl mx-auto relative bg-[#1D1D1D] rounded-lg shadow-xl ">
-        <div className="flex flex-col md:flex-row justify-center">
-          <div className="flex my-6 justify-center p-6 sm:p-12 md:w-1/2">
-            <div className="w-full">
-              <form action="" onSubmit={handleSubmit}>
-                <h1 className="text-[#E29C31] text-center text-5xl font-bold font-merriweather uppercase">
-                  Redefinição de senha
-                </h1>
-                <p className="text-center mt-2 text-white text-base font-normal font-face-montserrat">
-                  Insira o email já cadastrado para a redefinição de senha!
-                </p>
+    <section className="min-h-screen bg-black">
+      <div className='flex flex-auto justify-center'>
+        <div className='relative'>
+          <div className="absolute w-[28.5rem] h-[42rem] border-2 left-[1.25rem] top-[9rem] border-[#E29C31]" />
+          <div className="flex flex-auto my-32 relative z-10 bg-[#1D1D1D] rounded-lg shadow-xl">
+            <div className="flex flex-col items-center">
+              <div className="flex py-14 w-8/12">
+                <div className="max-w-full">
+                  <form action="" onSubmit={handleSubmit}>
+                    <h1 className="text-[#E29C31] text-center text-5xl font-bold font-merriweather uppercase">
+                      Redefinir senha
+                    </h1>
+                    <p className="text-center mt-2 text-white text-base font-normal font-face-montserrat">
+                      Insira o email já cadastrado para a redefinição de senha!
+                    </p>
 
-                <div className="mt-12">
-                  <InputPadrao
-                    labelTexto="Email"
-                    placeholder="Digite aqui o seu email..."
-                    tipo="email"
-                    nome="usu_email"
-                    onChange={(e) => {
-                      setUsuEmail(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mt-12">
-                  <InputPadrao
-                    labelTexto="Confirmar Email"
-                    placeholder="Confirme o seu email..."
-                    tipo="email"
-                    nome="ConfirmaUsu_email"
-                    onChange={(e) => {
-                      setConfirmarEmail(e.target.value);
-                    }}
-                  />
-                </div>
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Email"
+                        placeholder="Digite aqui o seu email..."
+                        tipo="email"
+                        nome="usu_email"
+                        onChange={(e) => {
+                          setUsuEmail(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Confirmar Email"
+                        placeholder="Confirme o seu email..."
+                        tipo="email"
+                        nome="ConfirmaUsu_email"
+                        onChange={(e) => {
+                          setConfirmarEmail(e.target.value);
+                        }}
+                      />
+                    </div>
 
-                <div className="flex justify-center mt-24">
-                  <ButtonPadrao texto="Enviar" tipo="submit" />
+                    <div className="flex justify-center mt-24">
+                      <ButtonPadrao texto="Enviar" tipo="submit" />
+                    </div>
+                    {feedback.message && (
+                      <MensagemFeedback
+                        type={feedback.type as 'failure' | 'success'}
+                        message={feedback.message}
+                        subMessage={feedback.subMessage}
+                        onClose={() =>
+                          setFeedback({ type: '', message: '', subMessage: '' })
+                        }
+                      />
+                    )}
+                  </form>
                 </div>
-                {feedback.message && (
-                  <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
-                    message={feedback.message}
-                    subMessage={feedback.subMessage}
-                    onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
-                    }
-                  />
-                )}
-              </form>
+              </div>
             </div>
           </div>
         </div>

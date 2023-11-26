@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListaServicosSelect from './ListaServicosSelect';
 import { IServico } from 'types/IServico';
+import welcomeBarberCadas from 'assets/img/barbercadas.svg';
+import InputFile from 'components/InputFile';
 
 const CadastroProfissional = () => {
   const [usu_nomeCompleto, setUsuNome] = useState('');
@@ -86,116 +88,121 @@ const CadastroProfissional = () => {
   }, []);
 
   return (
-    <section className="flex items-center min-h-screen bg-age ">
-      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl my-12">
-        <div className="flex flex-col md:flex-row">
-          <div className="h-32 md:h-auto md:w-1/2">
-            <img
-              className="object-cover w-full h-full"
-              src="https://source.unsplash.com/user/erondu/1600x900"
-              alt="img"
-            />
-          </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-            <div className="w-full">
-              <form onSubmit={handleSubmit}>
-                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat uppercase">
-                  Cadastro
-                </h1>
-
-                <div className="mt-12">
-                  <InputPadrao
-                    labelTexto="Nome"
-                    placeholder="Digite aqui o seu nome.."
-                    tipo="text"
-                    nome="usu_nomeCompleto"
-                    onChange={(e) => {
-                      setUsuNome(e.target.value);
-                    }}
-                  />
+    <section className="flex flex-1 min-h-screen bg-black">
+      <div className='flex flex-auto mx-40 bg-[#1D1D1D]'>
+        <div className='flex flex-auto justify-center'>
+          <div className='relative'>
+            <div className="border-2 absolute left-[1rem] top-[11rem] w-[32rem] h-[82rem] border-[#E29C31]"></div>
+            <div className="bg-black rounded-lg shadow-xl my-36 relative z-10 w-[32rem]">
+              <div className="flex my-6 justify-center items-center">
+                <div className="w-full">
+                  <form onSubmit={handleSubmit} className='m-24'>
+                    <h1 className="mb-2 text-4xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
+                      Cadastro
+                    </h1>
+                    <div className="mt-24">
+                      <InputPadrao
+                        labelTexto="Nome Completo"
+                        placeholder="Digite aqui o seu nome.."
+                        tipo="text"
+                        nome="usu_nomeCompleto"
+                        onChange={(e) => {
+                          setUsuNome(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Email"
+                        placeholder="Digite aqui o seu email..."
+                        tipo="email"
+                        nome="usu_email"
+                        onChange={(e) => {
+                          setUsuEmail(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className='mt-12'>
+                      <div className="flex flex-col mb-4">
+                        <h4 className="mb-2 font-face-montserrat text-start text-white text-lg font-normal">
+                          Foto de perfil
+                        </h4>
+                        <p className="mb-2 font-face-montserrat text-white text-sm text-start text-opacity-60">
+                          Envie uma foto do seu dispositivo
+                        </p>
+                      </div>
+                      <div className="flex flex-row justify-between items-center mb-4">
+                        {usu_foto ? (
+                          <div className="w-20 h-20 overflow-hidden border-2 border-[#E29C31]">
+                            <img
+                              src={URL.createObjectURL(usu_foto)}
+                              alt="Foto do usuário"
+                              className="w-full h-full object-cover "
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-24 h-24 overflow-hidden border-2 border-[#E29C31]">                           
+                          </div>
+                        )}
+                        <div className="">
+                          <InputFile
+                            textoBotao="Enviar foto"
+                            onChange={(e) => {
+                              const file = e.target.files && e.target.files[0];
+                              if (file) {
+                                setUsuFoto(file);
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Telefone"
+                        placeholder="Digite aqui o seu telefone..."
+                        tipo="text"
+                        nome="usu_email"
+                        onChange={(e) => {
+                          setUsuEmail(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Senha"
+                        placeholder="Digite aqui a sua senha..."
+                        tipo="password"
+                        nome="usu_senha"
+                        onChange={(e) => {
+                          setUsuSenha(e.target.value);
+                        }}
+                      />
+                    </div>
+                    {feedback.message && (
+                      <MensagemFeedback
+                        type={feedback.type as 'failure' | 'success'}
+                        message={feedback.message}
+                        subMessage={feedback.subMessage}
+                        onClose={() =>
+                          setFeedback({ type: '', message: '', subMessage: '' })
+                        }
+                      />
+                    )}
+                    <div className="mt-12">
+                      <div className="mt-4">
+                        <ListaServicosSelect
+                          servicos={listaServicos}
+                          onServicoSelecionado={handleServicosSelecionados}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-center mt-14">
+                      <ButtonPadrao texto="Cadastrar" tipo="submit" />
+                    </div>
+                  </form>
                 </div>
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Email"
-                    placeholder="Digite aqui o seu email..."
-                    tipo="email"
-                    nome="usu_email"
-                    onChange={(e) => {
-                      setUsuEmail(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Endereço foto"
-                    placeholder="Digite o endereço da sua foto"
-                    tipo="file"
-                    nome="usuEnderecoFoto"
-                    onChange={(e) => {
-                      const file = e.target.files && e.target.files[0];
-                      if (file) {
-                        setUsuFoto(file);
-                      }
-                    }}
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Descricao"
-                    placeholder="Digite aqui uma breve descrição..."
-                    tipo="text"
-                    nome="pro_descricao"
-                    onChange={(e) => {
-                      setProDescricao(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Senha"
-                    placeholder="Digite aqui a sua senha..."
-                    tipo="password"
-                    nome="usu_senha"
-                    onChange={(e) => {
-                      setUsuSenha(e.target.value);
-                    }}
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Confirmar senha"
-                    placeholder="Confirme sua senha..."
-                    tipo="password"
-                    nome="usuSenhaConfirma"
-                    onChange={(e) => {
-                      setUsuConfirmarSenha(e.target.value);
-                    }}
-                  />
-                </div>
-                {feedback.message && (
-                  <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
-                    message={feedback.message}
-                    subMessage={feedback.subMessage}
-                    onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
-                    }
-                  />
-                )}
-                <div className="mt-4">
-                  <div className="mt-4">
-                    <ListaServicosSelect
-                      servicos={listaServicos}
-                      onServicoSelecionado={handleServicosSelecionados}
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-center mt-12">
-                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

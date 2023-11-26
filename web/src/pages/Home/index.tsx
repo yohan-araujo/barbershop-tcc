@@ -130,7 +130,7 @@ const Home = () => {
         <div className="flex flex-row items-center lg:mx-[12rem] md:mx-5 gap-12 md:gap-4">
           <div className="flex flex-auto p-8">
             <div className="relative">
-              <div className="lg:w-[35rem] md:w-[24rem] lg:h-[29rem] md:h-[20rem] absolute top-7 left-7 border-2 border-orange-400 border-solid border-opacity-50 bottom-0 right-0"></div>
+              <div className="lg:w-[35rem] md:w-[24rem] lg:h-[29rem] md:h-[20rem] absolute top-7 left-7 border-2 border-orange-400 border-solid border-opacity-50"></div>
               <img
                 className="lg:w-[35rem] md:w-[25rem] relative z-10"
                 src={imgbarbahora}

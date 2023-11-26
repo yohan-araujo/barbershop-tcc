@@ -63,143 +63,149 @@ const CadastroCliente = () => {
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-black">
-      <div className="border-2 absolute right-[20rem] top-[17rem] w-[72rem] h-[68rem] border-[#E29C31]"></div>
-      <div className="flex flex-auto h-full lg:max-w-4xl mx-auto bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative">
-        <div className="flex flex-row">
-          <div className="">
-            <div className="max-h-full order-r border-[#E29C31]">
-              <img
-                className="object-cover h-full min-w-full"
-                src={welcomeBarberCadas}
-                alt="img"
-              />
-            </div>
-          </div>
-          <div className="flex my-6 justify-center items-center px-20">
-            <div className="max-w-full">
-              <form action="" onSubmit={handleSubmit}>
-                <h1 className="mb-2 text-3xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
-                  Cadastro
-                </h1>
-                <h6 className="text-center text-white text-base font-normal font-face-montserrat">
-                  Insira suas informações!
-                </h6>
-                <div className="mt-6 mb-4">
-                  <InputPadrao
-                    labelTexto="Nome Completo"
-                    placeholder="Insira seu nome!"
-                    tipo="text"
-                    nome="usu_nomeCompleto"
-                    onChange={(e) => {
-                      setUsuNome(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mb-4">
-                  <InputPadrao
-                    labelTexto="Email"
-                    placeholder="Digite aqui o seu email..."
-                    tipo="email"
-                    nome="usu_email"
-                    onChange={(e) => {
-                      setUsuEmail(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <div className="flex flex-col mb-4">
-                    <h4 className="mb-2 font-face-montserrat text-start text-white text-lg font-normal">
-                      Foto de perfil
-                    </h4>
-                    <p className="mb-2 font-face-montserrat text-white text-sm text-start text-opacity-60">
-                      Envie uma foto do seu dispositivo
-                    </p>
-                  </div>
-                  <div className="flex flex-row justify-between">
-                    {usu_foto ? (
-                      <div className="w-20 h-20 overflow-hidden border-2 border-[#E29C31]">
-                        <img
-                          src={URL.createObjectURL(usu_foto)}
-                          alt="Foto do usuário"
-                          className="w-full h-full object-cover "
-                        />
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div className="">
-                      <InputFile
-                        textoBotao="Enviar foto"
+    <section className="flex flex-1 min-h-screen bg-black">
+      <div className='flex flex-auto justify-center'>
+        <div className='relative'>
+          <div className="border-2 absolute left-[2rem] top-[10rem] w-[59rem] h-[59rem] border-[#E29C31]"></div>
+          <div className="bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative z-10">
+            <div className="flex flex-row">
+              <div className="max-h-full border-[#E29C31]">
+                <img
+                  className="object-cover h-full w-full"
+                  src={welcomeBarberCadas}
+                  alt="img"
+                />
+              </div>
+              <div className="flex my-6 justify-center items-center px-20">
+                <div className="max-w-full">
+                  <form action="" onSubmit={handleSubmit}>
+                    <h1 className="mb-2 text-3xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
+                      Cadastro
+                    </h1>
+                    <h6 className="text-center text-white text-base font-normal font-face-montserrat">
+                      Insira suas informações!
+                    </h6>
+                    <div className="mt-6 mb-4">
+                      <InputPadrao
+                        labelTexto="Nome Completo"
+                        placeholder="Insira seu nome!"
+                        tipo="text"
+                        nome="usu_nomeCompleto"
                         onChange={(e) => {
-                          const file = e.target.files && e.target.files[0];
-                          if (file) {
-                            setUsuFoto(file);
-                          }
+                          setUsuNome(e.target.value);
                         }}
                       />
                     </div>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <InputPadrao
-                    labelTexto="Telefone"
-                    placeholder="Digite aqui o seu telefone..."
-                    tipo="text"
-                    nome="cli_tel"
-                    onChange={(e) => {
-                      setCliTel(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mb-4">
-                  <InputPadrao
-                    labelTexto="Senha"
-                    placeholder="Digite aqui a sua senha..."
-                    tipo="password"
-                    nome="usu_senha"
-                    onChange={(e) => {
-                      setUsuSenha(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="mb-4">
-                  <InputPadrao
-                    labelTexto="Confirmar senha"
-                    placeholder="Confirme sua senha..."
-                    tipo="password"
-                    nome="usuSenhaConfirma"
-                    onChange={(e) => {
-                      setUsuConfirmarSenha(e.target.value);
-                    }}
-                  />
-                </div>
+                    <div className="mb-4">
+                      <InputPadrao
+                        labelTexto="Email"
+                        placeholder="Digite aqui o seu email..."
+                        tipo="email"
+                        nome="usu_email"
+                        onChange={(e) => {
+                          setUsuEmail(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <div className="flex flex-col mb-4">
+                        <h4 className="mb-2 font-face-montserrat text-start text-white text-lg font-normal">
+                          Foto de perfil
+                        </h4>
+                        <p className="mb-2 font-face-montserrat text-white text-sm text-start text-opacity-60">
+                          Envie uma foto do seu dispositivo
+                        </p>
+                      </div>
+                      <div className="flex flex-row justify-between items-center mb-4">
+                        {usu_foto ? (
+                          <div className="w-24 h-24 overflow-hidden border-2 border-[#E29C31]">
+                            <img
+                              src={URL.createObjectURL(usu_foto)}
+                              alt="Foto do usuário"
+                              className="w-full h-full object-cover "
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="w-20 h-20 overflow-hidden border-2 border-[#E29C31]">
 
-                {feedback.message && (
-                  <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
-                    message={feedback.message}
-                    subMessage={feedback.subMessage}
-                    onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
-                    }
-                    redirectTo="/login"
-                  />
-                )}
-                <div className="flex justify-center mb-4">
-                  <p className="text-white">
-                    <a
-                      href="login"
-                      className="text-center text-white text-base font-normal font-face-montserrat underline"
-                    >
-                      Já possui conta?
-                    </a>
-                  </p>
+                            </div>
+                          </div>
+                        )}
+                        <div className="">
+                          <InputFile
+                            textoBotao="Enviar foto"
+                            onChange={(e) => {
+                              const file = e.target.files && e.target.files[0];
+                              if (file) {
+                                setUsuFoto(file);
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <InputPadrao
+                        labelTexto="Telefone"
+                        placeholder="Digite aqui o seu telefone..."
+                        tipo="text"
+                        nome="cli_tel"
+                        onChange={(e) => {
+                          setCliTel(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <InputPadrao
+                        labelTexto="Senha"
+                        placeholder="Digite aqui a sua senha..."
+                        tipo="password"
+                        nome="usu_senha"
+                        onChange={(e) => {
+                          setUsuSenha(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <InputPadrao
+                        labelTexto="Confirmar senha"
+                        placeholder="Confirme sua senha..."
+                        tipo="password"
+                        nome="usuSenhaConfirma"
+                        onChange={(e) => {
+                          setUsuConfirmarSenha(e.target.value);
+                        }}
+                      />
+                    </div>
+
+                    {feedback.message && (
+                      <MensagemFeedback
+                        type={feedback.type as 'failure' | 'success'}
+                        message={feedback.message}
+                        subMessage={feedback.subMessage}
+                        onClose={() =>
+                          setFeedback({ type: '', message: '', subMessage: '' })
+                        }
+                        redirectTo="/login"
+                      />
+                    )}
+                    <div className="flex justify-center mb-4">
+                      <p className="text-white">
+                        <a
+                          href="login"
+                          className="text-center text-white text-base font-normal font-face-montserrat underline"
+                        >
+                          Já possui conta?
+                        </a>
+                      </p>
+                    </div>
+                    <div className="flex justify-center">
+                      <ButtonPadrao texto="Cadastrar" tipo="submit" />
+                    </div>
+                  </form>
                 </div>
-                <div className="flex justify-center">
-                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

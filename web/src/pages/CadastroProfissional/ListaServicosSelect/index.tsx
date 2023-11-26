@@ -44,10 +44,10 @@ const ListaServicosSelect = ({
 
   return (
     <div className="text-white">
-      <h1 className="text-white font-face-montserrat text-2xl text-center">
-        Qual serviço este profissional realiza?
+      <h1 className="text-white font-face-montserrat text-2xl text-start">
+        Funções
       </h1>
-      <ul className="mt-8">
+      <ul className="mt-8  border-2 border-[#E29C31] p-4">
         {servicos.map((servico) => (
           <li key={servico.ser_id}>
             <label>

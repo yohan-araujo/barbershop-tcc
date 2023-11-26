@@ -34,32 +34,35 @@ const EditarAgendas = () => {
   };
 
   return (
-    <section className="flex bg-age">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
-        <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
-          <span className="text-center text-white text-6xl font-bold font-face-montserrat my-12">
-            Editar Agendas
-          </span>
-          <div className="flex m-auto">
-            <ProfissionaisSelect
-              profissionais={profissionais}
-              onProfissionalSelect={handleProfissionalSelecionado}
-            />
-          </div>
-          w
-          <div className="flex-auto mt-16 p-5">
-            {profissionalSelecionado ? (
-              <AgendaProfissional
-                agendamentos={agenda}
-                profissionalSelecionado={profissionalSelecionado}
+    <section className="flex min-h-screen bg-black">
+      <div className='flex flex-auto justify-center items-center'>
+        <div className='relative'>
+          <div className="border-2 absolute left-2 top-2 w-[43rem] h-[26.7rem] border-[#E29C31]" />
+          <div className="flex flex-col relative z-10 bg-[#1D1D1D]">
+            <span className="text-center text-[#E29C31] text-6xl font-bold font-merriweather my-12">
+              Editar Agendas
+            </span>
+            <div className="flex m-auto">
+              <ProfissionaisSelect
+                profissionais={profissionais}
+                onProfissionalSelect={handleProfissionalSelecionado}
               />
-            ) : (
-              <div>
-                <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white my-12">
-                  Nenhum profissional selecionado.
-                </p>
-              </div>
-            )}
+            </div>
+            w
+            <div className="flex-auto mt-16 p-5">
+              {profissionalSelecionado ? (
+                <AgendaProfissional
+                  agendamentos={agenda}
+                  profissionalSelecionado={profissionalSelecionado}
+                />
+              ) : (
+                <div>
+                  <p className="flex justify-center font-bold font-merriweather text-4xl text-[#E29C31] my-12">
+                    Nenhum profissional selecionado.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ const InputPadrao = ({
         placeholder={placeholder}
         name={nome}
         value={value}
-        className="py-2 px-4 text-lg border-2 border-[#E29C31] rounded-md bg-transparent font-face-montserrat text-white focus:outline-none"
+        className="py-2 px-4 text-lg border-2 border-[#E29C31] bg-transparent font-face-montserrat text-white focus:outline-none"
         onChange={onChange}
       />
     </div>

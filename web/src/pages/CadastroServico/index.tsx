@@ -41,59 +41,61 @@ const CadastroServico = () => {
   };
 
   return (
-    <section className="flex items-center min-h-screen bg-age">
-      <div className="flex-1 h-full max-w-4xl mx-auto bg-[#414141] rounded-lg shadow-xl">
-        <div className="flex flex-col md:flex-row">
-          <div className="h-32 md:h-auto md:w-1/2">
-            <img
-              className="object-cover w-full h-full"
-              src="https://source.unsplash.com/user/erondu/1600x900"
-              alt="img"
-            />
-          </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-            <div className="w-full">
-              <form action="" onSubmit={handleSubmit}>
-                <h1 className="mb-4 text-5xl font-bold text-center text-white font-face-montserrat uppercase">
-                  Cadastrar
-                </h1>
+    <section className="flex min-h-screen bg-black">
+      <div className='flex flex-auto justify-center items-center'>
+        <div className='relative'>
+          <div className="border-2 border-[#E29C31] absolute left-3 top-3 w-[25.5rem] h-[35.2rem] " />
+          <div className="flex flex-auto justify-center relative w-[25rem] z-10 bg-[#1D1D1D] rounded-lg shadow-xl">
+            <div className="flex flex-col items-center">
+              <div className="flex p-14 w-auto">
+                <div className="max-w-full">
+                  <form action="" onSubmit={handleSubmit}>
+                    <h1 className="mb-4 text-5xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
+                      Cadastrar
+                    </h1>
 
-                <div className="mt-12">
-                  <InputPadrao
-                    labelTexto="Tipo"
-                    placeholder="Digite o tipo do servico.."
-                    tipo="text"
-                    nome="ser_tipo"
-                    onChange={(e) => {
-                      setTipo(e.target.value);
-                    }}
-                  />
+                    <p className="text-center mt-2 text-white text-base font-normal font-face-montserrat">
+                      Adicione os serviços disponíveis no estabelecimento
+                    </p>
+
+                    <div className="mt-12">
+                      <InputPadrao
+                        labelTexto="Tipo"
+                        placeholder="Digite o tipo do servico.."
+                        tipo="text"
+                        nome="ser_tipo"
+                        onChange={(e) => {
+                          setTipo(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <InputPadrao
+                        labelTexto="Preco"
+                        placeholder="Digite o preco do servico..."
+                        tipo="text"
+                        nome="ser_preco"
+                        onChange={(e) => {
+                          setPreco(e.target.value);
+                        }}
+                      />
+                    </div>
+                    {feedback.message && (
+                      <MensagemFeedback
+                        type={feedback.type as 'failure' | 'success'}
+                        message={feedback.message}
+                        subMessage={feedback.subMessage}
+                        onClose={() =>
+                          setFeedback({ type: '', message: '', subMessage: '' })
+                        }
+                      />
+                    )}
+                    <div className="flex justify-center mt-12">
+                      <ButtonPadrao texto="Cadastrar" tipo="submit" />
+                    </div>
+                  </form>
                 </div>
-                <div className="mt-4">
-                  <InputPadrao
-                    labelTexto="Preco"
-                    placeholder="Digite o preco do servico..."
-                    tipo="text"
-                    nome="ser_preco"
-                    onChange={(e) => {
-                      setPreco(e.target.value);
-                    }}
-                  />
-                </div>
-                {feedback.message && (
-                  <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
-                    message={feedback.message}
-                    subMessage={feedback.subMessage}
-                    onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
-                    }
-                  />
-                )}
-                <div className="flex justify-center mt-12">
-                  <ButtonPadrao texto="Cadastrar" tipo="submit" />
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
