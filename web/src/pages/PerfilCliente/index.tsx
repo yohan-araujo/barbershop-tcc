@@ -1,21 +1,17 @@
 import ButtonPadrao from 'components/ButtonPadrao';
-import { Edit } from 'lucide-react';
-import ListaHorariosAtivos from './ListaHorariosAtivos';
+import ListaHorariosAtivos from './ListaHorarios';
 import { useEffect, useState } from 'react';
 import { IAgendamento } from 'types/IAgendamento';
 import axios from 'axios';
-import ListaHorariosInativos from './ListaHorariosInativos';
-import { Link } from 'react-router-dom';
 import CartaoFidelidade from './CartaoFidelidade';
 import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
+import { Link } from 'react-router-dom';
 
 const PerfilCliente = () => {
   const [listaAgendamentosAtivos, setListaAgendamentosAtivos] = useState<
     IAgendamento[]
   >([]);
-  const [listaAgendamentosInativos, setListaAgendamentosInativos] = useState<
-    IAgendamento[]
-  >([]);
+
   const [cartoes, setCartoes] = useState<ICartaoFidelidade[]>([]);
   const [fotoUsuario, setFotoUsuario] = useState('');
 
@@ -26,26 +22,12 @@ const PerfilCliente = () => {
   useEffect(() => {
     axios
       .get<IAgendamento[]>(
-        `http://localhost:3001/api/getAgendamentosAtivos/${sessionStorage.getItem(
-          'clienteID'
-        )}`
+        `http://localhost:3001/api/getAgendamentosAtivosInativos/${clienteID}`
       )
       .then((response) => {
         setListaAgendamentosAtivos(response.data);
       });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get<IAgendamento[]>(
-        `http://localhost:3001/api/getAgendamentosInativos/${sessionStorage.getItem(
-          'clienteID'
-        )}`
-      )
-      .then((response) => {
-        setListaAgendamentosInativos(response.data);
-      });
-  }, []);
+  }, [clienteID]);
 
   useEffect(() => {
     axios
@@ -55,7 +37,7 @@ const PerfilCliente = () => {
       .then((response) => {
         setCartoes(response.data);
       });
-  }, []);
+  }, [clienteID]);
 
   useEffect(() => {
     if (usuarioId) {
@@ -77,60 +59,56 @@ const PerfilCliente = () => {
 
   return (
     <section className="flex bg-black">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
-        <div className="flex flex-row ml-32">
-          <img
-            src={fotoUsuario}
-            alt="foto do usuario"
-            className="w-56 h-56 rounded-full relative top-[6em] shadow-2xl"
-          />
-          <span className="text-white text-4xl font-face-montserrat font-bold mt-40 ml-8">
-            {nomeUsuario}
-          </span>
-          <div className="ml-auto mt-40 pr-8">
-            <ButtonPadrao texto="Editar Perfil" />
+      <div className="flex flex-col m-auto w-3/4 bg-perfil">
+        <div className="flex flex-row ml-24 my-16">
+          <div className="relative">
+            <div className="absolute top-2 left-3 h-[15rem] w-[14.5rem] border-2 border-[#E29C31]"></div>
+            <img
+              src={fotoUsuario}
+              alt="foto do usuario"
+              className="relative z-10 w-56 h-56 shadow-inner"
+            />
+          </div>
+          <div className="flex flex-col ml-6 mt-4">
+            <span className="text-white text-4xl font-merriweather font-bold  ml-8">
+              {nomeUsuario}
+            </span>
+            <span className="text-white text-lg font-face-montserrat ml-8 mt-6">
+              Cliente desde: x
+            </span>
+            <span className="text-white text-text-lg font-face-montserrat ml-8">
+              Telefone: x
+            </span>
+          </div>
+          <div className="ml-auto mt-48 mr-8">
+            <ButtonPadrao texto="Editar Perfil" outline={true} />
           </div>
         </div>
-        <div className="grid grid-cols-2 bg-[#6E7781] rounded-b-xl">
-          <div className="flex flex-col my-36">
+        <div className="grid grid-cols-2 bg-[#1D1D1D] ">
+          <div className="flex flex-col my-32">
             {' '}
             <div className="flex flex-col ml-12">
               <div className="flex flex-row">
-                <span className="text-white text-4xl font-semibold font-face-montserrat">
+                <span className="text-[#E29C31] text-4xl font-semibold font-merriweather">
                   Horários ativos
                 </span>
-                <div className="w-10 h-10 rounded-full bg-zinc-600 flex justify-center mt-1 ml-3 text-white">
-                  <Link to="#" className="mt-2 ml-1">
-                    <Edit />
-                  </Link>
-                </div>
               </div>
               <div className="flex mt-12 ml-">
-                <div className="flex ">
-                  {listaAgendamentosAtivos.length > 0 ? (
-                    <ListaHorariosAtivos
-                      agendamentos={listaAgendamentosAtivos}
-                    />
-                  ) : (
-                    <div>
-                      <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white text-center">
-                        Nenhum Agendamento registrado.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col ml-12 mt-36">
-              <div className="flex flex-col">
-                <span className="text-white text-4xl font-semibold font-face-montserrat">
-                  Histórico
-                </span>
-                <div className="flex flex-col mt-12 ml-4">
-                  <div className="flex">
-                    {listaAgendamentosInativos.length > 0 ? (
-                      <ListaHorariosInativos
-                        agendamentos={listaAgendamentosInativos}
+                <div className="flex flex-col ">
+                  <div className="flex flex-row gap-2">
+                    <div className="w-4 h-4 bg-[#E29C31]"></div>
+                    <h1 className="text-white font-face-montserrat">
+                      Horarios ativos
+                    </h1>
+                    <div className="w-4 h-4 bg-black"></div>
+                    <h1 className="text-white font-face-montserrat">
+                      Horarios inativos
+                    </h1>
+                  </div>
+                  <div className="mt-2">
+                    {listaAgendamentosAtivos.length > 0 ? (
+                      <ListaHorariosAtivos
+                        agendamentos={listaAgendamentosAtivos}
                       />
                     ) : (
                       <div>
@@ -142,17 +120,29 @@ const PerfilCliente = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[28rem] mt-4"></div>
+            </div>
+            <div className="flex flex-col ml-12 mt-36">
+              <div className="flex flex-col">
+                <span className="text-[#E29C31] text-4xl font-semibold font-merriweather">
+                  Cartão fidelidade
+                </span>
+                <div className="flex justify-center mt-6">
+                  {cartoes.length > 0 ? (
+                    <CartaoFidelidade cartoes={cartoes} />
+                  ) : (
+                    <p>Carregando...</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col">
-            <span className="">Cartão Fidelidade</span>
-            <div className="flex justify-center mt-32">
-              {cartoes.length > 0 ? (
-                <CartaoFidelidade cartoes={cartoes} />
-              ) : (
-                <p>Carregando...</p>
-              )}
+          <div className="flex flex-col ml-6">
+            <div className="flex flex-col my-32">
+              <div className="flex justify-center mt-48">
+                <Link to="/agendamento">
+                  <ButtonPadrao texto="Agendar Horário" outline={true} />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
