@@ -15,8 +15,8 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
     <div className="relative">
       <div
         className={`absolute top-3 left-8  ${
-          MAX_BOLINHAS ? 'h-[14rem]' : 'h-[15rem]'
-        } w-[40rem] border-2 border-[#E29C31]`}
+          MAX_BOLINHAS ? 'h-[14.5rem]' : 'h-[15.5rem]'
+        } w-[40.5rem] border-2 border-[#E29C31]`}
       ></div>
       <div className="bg-black relative z-10 w-[41.5rem] py-4">
         <p className="text-white font-face-montserrat text-xl ml-12">

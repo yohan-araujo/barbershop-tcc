@@ -692,7 +692,8 @@ app.get('/api/getAgendamentosAtivosInativos/:clienteID', (req, res) => {
   JOIN pro_profissionais AS pro ON age.pro_id = pro.pro_id
   JOIN usu_usuarios AS usu ON pro.usu_id = usu.usu_id
   JOIN ser_servicos AS s ON age.ser_id = s.ser_id
-  WHERE age.cli_id = ?;`;
+  WHERE age.cli_id = 1
+  ORDER BY  age.age_data DESC;`;
   db.query(selectAgendamento, [clienteID], (err, result) => {
     res.send(result);
   });
