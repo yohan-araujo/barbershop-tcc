@@ -104,3 +104,10 @@ body {
   padding: 24px;
   background-position: center;
 }
+
+.highlighted-row {
+  background-color: #e29c31;
+  color: black;
+  font-weight: bold;
+  border-radius: 0.5rem; /* Ajuste o valor conforme desejado */
+}
