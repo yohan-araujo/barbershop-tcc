@@ -137,16 +137,16 @@ function salvarToken(email, token, expiracaoToken) {
 
 function enviarEmailRedefinicaoSenha(email, token) {
   const transporter = nodemailer.createTransport({
-    host: 'sandbox.smtp.mailtrap.io',
-    port: 2525,
+    host: 'smtp-mail.outlook.com',
+    port: 587,
     auth: {
-      user: '8607378b1a20ca',
-      pass: '0791f186b8091b',
+      user: 'barbershopContato@outlook.com',
+      pass: 'barbershop123',
     },
   });
 
   const opcoesEmail = {
-    from: 'contatobarbershopFatec@gmail.com',
+    from: 'barbershopContato@outlook.com',
     to: email,
     subject: 'Redefinição de senha',
     html: `<h1>Olá ${email},</h1> <br> <h3>Para redefinir sua senha, clique no link abaixo:</h3> <br> <a href="http://localhost:3000/api/redefinicaoDeSenha?token=${token}">Redefinir senha</a>`,
