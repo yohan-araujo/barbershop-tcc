@@ -32,7 +32,7 @@ const Card = ({ profissional, onClick, aoSelecionado }: CardProps) => {
             <img
               src={urlImagem}
               alt="imagem profissional"
-              className="h-20 rounded-full"
+              className="h-20 w-20 rounded-full"
             />
           </div>
         </div>

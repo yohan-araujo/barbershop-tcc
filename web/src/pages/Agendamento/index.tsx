@@ -234,27 +234,32 @@ const Agendamento = () => {
           <div className="">
             {etapaAtual === 1 && (
               <>
-                <div className="bg-black px-7 py-4 mt-24 ">
-                  <div className="flex justify-center my-12">
-                    <h1 className="font-merriweather font-semibold text-5xl text-center text-[#E29C31]">
-                      Escolha o profissional:
-                    </h1>
-                  </div>
+                <div className="relative">
+                  <div className="absolute top-2 left-3 h-[73rem] w-[68rem] border-2 border-[#E29C31]"></div>
+                  <div className="relative z-10 bg-black px-7 py-4 mt-24 h-[72rem]">
+                    <div className="flex justify-center my-12">
+                      <h1 className="font-merriweather font-semibold text-5xl text-center text-[#E29C31]">
+                        Escolha o profissional:
+                      </h1>
+                    </div>
 
-                  <BarraServicos />
+                    <BarraServicos />
 
-                  <div className="flex gap-4 my-24">
-                    <ListaCards
-                      profissionais={listaProfissionais}
-                      onProfissionalSelecionado={handleProfissionalSelecionado}
-                    />
-                  </div>
+                    <div className="flex gap-4 my-24">
+                      <ListaCards
+                        profissionais={listaProfissionais}
+                        onProfissionalSelecionado={
+                          handleProfissionalSelecionado
+                        }
+                      />
+                    </div>
 
-                  <div className="flex justify-center mt-[89px] mb-[80px]">
-                    <ButtonPadrao
-                      texto="Próximo"
-                      onClick={handleProximaEtapa}
-                    />
+                    <div className="flex justify-center mt-[89px] mb-[80px]">
+                      <ButtonPadrao
+                        texto="Próximo"
+                        onClick={handleProximaEtapa}
+                      />
+                    </div>
                   </div>
                 </div>
               </>
@@ -262,8 +267,8 @@ const Agendamento = () => {
             {etapaAtual === 2 && (
               <>
                 <div className="relative">
-                  <div className="absolute top-4 left-5 h-[48rem] w-[36rem] border-2 border-[#E29C31]"></div>
-                  <div className="relative bg-black w-[36rem] h-[50rem] p-4 mt-12 z-10">
+                  <div className="absolute top-4 left-5 h-[50rem] w-[36rem] border-2 border-[#E29C31]"></div>
+                  <div className="relative bg-black w-[36rem] h-[50rem] p-4 mt-12 z-10 shadow-xl">
                     <div className="flex flex-col  text-center mt-12">
                       <h1 className="font-merriweather font-bold text-5xl text-[#E29C31]">
                         Escolha o serviço:
@@ -297,46 +302,16 @@ const Agendamento = () => {
 
             {etapaAtual === 3 && (
               <>
-                <div className=" bg-[#828282] p-12 rounded-3xl my-24 mx-24 justify-center">
-                  <h1 className="text-white font-face-montserrat font-semibold text-7xl text-center mb-16">
-                    Agendamento
-                  </h1>
-
-                  <div className="grid grid-cols-3 gap-32">
-                    <div className="flex flex-col border-4 shadow-inner rounded-2xl">
-                      <span className="text-center font-semibold text-[2rem] text-white font-face-montserrat mt-12">
-                        Selecionados:
-                      </span>
-                      <div className="flex flex-col text-white my-6 items-center">
-                        <span className="font-bold font-face-montserrat text-3xl">
-                          Profissional Selecionado: <br />
-                        </span>
-                        <div className="flex flex-row gap-12 mt-6">
-                          <span className="font-face-montserrat text-3xl mt-1">
-                            {profissionalSelecionado?.usu_nomeCompleto}
-                          </span>
-                          <ButtonPadrao
-                            texto="ALTERAR"
-                            onClick={handleAlteracaoProfissional}
-                          />
-                        </div>
-                        <span className="font-bold font-face-montserrat text-3xl mt-12">
-                          Serviço Selecionado: <br />
-                        </span>
-                        <div className="flex flex-row gap-6 mt-6 px-2">
-                          <span className="font-face-montserrat text-3xl mt-1">
-                            {servicoSelecionado?.ser_tipo}
-                          </span>
-                          <ButtonPadrao
-                            texto="ALTERAR"
-                            onClick={handleAlteracaoServico}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                <div className="flex flex-col bg-black w-[64rem] px-12 py-12  mt-24 justify-center">
+                  <div className="mt-6">
+                    <h1 className="text-[#E29C31] font-merriweather font-bold text-4xl text-center ">
+                      Agende seu horário
+                    </h1>
+                  </div>
+                  <div className="grid grid-cols-2 gap-32 mt-12">
                     <div>
                       <div className="flex flex-col">
-                        <span className="text-center text-white font-semibold font-face-montserrat text-[2rem]  ">
+                        <span className="text-center text-[#E29C31] font-semibold font-merriweather text-3xl">
                           Selecione a Data:
                         </span>
                         <div className="mt-6">
@@ -353,7 +328,7 @@ const Agendamento = () => {
                     </div>
                     <div>
                       <div className="flex flex-col items-center">
-                        <label className="flex text-white font-semibold font-face-montserrat text-[2rem] justify-center">
+                        <label className="flex text-[#E29C31] font-semibold font-merriweather text-3xl ">
                           Hora:
                         </label>
                         <div className="my-12">
@@ -371,11 +346,11 @@ const Agendamento = () => {
                             tipo="submit"
                           />
                         </div>
+                        <ButtonPadrao
+                          texto="Voltar"
+                          onClick={handleEtapaAnterior}
+                        />
                       </div>
-                      <ButtonPadrao
-                        texto="Voltar"
-                        onClick={handleEtapaAnterior}
-                      />
                     </div>
                   </div>
                 </div>

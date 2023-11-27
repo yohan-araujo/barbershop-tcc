@@ -525,6 +525,7 @@ app.post(
     const usu_tipo = 'P';
     const usu_foto = req.file.filename;
     const caminhoImagem = req.file.path;
+    console.log(caminhoImagem);
 
     const salt = crypto.randomBytes(16).toString('hex');
     const hash = crypto
@@ -535,6 +536,9 @@ app.post(
       'INSERT INTO usu_usuarios (usu_nomeCompleto, usu_email, usu_senha, usu_salt, usu_foto, usu_caminhoFoto, usu_tipo) VALUES (?,?,?,?,?,?,?)';
     const insertUsuarioProfissional =
       'INSERT INTO pro_profissionais (usu_id, pro_descricao) VALUES (?,?)';
+
+    const updateCaminhoFoto =
+      'UPDATE usu_usuarios SET usu_caminhoFoto = ? WHERE usu_id = ?';
 
     db.beginTransaction((err) => {
       if (err) {
@@ -580,8 +584,8 @@ app.post(
             }
 
             db.query(
-              insertUsuarioProfissional,
-              [usu_id, pro_descricao],
+              updateCaminhoFoto,
+              [newFilePath, usu_id],
               (err, result) => {
                 if (err) {
                   console.log(err);
@@ -590,18 +594,31 @@ app.post(
                   });
                 }
 
-                const pro_id = result.insertId;
+                db.query(
+                  insertUsuarioProfissional,
+                  [usu_id, pro_descricao],
+                  (err, result) => {
+                    if (err) {
+                      console.log(err);
+                      return db.rollback(() => {
+                        res.status(500).send(err);
+                      });
+                    }
 
-                db.commit((err) => {
-                  if (err) {
-                    console.log(err);
-                    return db.rollback(() => {
-                      res.status(500).send(err);
+                    const pro_id = result.insertId;
+
+                    db.commit((err) => {
+                      if (err) {
+                        console.log(err);
+                        return db.rollback(() => {
+                          res.status(500).send(err);
+                        });
+                      }
+
+                      res.send({ pro_id });
                     });
                   }
-
-                  res.send({ pro_id });
-                });
+                );
               }
             );
           });

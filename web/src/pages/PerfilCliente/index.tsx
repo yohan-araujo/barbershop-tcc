@@ -74,10 +74,10 @@ const PerfilCliente = () => {
               {nomeUsuario}
             </span>
             <span className="text-white text-lg font-face-montserrat ml-8 mt-6">
-              Cliente desde: x
+              Cliente desde: 19 de setembro de 2020
             </span>
             <span className="text-white text-text-lg font-face-montserrat ml-8">
-              Telefone: x
+              Telefone: (12) 99999-9999
             </span>
           </div>
           <div className="ml-auto mt-48 mr-8">
@@ -112,7 +112,7 @@ const PerfilCliente = () => {
                       />
                     ) : (
                       <div>
-                        <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white text-center">
+                        <p className="flex justify-center font-bold font-merriweather text-4xl text-white mt-20">
                           Nenhum Agendamento registrado.
                         </p>
                       </div>
