@@ -22,7 +22,9 @@ const CarrosselGrafico = ({ charts }: CarroselGraficoProps) => {
 
   return (
     <div className="">
-      <div>{charts[currentIndex]}</div>
+      <div className='bg-black text-white'>
+        {charts[currentIndex]}
+      </div>
       <div className="flex flex-row mt-4 justify-center space-x-5">
         <ButtonPadrao texto="Anterior" onClick={prevChart} />
         <ButtonPadrao texto="Próximo" onClick={nextChart} />
