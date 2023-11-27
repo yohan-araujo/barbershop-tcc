@@ -162,10 +162,10 @@ const Navbar = () => {
       </div>
       <ul className="flex items-center justify-center flex-grow">
         {rotas.map((rota, index) => (
-          <li key={index} className="list-none mx-12">
+          <li key={index} className="list-none mx-12 uppercase">
             <Link
               to={rota.to}
-              className="text-white text-xl font-medium no-underline hover:text-gray-800 transition duration-200 ease-in-out font-face-montserrat"
+              className="text-white text-xl font-medium no-underline hover:text-[#E29C31] transition duration-200 ease-in-out font-face-montserrat"
             >
               {rota.label}
             </Link>

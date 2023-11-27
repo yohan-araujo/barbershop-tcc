@@ -1,23 +1,23 @@
-import ButtonPadrao from 'components/ButtonPadrao';
-import InputPadrao from 'components/InputPadrao';
-import MensagemFeedback from 'components/MensagemFeedback';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ListaServicosSelect from './ListaServicosSelect';
-import { IServico } from 'types/IServico';
-import InputFile from 'components/InputFile';
+import ButtonPadrao from "components/ButtonPadrao";
+import InputPadrao from "components/InputPadrao";
+import MensagemFeedback from "components/MensagemFeedback";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ListaServicosSelect from "./ListaServicosSelect";
+import { IServico } from "types/IServico";
+import InputFile from "components/InputFile";
 
 const CadastroProfissional = () => {
-  const [usu_nomeCompleto, setUsuNome] = useState('');
-  const [usu_email, setUsuEmail] = useState('');
+  const [usu_nomeCompleto, setUsuNome] = useState("");
+  const [usu_email, setUsuEmail] = useState("");
   const [usu_foto, setUsuFoto] = useState<File | null>(null);
-  const [usu_senha, setUsuSenha] = useState('');
-  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState('');
-  const [pro_descricao, setProDescricao] = useState('');
+  const [usu_senha, setUsuSenha] = useState("");
+  const [usu_confirmaSenha, setUsuConfirmarSenha] = useState("");
+  const [pro_descricao, setProDescricao] = useState("");
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
   const [listaServicos, setListaServicos] = useState<IServico[]>([]);
   const [servicosSelecionados, setServicosSelecionados] = useState<
@@ -32,55 +32,55 @@ const CadastroProfissional = () => {
     event.preventDefault();
     if (usu_senha !== usu_confirmaSenha) {
       setFeedback({
-        type: 'failure',
-        message: 'As senhas não correspondem!',
-        subMessage: 'O cadastro falhou!',
+        type: "failure",
+        message: "As senhas não correspondem!",
+        subMessage: "O cadastro falhou!",
       });
       return;
     }
 
     const formData = new FormData();
-    formData.append('usu_nomeCompleto', usu_nomeCompleto);
-    formData.append('usu_email', usu_email);
-    formData.append('usu_senha', usu_senha);
-    if (usu_foto) formData.append('usu_foto', usu_foto);
-    formData.append('pro_descricao', pro_descricao);
+    formData.append("usu_nomeCompleto", usu_nomeCompleto);
+    formData.append("usu_email", usu_email);
+    formData.append("usu_senha", usu_senha);
+    if (usu_foto) formData.append("usu_foto", usu_foto);
+    formData.append("pro_descricao", pro_descricao);
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/insertUsuarioProfissional',
+        "http://localhost:3001/api/insertUsuarioProfissional",
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       const proId = response.data.pro_id;
 
-      await axios.post('http://localhost:3001/api/insertServicosProfissional', {
+      await axios.post("http://localhost:3001/api/insertServicosProfissional", {
         servicos: servicosSelecionados,
         pro_id: proId,
       });
 
       setFeedback({
-        type: 'success',
-        message: 'Sucesso',
-        subMessage: 'Cadastro realizado com sucesso!',
+        type: "success",
+        message: "Sucesso",
+        subMessage: "Cadastro realizado com sucesso!",
       });
     } catch (error) {
       setFeedback({
-        type: 'failure',
-        message: 'Falhou',
-        subMessage: 'Cadastro não foi realizado!',
+        type: "failure",
+        message: "Falhou",
+        subMessage: "Cadastro não foi realizado!",
       });
     }
   };
 
   useEffect(() => {
     axios
-      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
+      .get<IServico[]>("http://localhost:3001/api/getServicosCadastrados")
       .then((response) => {
         setListaServicos(response.data);
       });
@@ -91,7 +91,7 @@ const CadastroProfissional = () => {
       <div className="flex flex-auto mx-40 bg-[#1D1D1D]">
         <div className="flex flex-auto justify-center">
           <div className="relative">
-            <div className="border-2 absolute left-[5rem] top-[11rem] w-[36rem] h-[89rem] border-[#E29C31]"></div>
+            <div className="border-2 absolute left-[5rem] top-[11rem] w-[36rem] h-[81.5rem] border-[#E29C31]"></div>
             <div className="bg-black rounded-lg shadow-xl my-36 relative z-10 w-[40rem]">
               <div className="flex my-6 justify-center items-center">
                 <div className="w-full">
@@ -157,17 +157,6 @@ const CadastroProfissional = () => {
                     </div>
                     <div className="mt-6">
                       <InputPadrao
-                        labelTexto="Telefone"
-                        placeholder="Digite aqui o seu telefone..."
-                        tipo="text"
-                        nome="usu_email"
-                        onChange={(e) => {
-                          setUsuEmail(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="mt-6">
-                      <InputPadrao
                         labelTexto="Descrição"
                         placeholder="Digite uma breve descrição..."
                         tipo="text"
@@ -190,8 +179,8 @@ const CadastroProfissional = () => {
                     </div>
                     <div className="mt-6">
                       <InputPadrao
-                        labelTexto="Senha"
-                        placeholder="Digite aqui a sua senha..."
+                        labelTexto="Confirmação de Senha"
+                        placeholder="Confirme aqui a sua senha..."
                         tipo="password"
                         nome="usu_senha"
                         onChange={(e) => {
@@ -201,11 +190,11 @@ const CadastroProfissional = () => {
                     </div>
                     {feedback.message && (
                       <MensagemFeedback
-                        type={feedback.type as 'failure' | 'success'}
+                        type={feedback.type as "failure" | "success"}
                         message={feedback.message}
                         subMessage={feedback.subMessage}
                         onClose={() =>
-                          setFeedback({ type: '', message: '', subMessage: '' })
+                          setFeedback({ type: "", message: "", subMessage: "" })
                         }
                       />
                     )}
