@@ -59,6 +59,14 @@ body {
   background-size: cover; /* Coloca o elemento de background atrás de tudo */
 }
 
+.bg-admin {
+  background-image: url(../assets/bg-admin.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+   
+}
+
 .font-lato {
   font-family: 'Lato', sans-serif;
 }

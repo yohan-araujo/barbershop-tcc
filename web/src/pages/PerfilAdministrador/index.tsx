@@ -45,33 +45,97 @@ const PerfilAdministrador = () => {
   const charts = [<GraficoLine />, <GraficoPie />];
 
   return (
-    <section className="flex bg-age">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
-        <div className="flex flex-row ml-32">
-          <img
-            src={fotoUsuario}
-            alt="foto do usuario"
-            className="w-56 h-56 rounded-full relative top-[6em] shadow-2xl"
-          />
-          <span className="text-white text-4xl font-face-montserrat font-bold mt-40 ml-8">
-            {nomeUsuario}
-          </span>
-          <div className="ml-auto mt-40 pr-8">
-            <ButtonPadrao texto="Editar Perfil" />
+    <section className="min-h-screen bg-black">
+      <div className="flex flex-col mx-auto w-3/4 bg-[#1D1D1D]">
+        <div className='bg-admin relative z-0'>
+          <div className="flex flex-auto items-start">
+            <div className='relative z-10 m-12 px-4 py-12'>
+              <div className='border-2 border-solid border-[#E29C31] absolute top-14 left-8 w-[14.5rem] h-[14.5rem]' />
+              <img
+                src={fotoUsuario}
+                alt="foto do usuario"
+                className="w-56 h-56 items-start relative z-10"
+              />
+            </div>
+            <div className="flex flex-col ml-4 z-20 my-24">
+              <h3 className="text-white text-5xl font-merriweather font-bold mb-8">
+                {nomeUsuario}
+              </h3>
+              <h6 className='text-white text-base font-medium font-face-montserrat mb-2'>
+                Trabalha no Barbershop desde 16 de Outubro de 2015
+              </h6>
+              <h6 className='text-white text-base font-medium font-face-montserrat'>
+                Telefone: (12) 99415-8596
+              </h6>
+            </div>
+
+            <div className="flex flex-auto justify-end mt-auto mb-4 mx-6">
+              <ButtonPadrao texto="Editar Perfil" />
+            </div>
+
+          </div>
+
+        </div>
+        <div className="grid grid-cols-12 gap-4 mx-20">
+          <div className="col-span-6 flex justify-start">
+            <div className='flex flex-col my-20 mx-12'>
+              <div className='flex flex-col items-center'>
+                <div className="flex flex-row">
+                  <span className="text-[#E29C31] text-4xl font-bold font-merriweather">
+                    Profissionais
+                  </span>
+                </div>
+                <div className="">
+                  <ListaProfissionais profissionais={listaProfissionais} />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-span-6 flex justify-end mr-12 items-center">
+            <div className="flex flex-col items-center gap-6">
+              <div className='flex flex-col items-center'>
+                <div className='flex flex-auto pr-24 mb-6'>
+                  <h3 className='items-start text-[#E29C31] text-4xl font-bold font-merriweather'>
+                    Funções
+                  </h3>
+                </div>
+                <div className="flex">
+                  <Link to="/editarAgendas">
+                    <ButtonPadrao texto="Editar agendas" />
+                  </Link>
+                </div>
+                <div className="flex mt-4">
+                  <Link to="/cadastroServico">
+                    <ButtonPadrao texto="Cadastrar Servico" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 bg-[#6E7781] rounded-b-xl">
-          <div className="flex flex-col my-36">
-            {' '}
-            <div className="flex flex-row ml-12">
-              <span className="text-white text-4xl font-semibold font-face-montserrat">
-                Profissionais
-              </span>
+        <div className='grid grid-cols-12 gap-4 mx-20'>
+          <div className='col-span-6 my-12'>
+            <div className="flex flex-col">
+              <div className='flex items-start ml-8 '>
+                <span className="text-orange-400 text-4xl font-bold font-merriweather">
+                  Desempenho
+                </span>
+              </div>
+              <div className="flex p-5 my-8">
+                <CarroselGrafico charts={charts} />
+              </div>
             </div>
-            <div className="flex ml-12 mt-12">
-              <ListaProfissionais profissionais={listaProfissionais} />
-            </div>
-            <div className="flex flex-col ml-12 mt-36">
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default PerfilAdministrador;
+
+{/* <div className="flex flex-col">
               <div className="flex flex-row">
                 <span className="text-white text-4xl font-semibold font-face-montserrat">
                   Desempenho profissionais
@@ -82,21 +146,9 @@ const PerfilAdministrador = () => {
                   aqui vai o desempenho de cada profissional
                 </p>
               </div>
-            </div>
-          </div>
-          <div className="flex flex-col mt-36">
-            <div className="flex flex-col justify-center">
-              <div className="flex m-auto my-11">
-                <Link to="/editarAgendas" className="mt-2 ml-1">
-                  <ButtonPadrao texto="Editar agendas" />
-                </Link>
-              </div>
-              <div className="flex m-auto">
-                <Link to="/cadastroServico" className="mt-2 ml-1">
-                  <ButtonPadrao texto="Cadastrar Servico" />
-                </Link>
-              </div>
-            </div>
+            </div> */}
+
+{/* <div className="flex flex-col mt-36">
             <div className="mt-[7.5rem]">
               <span className="text-white text-4xl font-semibold font-face-montserrat">
                 Faturamento
@@ -105,11 +157,4 @@ const PerfilAdministrador = () => {
                 <CarroselGrafico charts={charts} />
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default PerfilAdministrador;
+          </div> */}
