@@ -1,8 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
-import CfFoto from 'assets/img/bg-cf.png';
-import CFicon from 'assets/icon-cf.svg';
-import ButtonPadrao from 'components/ButtonPadrao';
+import { Link } from "react-router-dom";
+import { ICartaoFidelidade } from "types/ICartaoFidelidade";
+import CfFoto from "assets/img/bg-cf.png";
+import CFicon from "assets/icon-cf.svg";
+import ButtonPadrao from "components/ButtonPadrao";
 
 interface CartaoProps {
   cartoes: ICartaoFidelidade[];
@@ -15,7 +15,7 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
     <div className="relative">
       <div
         className={`absolute top-3 left-8  ${
-          MAX_BOLINHAS ? 'h-[14.5rem]' : 'h-[15.5rem]'
+          MAX_BOLINHAS ? "h-[14.5rem]" : "h-[15.5rem]"
         } w-[40.5rem] border-2 border-[#E29C31]`}
       ></div>
       <div className="bg-black relative z-10 w-[41.5rem] py-4">
@@ -30,7 +30,7 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
                   {Array.from({ length: MAX_BOLINHAS }).map((_, index) => (
                     <div
                       className={`w-12 h-12 rounded-full mb-4 mr-2 bg-[#E29C31] flex items-center justify-center ${
-                        index < cartao.cf_pontos ? 'bg-[#E29C31]' : ''
+                        index < cartao.cf_pontos ? "bg-[#E29C31]" : ""
                       }`}
                       key={index}
                     >

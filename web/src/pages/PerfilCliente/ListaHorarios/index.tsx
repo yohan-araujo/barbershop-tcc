@@ -45,7 +45,7 @@ const ListaHorarios = ({ agendamentos }: ListaHorariosProps) => {
                   {horario.usu_nomeCompleto}
                 </div>
                 <div className="font-face-montserrat text-center py-2 mt-2">
-                  {horario.ser_preco != 0
+                  {horario.ser_preco !== 0
                     ? `R$ ${horario.ser_preco.toFixed(2)}`
                     : 'Gratuito'}
                 </div>

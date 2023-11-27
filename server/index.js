@@ -429,7 +429,7 @@ app.post('/api/insertAgendamentoGratuito', (req, res) => {
 
   const selectServicoGratuitoQuery =
     'SELECT ser_id FROM ser_servicos WHERE ser_tipo = ? AND ser_gratuito = ?';
-  const tipoServicoCorteCabelo = 'Corte de cabelo';
+  const tipoServicoCorteCabelo = 'Corte';
   const isGratuito = true;
 
   db.query(

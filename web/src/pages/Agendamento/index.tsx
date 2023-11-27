@@ -1,15 +1,15 @@
 // Importacoes
 
-import ButtonPadrao from 'components/ButtonPadrao';
-import ListaCards from './ListaCards';
-import TabelaServicos from './TabelaServicos';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { IProfissional } from 'types/IProfissional';
-import { IServico } from 'types/IServico';
-import { Calendar } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
+import ButtonPadrao from "components/ButtonPadrao";
+import ListaCards from "./ListaCards";
+import TabelaServicos from "./TabelaServicos";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { IProfissional } from "types/IProfissional";
+import { IServico } from "types/IServico";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import {
   isSunday,
   addDays,
@@ -18,11 +18,11 @@ import {
   startOfWeek,
   endOfMonth,
   endOfYear,
-} from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
-import MensagemFeedback from 'components/MensagemFeedback';
-import SelectHorario from './SelectHorario';
-import BarraServicos from './BarraServicos';
+} from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+import MensagemFeedback from "components/MensagemFeedback";
+import SelectHorario from "./SelectHorario";
+import BarraServicos from "./BarraServicos";
 
 const Agendamento = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -40,16 +40,16 @@ const Agendamento = () => {
   const [horaSelecionada, setHoraSelecionada] = useState<string | null>(null);
   const [etapaAtual, setEtapaAtual] = useState(1);
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
   const [cartaoResgatavel, setCartaoResgatavel] = useState(false);
 
   //Trazendo informação do banco
   useEffect(() => {
     axios
-      .get<IProfissional[]>('http://localhost:3001/api/getProfissionais')
+      .get<IProfissional[]>("http://localhost:3001/api/getProfissionais")
       .then((response) => {
         setListaProfissionais(response.data);
       });
@@ -65,7 +65,7 @@ const Agendamento = () => {
           setListaServicos(response.data);
         })
         .catch((error) => {
-          console.error('Erro ao obter serviços:', error);
+          console.error("Erro ao obter serviços:", error);
         });
     }
   }, [profissionalSelecionado]);
@@ -74,7 +74,7 @@ const Agendamento = () => {
     axios
       .get<{ cf_resgatavel: number }>(
         `http://localhost:3001/api/getCartaoResgatavel/${sessionStorage.getItem(
-          'clienteID'
+          "clienteID"
         )}`
       )
       .then((response) => {
@@ -85,7 +85,7 @@ const Agendamento = () => {
         }
       })
       .catch((error) => {
-        console.error('Erro ao obter cartaoResgatavel:', error);
+        console.error("Erro ao obter cartaoResgatavel:", error);
         setCartaoResgatavel(false);
       });
   }, []);
@@ -166,27 +166,27 @@ const Agendamento = () => {
       profissionalSelecionado &&
       servicoSelecionado
     ) {
-      const dataFormatada = format(dataSelecionada, 'yyyy-MM-dd');
+      const dataFormatada = format(dataSelecionada, "yyyy-MM-dd");
       axios
-        .post('http://localhost:3001/api/insertAgendamento', {
+        .post("http://localhost:3001/api/insertAgendamento", {
           data: dataFormatada,
           hora: horaSelecionada,
           profissionalID: profissionalSelecionado.pro_id,
           servicoID: servicoSelecionado.ser_id,
-          clienteID: sessionStorage.getItem('clienteID'),
+          clienteID: sessionStorage.getItem("clienteID"),
         })
         .then((response) => {
           setFeedback({
-            type: 'success',
-            message: 'Sucesso',
-            subMessage: 'Agendamento realizado com sucesso!',
+            type: "success",
+            message: "Sucesso",
+            subMessage: "Agendamento realizado com sucesso!",
           });
         })
         .catch((error) => {
           setFeedback({
-            type: 'failure',
-            message: 'Falhou',
-            subMessage: 'Cadastro não foi realizado!',
+            type: "failure",
+            message: "Falhou",
+            subMessage: "Cadastro não foi realizado!",
           });
         });
     }
@@ -196,27 +196,34 @@ const Agendamento = () => {
     event.preventDefault();
 
     if (dataSelecionada && horaSelecionada && profissionalSelecionado) {
-      const dataFormatada = format(dataSelecionada, 'yyyy-MM-dd');
-
+      const dataFormatada = format(dataSelecionada, "yyyy-MM-dd");
+      console.log(
+        "profissional: ",
+        profissionalSelecionado,
+        "servico selecionado",
+        servicoSelecionado,
+        horaSelecionada,
+        dataFormatada
+      );
       axios
-        .post('http://localhost:3001/api/insertAgendamentoGratuito', {
+        .post("http://localhost:3001/api/insertAgendamentoGratuito", {
           data: dataFormatada,
           hora: horaSelecionada,
           profissionalID: profissionalSelecionado.pro_id,
-          clienteID: sessionStorage.getItem('clienteID'),
+          clienteID: sessionStorage.getItem("clienteID"),
         })
         .then((response) => {
           setFeedback({
-            type: 'success',
-            message: 'Sucesso',
-            subMessage: 'Agendamento realizado com sucesso!',
+            type: "success",
+            message: "Sucesso",
+            subMessage: "Agendamento realizado com sucesso!",
           });
         })
         .catch((error) => {
           setFeedback({
-            type: 'failure',
-            message: 'Falhou',
-            subMessage: 'Cadastro não foi realizado!',
+            type: "failure",
+            message: "Falhou",
+            subMessage: "Agendamento não foi realizado!",
           });
         });
     }
@@ -341,7 +348,7 @@ const Agendamento = () => {
                         <div className="my-4">
                           <ButtonPadrao
                             texto={
-                              cartaoResgatavel ? 'AGENDAR GRATIS' : 'AGENDAR'
+                              cartaoResgatavel ? "AGENDAR GRATIS" : "AGENDAR"
                             }
                             tipo="submit"
                           />
@@ -356,11 +363,11 @@ const Agendamento = () => {
                 </div>
                 {feedback.message && (
                   <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
+                    type={feedback.type as "failure" | "success"}
                     message={feedback.message}
                     subMessage={feedback.subMessage}
                     onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
+                      setFeedback({ type: "", message: "", subMessage: "" })
                     }
                     redirectTo="/perfilCliente"
                   />
@@ -376,14 +383,14 @@ const Agendamento = () => {
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 1 ? "bg-[#E29C31]" : "bg-black"
                 }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 2 ? "bg-[#E29C31]" : "bg-black"
                 }`}
               ></div>
             </div>
@@ -393,21 +400,21 @@ const Agendamento = () => {
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 1 ? "bg-[#E29C31]" : "bg-black"
                 }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 2 ? "bg-[#E29C31]" : "bg-black"
                 }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 3 ? "bg-[#E29C31]" : "bg-black"
                 }`}
               ></div>
             </div>
