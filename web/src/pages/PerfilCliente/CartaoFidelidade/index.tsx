@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ICartaoFidelidade } from 'types/ICartaoFidelidade';
-import CfFoto from 'assets/img/CfFoto.png';
-import CFicon from 'assets/cf-icon.svg';
+import CfFoto from 'assets/img/bg-cf.png';
+import CFicon from 'assets/icon-cf.svg';
 import ButtonPadrao from 'components/ButtonPadrao';
 
 interface CartaoProps {

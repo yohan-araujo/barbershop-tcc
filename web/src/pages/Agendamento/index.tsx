@@ -22,6 +22,7 @@ import {
 import ptBR from 'date-fns/locale/pt-BR';
 import MensagemFeedback from 'components/MensagemFeedback';
 import SelectHorario from './SelectHorario';
+import BarraServicos from './BarraServicos';
 
 const Agendamento = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -222,103 +223,25 @@ const Agendamento = () => {
   };
 
   return (
-    <section className="bg-black">
+    <section className="bg-[#3B3B3B]">
       <div>
-        <div className="flex justify-start items-start p-4 gap-3 mr-[21px] mb-[28px]">
-          {cartaoResgatavel ? (
-            <>
-              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-                <div
-                  className={`w-8 h-8 rounded-full ${
-                    etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                ></div>
-              </div>
-              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-                <div
-                  className={`w-8 h-8 rounded-full ${
-                    etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                ></div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-                <div
-                  className={`w-8 h-8 rounded-full ${
-                    etapaAtual >= 1 ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                ></div>
-              </div>
-              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-                <div
-                  className={`w-8 h-8 rounded-full ${
-                    etapaAtual >= 2 ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                ></div>
-              </div>
-              <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full">
-                <div
-                  className={`w-8 h-8 rounded-full ${
-                    etapaAtual >= 3 ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                ></div>
-              </div>
-            </>
-          )}
-        </div>
-
         <form
           onSubmit={
             cartaoResgatavel ? handleSubmitComCartao : handleSubmitSemCartao
           }
-          className="flex justify-center max-w-screen"
+          className="flex justify-center"
         >
           <div className="">
             {etapaAtual === 1 && (
               <>
-                <div className="bg-[#828282] p-4 mb-4 rounded-[20px]">
-                  <div className="flex text-white items-center justify-center">
-                    <h1 className="font-face-montserrat font-semibold text-[96px] text-center">
-                      Profissionais
+                <div className="bg-black px-7 py-4 mt-24 ">
+                  <div className="flex justify-center my-12">
+                    <h1 className="font-merriweather font-semibold text-5xl text-center text-[#E29C31]">
+                      Escolha o profissional:
                     </h1>
                   </div>
 
-                  <div className="w-[1112px] h-[64px] mt-[63px] mb-[58px] bg-white shadow-md rounded-[24px] flex p-4">
-                    <div className="flex items-center gap-x-16 px-5">
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 h-10 bg-[#D9D9D9] maquinabarbear-svg rounded-full"></div>
-                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
-                          Barba
-                        </h3>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 h-10 bg-[#D9D9D9]  pincelcabelo-svg rounded-full"></div>
-                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
-                          Pintura
-                        </h3>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 h-10 bg-[#D9D9D9] cortecabelo-svg rounded-full"></div>
-                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
-                          Corte
-                        </h3>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 h-10 bg-[#D9D9D9] sobrancelhas-svg rounded-full"></div>
-                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
-                          Sobrancelha
-                        </h3>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 h-10 bg-[#D9D9D9] crianca-svg rounded-full"></div>
-                        <h3 className="font-face-montserrat font-semibold text-xl text-[#414141]">
-                          Atende Crianças
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
+                  <BarraServicos />
 
                   <div className="flex gap-4 my-24">
                     <ListaCards
@@ -326,36 +249,47 @@ const Agendamento = () => {
                       onProfissionalSelecionado={handleProfissionalSelecionado}
                     />
                   </div>
-                </div>
-                <div className="flex justify-center mt-[89px] mb-[80px]">
-                  <ButtonPadrao texto="Próximo" onClick={handleProximaEtapa} />
+
+                  <div className="flex justify-center mt-[89px] mb-[80px]">
+                    <ButtonPadrao
+                      texto="Próximo"
+                      onClick={handleProximaEtapa}
+                    />
+                  </div>
                 </div>
               </>
             )}
             {etapaAtual === 2 && (
               <>
-                <div className="bg-[#828282] w-[32rem] h-[48rem] p-4 mb-4 rounded-3xl">
-                  <div className="flex text-white items-center justify-center">
-                    <h1 className="font-face-montserrat font-semibold text-[96px] text-center mt-[31px] mb-[78px] mx-[82px]">
-                      Serviços
-                    </h1>
-                  </div>
+                <div className="relative">
+                  <div className="absolute top-4 left-5 h-[48rem] w-[36rem] border-2 border-[#E29C31]"></div>
+                  <div className="relative bg-black w-[36rem] h-[50rem] p-4 mt-12 z-10">
+                    <div className="flex flex-col  text-center mt-12">
+                      <h1 className="font-merriweather font-bold text-5xl text-[#E29C31]">
+                        Escolha o serviço:
+                      </h1>
+                      <h1 className="font-face-montserrat text-xl text-white mt-4">
+                        Selecione um serviço para continuar o processo de
+                        agendamento.
+                      </h1>
+                    </div>
 
-                  <div className="flex gap-4">
-                    <TabelaServicos
-                      servicos={listaServicos}
-                      onServicoSelecionado={handleServicoSelecionado}
-                    />
-                  </div>
-                  <div className="flex justify-center gap-5">
-                    <ButtonPadrao
-                      texto="Voltar"
-                      onClick={handleEtapaAnterior}
-                    />
-                    <ButtonPadrao
-                      texto="Próximo"
-                      onClick={handleProximaEtapa}
-                    />
+                    <div className="flex px-4">
+                      <TabelaServicos
+                        servicos={listaServicos}
+                        onServicoSelecionado={handleServicoSelecionado}
+                      />
+                    </div>
+                    <div className="flex justify-center gap-5 ">
+                      <ButtonPadrao
+                        texto="Voltar"
+                        onClick={handleEtapaAnterior}
+                      />
+                      <ButtonPadrao
+                        texto="Próximo"
+                        onClick={handleProximaEtapa}
+                      />
+                    </div>
                   </div>
                 </div>
               </>
@@ -460,6 +394,50 @@ const Agendamento = () => {
             )}
           </div>
         </form>
+      </div>
+      <div className="flex justify-center gap-3 py-16">
+        {cartaoResgatavel ? (
+          <>
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+              <div
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
+              ></div>
+            </div>
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+              <div
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
+              ></div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+              <div
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
+              ></div>
+            </div>
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+              <div
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
+              ></div>
+            </div>
+            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+              <div
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
+              ></div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

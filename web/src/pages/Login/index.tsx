@@ -3,7 +3,7 @@ import ButtonPadrao from 'components/ButtonPadrao';
 import { useState } from 'react';
 import axios from 'axios';
 import MensagemFeedback from 'components/MensagemFeedback';
-import welcomeBarberCadas from 'assets/img/barbercadas.svg';
+import welcomeBarberCadas from 'assets/bg-cadastros.svg';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -77,8 +77,8 @@ const Login = () => {
 
   return (
     <section className="flex min-h-screen bg-black">
-      <div className='flex flex-auto justify-center'>
-        <div className='relative'>
+      <div className="flex flex-auto justify-center">
+        <div className="relative">
           <div className="absolute w-[59rem] h-[51rem] border-2 left-[2rem] top-[9.5rem] border-[#E29C31]" />
           <div className="flex flex-auto my-32  relative z-10 bg-[#1D1D1D] rounded-lg shadow-xl">
             <div className="flex flex-col md:flex-row">
@@ -96,7 +96,8 @@ const Login = () => {
                       Bem-Vindo!
                     </h1>
                     <p className="w-auto text-center mt-2 text-white text-base font-normal font-['Montserrat']">
-                      Insira suas informações e <br /> aproveite nossos serviços!
+                      Insira suas informações e <br /> aproveite nossos
+                      serviços!
                     </p>
 
                     <div className="mt-12">
@@ -161,7 +162,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
     </section>
   );
 };

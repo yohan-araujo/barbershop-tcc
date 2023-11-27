@@ -5,8 +5,8 @@ import {
   Mail as MailIcon,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import whatsappIcon from 'assets/whatsapp.svg';
-import barbershopIcon from 'assets/barbershop-icon.svg';
+import whatsappIcon from 'assets/icon-whatsapp.svg';
+import barbershopIcon from 'assets/icon-barbershop.svg';
 
 const Footer = () => {
   return (

@@ -3,7 +3,7 @@ import InputPadrao from 'components/InputPadrao';
 import { useState } from 'react';
 import axios from 'axios';
 import MensagemFeedback from 'components/MensagemFeedback';
-import welcomeBarberCadas from 'assets/img/barbercadas.svg';
+import BgCadastro from 'assets/bg-cadastros.svg';
 import InputFile from 'components/InputFile';
 
 const CadastroCliente = () => {
@@ -64,15 +64,15 @@ const CadastroCliente = () => {
 
   return (
     <section className="flex flex-1 min-h-screen bg-black">
-      <div className='flex flex-auto justify-center'>
-        <div className='relative'>
+      <div className="flex flex-auto justify-center">
+        <div className="relative">
           <div className="border-2 absolute left-[2rem] top-[10rem] w-[59rem] h-[59rem] border-[#E29C31]"></div>
           <div className="bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative z-10">
             <div className="flex flex-row">
               <div className="max-h-full border-[#E29C31]">
                 <img
                   className="object-cover h-full w-full"
-                  src={welcomeBarberCadas}
+                  src={BgCadastro}
                   alt="img"
                 />
               </div>
@@ -127,9 +127,7 @@ const CadastroCliente = () => {
                           </div>
                         ) : (
                           <div>
-                            <div className="w-20 h-20 overflow-hidden border-2 border-[#E29C31]">
-
-                            </div>
+                            <div className="w-20 h-20 overflow-hidden border-2 border-[#E29C31]"></div>
                           </div>
                         )}
                         <div className="">

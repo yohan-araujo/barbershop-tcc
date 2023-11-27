@@ -24,44 +24,44 @@ const TabelaServicos = ({
     onServicoSelecionado(servico);
   };
 
-  useEffect(() => {
-    console.log(servicoSelecionado);
-  }, [servicoSelecionado]);
-
   return (
-    <ul className="w-full">
+    <div className="w-[48rem] cursor-pointer my-6">
       {servicos.map((servico) => (
-        <li
+        <div
           key={servico.ser_id}
-          className="bg-white h-16 rounded-xl mx-8 mb-8 px-4 grid"
+          className={`h-20 border-2 my-8 ${
+            servicoSelecionado === servico
+              ? 'bg-[#E29C31] border-black'
+              : 'bg-black border-[#E29C31] text-white'
+          }`}
+          onClick={() => handleServicoSelecionado(servico)}
         >
-          <label className="relative flex items-center justify-between cursor-pointer">
-            <div className=" flex items-center">
-              <input
-                type="checkbox"
-                value={servico.ser_id}
-                checked={servicoSelecionado === servico}
-                onChange={() => handleServicoSelecionado(servico)}
-                className="hidden"
-              />
-              <div className="w-6 h-6 bg-gray-300 rounded-full border border-gray-400 flex items-center justify-center">
-                {servicoSelecionado === servico && (
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                )}
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-row px-2 ml-4 gap-3">
+              <div
+                className={`flex w-12 h-12 rounded-full mt-3 ${
+                  servicoSelecionado === servico
+                    ? 'bg-black text-white'
+                    : 'bg-white text-black'
+                }`}
+              >
+                <span className="mt-3 ml-3">icon</span>
               </div>
-
-              <div className="flex text-2xl ml-3 font-face-montserrat">
+              <div className="flex text-2xl font-face-montserrat uppercase font-bold mt-5 ">
                 {servico.ser_tipo}
               </div>
             </div>
 
-            <div className="font-face-montserrat text-2xl">
-              R${servico.ser_preco.toFixed(2)}
+            <div className="flex font-bold mt-5 mr-4">
+              <span className="font-face-montserrat text-2xl">
+                {' '}
+                R${servico.ser_preco.toFixed(2)}
+              </span>
             </div>
-          </label>
-        </li>
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 

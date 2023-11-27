@@ -56,54 +56,18 @@ body {
 }
 
 .bg-admin {
-  background-image: url(../assets/bg-admin.png);
+  background-image: url(../assets/img/bg-admin.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-   
 }
 
 .font-lato {
   font-family: 'Lato', sans-serif;
 }
 
-.maquinabarbear-svg {
-  background-image: url('../assets/barbeador-eletrico.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 24px;
-}
-
-.pincelcabelo-svg {
-  background-image: url('../assets/escova-de-tintura-de-cabelo.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 24px;
-}
-
-.crianca-svg {
-  background-image: url('../assets/feliz.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 24px;
-}
-
-.sobrancelhas-svg {
-  background-image: url('../assets/sobrancelha.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 24px;
-}
-
-.cortecabelo-svg {
-  background-image: url('../assets/tesouras.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 24px;
-}
-
 .cficon-svg {
-  background-image: url('../assets/cf-icon.svg');
+  background-image: url('../assets/icon-cf.svg');
   background-repeat: no-repeat;
   padding: 24px;
   background-position: center;

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
-import NavalhaIcon from 'assets/navalha-icon.svg';
-import TesouraIcon from 'assets/tesoura-icon.svg';
-import SobrancelhaIcon from 'assets/sobrancelha-icon.svg';
-import PincelIcon from 'assets/pincel-icon.svg';
+import NavalhaIcon from 'assets/icon-navalha.svg';
+import TesouraIcon from 'assets/icon-tesoura.svg';
+import SobrancelhaIcon from 'assets/icon-sobrancelha.svg';
+import PincelIcon from 'assets/icon-pincel.svg';
 
 interface CardProfissionalProps {
   profissional: IProfissional;

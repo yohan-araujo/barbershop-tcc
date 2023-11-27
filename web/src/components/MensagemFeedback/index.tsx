@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ButtonPadrao from 'components/ButtonPadrao';
-import IconSuccess from 'assets/iconSuccess.svg';
-import IconFailure from 'assets/iconFailure.svg';
+import IconSuccess from 'assets/icon-success.svg';
+import IconFailure from 'assets/icon-failure.svg';
 
 type MensagemFeedbackProps = {
   message: string;

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
-import barberhomeimg from 'assets/barberhome.svg';
-import imgbarbahora from 'assets/img/Rectangle78.jpg';
+import BgHome from 'assets/bg-home.svg';
+import imgbarbahora from 'assets/img/bg-home2.jpg';
 import { IServico } from 'types/IServico';
 import ListaCardsServicos from './ListaCardsServicos';
 import ListaCardsProfissional from './ListaCardsProfissional';
@@ -63,7 +63,7 @@ const Home = () => {
           <div className="flex justify-start">
             <div className="">
               <img
-                src={barberhomeimg}
+                src={BgHome}
                 alt="Fotos da barbearia"
                 className="w-[40rem]"
               />
