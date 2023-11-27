@@ -7,7 +7,7 @@ interface ListaHorariosProps {
 const ListaHorarios = ({ agendamentos }: ListaHorariosProps) => {
   return (
     <div className="relative">
-      <div className="absolute top-2 left-8 h-[13rem] w-[40.5rem] border-2 border-[#E29C31]"></div>
+      <div className="absolute top-2 left-8 h-[12.5rem] w-[40.1rem] border-2 border-[#E29C31]"></div>
       <div className="bg-black shadow-inner p-5 relative z-10">
         <div className="text-white">
           <div className="grid grid-cols-5 gap-0 text-center">

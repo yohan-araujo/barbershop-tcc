@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListaServicosSelect from './ListaServicosSelect';
 import { IServico } from 'types/IServico';
-import welcomeBarberCadas from 'assets/img/barbercadas.svg';
 import InputFile from 'components/InputFile';
 
 const CadastroProfissional = () => {
@@ -58,7 +57,7 @@ const CadastroProfissional = () => {
         }
       );
 
-      const proId = response.data.pro_id; // Obter o ID do profissional cadastrado
+      const proId = response.data.pro_id;
 
       await axios.post('http://localhost:3001/api/insertServicosProfissional', {
         servicos: servicosSelecionados,
@@ -89,18 +88,18 @@ const CadastroProfissional = () => {
 
   return (
     <section className="flex flex-1 min-h-screen bg-black">
-      <div className='flex flex-auto mx-40 bg-[#1D1D1D]'>
-        <div className='flex flex-auto justify-center'>
-          <div className='relative'>
-            <div className="border-2 absolute left-[1rem] top-[11rem] w-[32rem] h-[82rem] border-[#E29C31]"></div>
-            <div className="bg-black rounded-lg shadow-xl my-36 relative z-10 w-[32rem]">
+      <div className="flex flex-auto mx-40 bg-[#1D1D1D]">
+        <div className="flex flex-auto justify-center">
+          <div className="relative">
+            <div className="border-2 absolute left-[5rem] top-[11rem] w-[36rem] h-[89rem] border-[#E29C31]"></div>
+            <div className="bg-black rounded-lg shadow-xl my-36 relative z-10 w-[40rem]">
               <div className="flex my-6 justify-center items-center">
                 <div className="w-full">
-                  <form onSubmit={handleSubmit} className='m-24'>
+                  <form onSubmit={handleSubmit} className="m-24">
                     <h1 className="mb-2 text-4xl font-bold text-center text-[#E29C31] font-merriweather uppercase">
                       Cadastro
                     </h1>
-                    <div className="mt-24">
+                    <div className="mt-12">
                       <InputPadrao
                         labelTexto="Nome Completo"
                         placeholder="Digite aqui o seu nome.."
@@ -111,7 +110,7 @@ const CadastroProfissional = () => {
                         }}
                       />
                     </div>
-                    <div className="mt-12">
+                    <div className="mt-6">
                       <InputPadrao
                         labelTexto="Email"
                         placeholder="Digite aqui o seu email..."
@@ -122,7 +121,7 @@ const CadastroProfissional = () => {
                         }}
                       />
                     </div>
-                    <div className='mt-12'>
+                    <div className="mt-6">
                       <div className="flex flex-col mb-4">
                         <h4 className="mb-2 font-face-montserrat text-start text-white text-lg font-normal">
                           Foto de perfil
@@ -141,8 +140,7 @@ const CadastroProfissional = () => {
                             />
                           </div>
                         ) : (
-                          <div className="w-24 h-24 overflow-hidden border-2 border-[#E29C31]">                           
-                          </div>
+                          <div className="w-24 h-24 overflow-hidden border-2 border-[#E29C31]"></div>
                         )}
                         <div className="">
                           <InputFile
@@ -157,7 +155,7 @@ const CadastroProfissional = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="mt-12">
+                    <div className="mt-6">
                       <InputPadrao
                         labelTexto="Telefone"
                         placeholder="Digite aqui o seu telefone..."
@@ -168,7 +166,18 @@ const CadastroProfissional = () => {
                         }}
                       />
                     </div>
-                    <div className="mt-12">
+                    <div className="mt-6">
+                      <InputPadrao
+                        labelTexto="Descrição"
+                        placeholder="Digite uma breve descrição..."
+                        tipo="text"
+                        nome="usu_descricao"
+                        onChange={(e) => {
+                          setProDescricao(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-6">
                       <InputPadrao
                         labelTexto="Senha"
                         placeholder="Digite aqui a sua senha..."
@@ -176,6 +185,17 @@ const CadastroProfissional = () => {
                         nome="usu_senha"
                         onChange={(e) => {
                           setUsuSenha(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-6">
+                      <InputPadrao
+                        labelTexto="Senha"
+                        placeholder="Digite aqui a sua senha..."
+                        tipo="password"
+                        nome="usu_senha"
+                        onChange={(e) => {
+                          setUsuConfirmarSenha(e.target.value);
                         }}
                       />
                     </div>
@@ -189,7 +209,7 @@ const CadastroProfissional = () => {
                         }
                       />
                     )}
-                    <div className="mt-12">
+                    <div className="mt-6">
                       <div className="mt-4">
                         <ListaServicosSelect
                           servicos={listaServicos}
