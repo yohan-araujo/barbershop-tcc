@@ -58,7 +58,7 @@ const DefinirNovaSenha = () => {
 
   return (
     <section className="flex items-center min-h-screen bg-black">
-      <div className="absolute w-[55rem] h-[48rem] border-2 right-[28.5rem] top-[15rem] border-[#E29C31]" />
+      <div className="absolute w-[42rem] h-[46rem] border-2 right-[37rem] top-[15rem] border-[#E29C31]" />
       <div className="flex my-32 h-full max-w-2xl mx-auto relative bg-[#1D1D1D] rounded-lg shadow-xl ">
         <div className="flex flex-col md:flex-row justify-center">
           <div className="flex my-6 justify-center p-6 sm:p-12 md:w-1/2">

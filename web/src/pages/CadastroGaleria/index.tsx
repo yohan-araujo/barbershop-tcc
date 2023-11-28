@@ -1,16 +1,16 @@
-import axios from 'axios';
-import ButtonPadrao from 'components/ButtonPadrao';
-import InputFile from 'components/InputFile';
-import MensagemFeedback from 'components/MensagemFeedback';
-import { ChangeEvent, useState } from 'react';
+import axios from "axios";
+import ButtonPadrao from "components/ButtonPadrao";
+import InputFile from "components/InputFile";
+import MensagemFeedback from "components/MensagemFeedback";
+import { ChangeEvent, useState } from "react";
 
 const CadastroGaleria = () => {
   const [arquivos, setArquivos] = useState<FileList | null>(null);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,27 +28,27 @@ const CadastroGaleria = () => {
     if (arquivos) {
       const formData = new FormData();
       for (let i = 0; i < arquivos.length; i++) {
-        formData.append('images', arquivos[i]);
+        formData.append("images", arquivos[i]);
       }
 
       axios
-        .post('http://localhost:3001/api/uploadImagens', formData)
+        .post("http://localhost:3001/api/uploadImagens", formData)
         .then((response) => {
           setFeedback({
-            type: 'success',
-            message: 'Sucesso',
-            subMessage: 'Agendamento realizado com sucesso!',
+            type: "success",
+            message: "Sucesso",
+            subMessage: "Agendamento realizado com sucesso!",
           });
         })
         .catch((error) => {
           setFeedback({
-            type: 'failure',
-            message: 'Falhou',
-            subMessage: 'Cadastro não foi realizado!',
+            type: "failure",
+            message: "Falhou",
+            subMessage: "Cadastro não foi realizado!",
           });
         });
     } else {
-      console.error('Nenhum arquivo selecionado');
+      console.error("Nenhum arquivo selecionado");
     }
   };
 
@@ -61,7 +61,7 @@ const CadastroGaleria = () => {
             <div className="flex flex-col">
               <div className="flex flex-col text-center mt-6">
                 <span className="text-5xl text-[#E29C31] font-bold font-merriweather">
-                  {' '}
+                  {" "}
                   Cadastro de fotos
                 </span>
                 <span className="font-face-montserrat text-xl text-white mt-4">
@@ -110,17 +110,17 @@ const CadastroGaleria = () => {
                       </div>
                       {feedback.message && (
                         <MensagemFeedback
-                          type={feedback.type as 'failure' | 'success'}
+                          type={feedback.type as "failure" | "success"}
                           message={feedback.message}
                           subMessage={feedback.subMessage}
                           onClose={() =>
                             setFeedback({
-                              type: '',
-                              message: '',
-                              subMessage: '',
+                              type: "",
+                              message: "",
+                              subMessage: "",
                             })
                           }
-                          redirectTo="/perfilProfissional"
+                          redirectTo="/galeria"
                         />
                       )}
                     </div>
