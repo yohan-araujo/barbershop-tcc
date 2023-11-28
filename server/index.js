@@ -26,7 +26,7 @@ app.use('/uploads', express.static('uploads'));
 
 const storageGaleria = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/');
+    cb(null, './uploads/Galeria');
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
