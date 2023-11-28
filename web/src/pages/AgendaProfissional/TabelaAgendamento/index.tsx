@@ -23,7 +23,7 @@ const TabelaAgendamento = ({
   return (
     <table className="w-full border-collapse">
       <thead>
-        <tr className="bg-blue-900">
+        <tr className="bg-black">
           <th className="border p-2 text-center text-white font-face-montserrat">
             Data
           </th>
@@ -46,23 +46,26 @@ const TabelaAgendamento = ({
       </thead>
       <tbody>
         {agendamentos.map((agendamento) => (
-          <tr key={agendamento.age_id} className="hover:bg-blue-950">
-            <td className="border p-2 text-center text-white font-face-montserrat">
+          <tr
+            key={agendamento.age_id}
+            className="hover:bg-[#E29C31] text-white hover:text-black transition duration-200 ease-in-out"
+          >
+            <td className="border p-2 text-center  hover:text-black font-face-montserrat font-bold">
               {new Date(agendamento.age_data).toLocaleDateString('pt-BR')}
             </td>
-            <td className="border p-2 text-center text-white font-face-montserrat">
+            <td className="border p-2 text-center font-face-montserrat font-bold">
               {agendamento.age_hora.substring(0, 5)}
             </td>
-            <td className="border p-2 text-center text-white font-face-montserrat">
+            <td className="border p-2 text-center font-face-montserrat font-bold">
               {agendamento.usu_nomeCompleto}
             </td>
-            <td className="border p-2 text-center text-white font-face-montserrat">
+            <td className="border p-2 text-center font-face-montserrat font-bold">
               {agendamento.ser_tipo}
             </td>
-            <td className="border p-2 text-center text-white font-face-montserrat">
+            <td className="border p-2 text-center font-face-montserrat font-bold">
               {agendamento.age_status ? 'Completo' : 'Incompleto'}
             </td>
-            <td className="border p-2 text-center text-white font-face-montserrat">
+            <td className="border p-2 text-center font-face-montserrat font-bold">
               <input
                 type="checkbox"
                 value={agendamento.age_id}

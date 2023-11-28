@@ -62,6 +62,13 @@ body {
   background-size: cover;
 }
 
+.gif-robo {
+  background-image: url(../assets/img/gif-robo.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 .font-lato {
   font-family: 'Lato', sans-serif;
 }

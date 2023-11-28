@@ -68,33 +68,33 @@ const AgendaProfissional = () => {
   };
 
   return (
-    <section className="flex bg-age">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-900">
-        <div className="flex flex-col mt-5 bg-[#6E7781] rounded-b-xl ">
-          <span className="text-center text-white text-6xl font-bold font-face-montserrat my-24">
-            Agenda
-          </span>
+    <section className="flex bg-black min-h-screen">
+      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-[#1D1D1D]">
+        <span className="text-center text-[#E29C31] text-6xl font-bold font-merriweather my-24">
+          Agenda
+        </span>
 
-          <div className="p-12">
-            {listaAgendamentos.length > 0 ? (
-              <TabelaAgendamento
-                agendamentos={listaAgendamentos}
-                onAgendamentoSelecionado={handleAgendamentoSelecionado}
-                agendamentosSelecionados={agendamentosSelecionados}
-              />
-            ) : (
-              <div>
-                <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white">
-                  Nenhum agendamento registrado.
-                </p>
-              </div>
-            )}
-          </div>
-          <div className="flex mx-auto my-12">
-            <ButtonPadrao texto="CONFIRMAR" onClick={handleAlterarStatus} />
-          </div>
+        <div className="h-[32rem] px-32">
+          {listaAgendamentos.length > 0 ? (
+            <TabelaAgendamento
+              agendamentos={listaAgendamentos}
+              onAgendamentoSelecionado={handleAgendamentoSelecionado}
+              agendamentosSelecionados={agendamentosSelecionados}
+            />
+          ) : (
+            <div>
+              <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white mt-44">
+                Nenhum agendamento registrado.
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="flex mx-auto my-12">
+          <ButtonPadrao texto="CONFIRMAR" onClick={handleAlterarStatus} />
         </div>
       </div>
+
       {feedback.message && (
         <MensagemFeedback
           type={feedback.type as 'failure' | 'success'}

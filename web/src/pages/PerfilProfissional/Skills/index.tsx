@@ -9,10 +9,10 @@ const Skills = ({ skills }: SkillsProps) => {
     <>
       {skills.map((skill: ISkill, index) => (
         <div
-          className="flex justify-between bg-[#677381] rounded-xl px-12 py-1 ml-2 shadow-inner"
+          className="flex justify-between bg-[#E29C31] px-12 py-1 ml-2 shadow-inner"
           key={index}
         >
-          <span className="text-white font-face-montserrat">
+          <span className="text-white font-face-montserrat uppercase font-bold">
             {skill.ser_tipo}
           </span>
         </div>

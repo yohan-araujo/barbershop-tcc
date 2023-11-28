@@ -49,32 +49,38 @@ const PerfilProfissional = () => {
 
   return (
     <section className="flex bg-black">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-blue-200">
-        <div className="flex flex-row ml-32">
-          <img
-            src={fotoUsuario}
-            alt="foto do usuario"
-            className="w-56 h-56 rounded-full relative top-[6em] shadow-2xl"
-          />
-          <span className="text-white text-4xl font-face-montserrat font-bold mt-40 ml-8">
-            {nomeUsuario}
-          </span>
-          <div className="ml-auto mt-40 pr-8">
-            <ButtonPadrao texto="Editar Perfil" />
+      <div className="flex flex-col m-auto w-3/4 bg-perfil ">
+        <div className="flex flex-row ml-32 py-[4.5rem]">
+          <div className="relative">
+            <div className="absolute top-2 left-3 h-[15rem] w-[14.5rem] border-2 border-[#E29C31]"></div>
+            <img
+              src={fotoUsuario}
+              alt="foto do usuario"
+              className="relative w-56 h-56 z-10"
+            />
+          </div>
+          <div className="ml-4 mt-4">
+            <span className="text-white text-4xl font-merriweather font-bold mt-40 ml-8">
+              {nomeUsuario}
+            </span>
+            <div className="flex flex-col mt-4">
+              <span className="text-white ml-8 font-face-montserrat">
+                Profissional do barbershop desde: x
+              </span>
+            </div>
+          </div>
+
+          <div className="flex ml-auto mt-48 pr-8">
+            <ButtonPadrao texto="Editar Perfil" outline={true} />
           </div>
         </div>
-        <div className="grid grid-cols-2 bg-[#6E7781] rounded-b-xl">
+        <div className="grid grid-cols-2 bg-[#1D1D1D] rounded-b-xl">
           <div className="flex flex-col my-36">
             {' '}
             <div className="flex flex-row ml-12">
-              <span className="text-white text-4xl font-semibold font-face-montserrat">
+              <span className="text-[#E29C31] text-4xl font-merriweather">
                 Skills
               </span>
-              <div className="w-10 h-10 rounded-full bg-zinc-600 flex justify-center mt-1 ml-3 text-white">
-                <Link to="#" className="mt-2 ml-1">
-                  <Edit />
-                </Link>
-              </div>
             </div>
             <div className="flex flex-col mt-12">
               <div className="flex justify-start ml-12">
@@ -83,40 +89,47 @@ const PerfilProfissional = () => {
             </div>
             <div className="flex flex-col ml-12 mt-36">
               <div className="flex flex-row">
-                <span className="text-white text-4xl font-semibold font-face-montserrat">
-                  Descrição
-                </span>
-                <div className="w-10 h-10 rounded-full bg-zinc-600 flex justify-center mt-1 ml-3 text-white">
-                  <Link to="#" className="mt-2 ml-1">
-                    <Edit />
-                  </Link>
+                <div className="mt-16">
+                  <span className="text-[#E29C31] text-4xl font-merriweather">
+                    Desempenho
+                  </span>
+                  <div className="flex justify-center p-5 my-8">
+                    <CarrosselGraficoProfissional charts={charts} />
+                  </div>
                 </div>
-              </div>
-              <div className="w-[28rem] mt-4 bg-[#677381]">
-                <p className="text-white font-face-montserrat text-xl font-medium shadow-inner rounded-lg p-6">
-                  {proDesc}
-                </p>
               </div>
             </div>
           </div>
-          <div className="flex flex-col">
-            <div className="flex flex-col justify-center">
-              <div className="flex m-auto my-32">
-                {' '}
-                <Link to="/agendaProfissional" className="mt-6 ml-1">
-                  <ButtonPadrao texto="minha agenda" />
-                </Link>
-                <Link to="/cadastroGaleria" className="mt-6 ml-1">
-                  <ButtonPadrao texto="Adicionar foto na galeria" />
-                </Link>
+          <div className="flex flex-col mt-36">
+            <div>
+              <span className="text-[#E29C31] text-4xl font-merriweather">
+                Traços
+              </span>
+            </div>
+            <div className="flex flex-col mt-12">
+              <div className="flex justify-start ">
+                <Skills skills={skills}></Skills>
               </div>
             </div>
-            <div className="mt-20">
-              <span className="text-white text-4xl font-semibold font-face-montserrat">
-                Desempenho
-              </span>
-              <div className="flex justify-center p-5 my-8">
-                <CarrosselGraficoProfissional charts={charts} />
+            <div className="flex flex-col mt-52">
+              <span className="text-[#E29C31] text-4xl font-merriweather">
+                Funções
+              </span>{' '}
+              <div className="flex flex-col ml-40 mt-12">
+                <Link to="/agendaProfissional" className="mt-6 ml-1">
+                  <ButtonPadrao
+                    texto="minha agenda"
+                    tamanho="w-[18rem]"
+                    outline={true}
+                  />
+                </Link>
+                <Link to="/cadastroGaleria" className="mt-6 ml-1">
+                  <ButtonPadrao
+                    texto="Cadastrar Foto"
+                    tamanho="w-[18rem]"
+                    outline={true}
+                  />
+                </Link>
               </div>
             </div>
           </div>

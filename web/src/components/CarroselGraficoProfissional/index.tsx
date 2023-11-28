@@ -24,8 +24,8 @@ const CarrosselGraficoProfissional = ({ charts }: CarroselGraficoProps) => {
     <div className="">
       <div>{charts[currentIndex]}</div>
       <div className="flex flex-row mt-4 justify-center space-x-5">
-        <ButtonPadrao texto="Anterior" onClick={prevChart} />
-        <ButtonPadrao texto="Próximo" onClick={nextChart} />
+        <ButtonPadrao texto="Anterior" onClick={prevChart} outline={true} />
+        <ButtonPadrao texto="Próximo" onClick={nextChart} outline={true} />
       </div>
     </div>
   );
