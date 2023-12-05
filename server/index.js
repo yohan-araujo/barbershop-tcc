@@ -974,6 +974,43 @@ app.get('/api/getCartaoResgatavel/:cli_id', (req, res) => {
   });
 });
 
+app.get('/api/getAgendamentos/:data/:pro_id', (req, res) => {
+  const data = req.params.data;
+  const pro_id = req.params.pro_id;
+
+  const query =
+    'SELECT * FROM age_agendamento WHERE age_data = ? AND pro_id = ?';
+  db.query(query, [data, pro_id], (error, results) => {
+    if (error) {
+      console.error('Erro ao consultar agendamentos:', error);
+      res.status(500).json({ error: 'Erro ao consultar agendamentos' });
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
+app.get('/api/getCliente/:cli_id', (req, res) => {
+  const cli_id = req.params.cli_id; // Corrigido para req.params.cli_id
+  const query =
+    'SELECT * FROM cli_clientes c JOIN usu_usuarios u ON c.usu_id = u.usu_id WHERE cli_id = ?;';
+  db.query(query, [cli_id], (error, results) => {
+    if (error) {
+      console.error('Erro ao consultar cliente:', error);
+      res.status(500).json({ error: 'Erro ao consultar cliente' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Cliente não encontrado' });
+      return;
+    }
+
+    res.json(results[0]);
+  });
+});
+
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {

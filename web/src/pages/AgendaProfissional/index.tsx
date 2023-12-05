@@ -1,108 +1,85 @@
-import { IAgendamento } from 'types/IAgendamento';
 import { useEffect, useState } from 'react';
+import Calendario from '../../components/Calendario';
+import { IAgendamento } from 'types/IAgendamento';
+import dayjs, { Dayjs } from 'dayjs';
 import axios from 'axios';
-import ButtonPadrao from 'components/ButtonPadrao';
-import TabelaAgendamento from './TabelaAgendamento';
-import MensagemFeedback from 'components/MensagemFeedback';
+import { meses } from 'json';
+import ListaCardsClientes from './ListaCliente';
 
 const AgendaProfissional = () => {
-  const [listaAgendamentos, setListaAgendamentos] = useState<IAgendamento[]>(
+  const [agendamentosDoDia, setAgendamentosDoDia] = useState<IAgendamento[]>(
     []
   );
-  const [agendamentosSelecionados, setAgendamentosSelecionados] = useState<
-    number[]
-  >([]);
-  const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
-  });
+  const [diaSelecionado, setDiaSelecionado] = useState<Dayjs | null>(null);
 
   useEffect(() => {
-    axios
-      .get<IAgendamento[]>(
-        `http://localhost:3001/api/getAgendamentos/${sessionStorage.getItem(
-          'proId'
-        )}`
-      )
-      .then((response) => {
-        setListaAgendamentos(response.data);
-      });
-  }, []);
+    if (diaSelecionado) {
+      axios
+        .get(
+          `http://localhost:3001/api/getAgendamentos/${diaSelecionado.format(
+            'YYYY-MM-DD'
+          )}/${sessionStorage.getItem('proId')}`
+        )
+        .then((response) => {
+          setAgendamentosDoDia(response.data);
+        })
+        .catch((error) => {
+          console.error('Erro ao carregar os agendamentos:', error);
+        });
+    } else {
+      setAgendamentosDoDia([]);
+      console.log('Agendamentos', agendamentosDoDia);
+    }
+  }, [diaSelecionado]);
 
-  const handleAgendamentoSelecionado = (agendamento: IAgendamento) => {
-    setAgendamentosSelecionados((agendamentosSelecionadosAntigos) => {
-      const isSelected = agendamentosSelecionadosAntigos.includes(
-        agendamento.age_id
-      );
-      if (isSelected) {
-        return agendamentosSelecionadosAntigos.filter(
-          (id) => id !== agendamento.age_id
-        );
-      } else {
-        return [...agendamentosSelecionadosAntigos, agendamento.age_id];
-      }
-    });
+  const handleDiaSelecionado = (dia: Dayjs | null) => {
+    setDiaSelecionado(dia);
   };
 
-  const handleAlterarStatus = () => {
-    axios
-      .put('http://localhost:3001/api/atualizarStatusAgendamentos', {
-        agendamentosSelecionados,
-      })
-      .then(() => {
-        setFeedback({
-          type: 'success',
-          message: 'Sucesso',
-          subMessage: 'Alteração de status realizado com sucesso!',
-        });
-        window.location.reload();
-      })
-      .catch((error) => {
-        setFeedback({
-          type: 'failure',
-          message: 'Falhou',
-          subMessage: 'Alteração de status não foi realizado!',
-        });
-      });
-  };
+  const mesAtual = dayjs().month();
 
   return (
-    <section className="flex bg-black min-h-screen">
-      <div className="flex flex-col m-auto w-3/4 my-12 rounded-3xl bg-[#1D1D1D]">
-        <span className="text-center text-[#E29C31] text-6xl font-bold font-merriweather my-24">
+    <section className="flex bg-black min-h-screen justify-center">
+      <div className="w-2/3 h-[48rem] bg-[#1D1D1D] my-24">
+        <span className="flex justify-center uppercase text-[#E29C31] font-merriweather my-12 text-5xl">
           Agenda
         </span>
-
-        <div className="h-[32rem] px-32">
-          {listaAgendamentos.length > 0 ? (
-            <TabelaAgendamento
-              agendamentos={listaAgendamentos}
-              onAgendamentoSelecionado={handleAgendamentoSelecionado}
-              agendamentosSelecionados={agendamentosSelecionados}
-            />
-          ) : (
-            <div>
-              <p className="flex justify-center font-bold font-face-montserrat text-4xl text-white mt-44">
-                Nenhum agendamento registrado.
-              </p>
+        <div className="grid grid-cols-2">
+          <div>
+            <div className="flex justify-center">
+              {' '}
+              <Calendario onDiaSelecionado={handleDiaSelecionado} />
             </div>
-          )}
-        </div>
+          </div>
+          <div className="flex flex-col justify-center">
+            {diaSelecionado ? (
+              <>
+                <div className="text-center my-2 font-bold text-3xl">
+                  <p className="text-white font-face-montserrat">
+                    Agendados para: <br />{' '}
+                    <span className="text-[#E29C31] font-face-montserrat">
+                      {diaSelecionado.format('DD')} de{' '}
+                      {meses[diaSelecionado.month()]}
+                    </span>{' '}
+                    de{' '}
+                    <span className="text-[#E29C31] font-face-montserrat">
+                      {diaSelecionado.year()}
+                    </span>
+                  </p>
+                </div>
 
-        <div className="flex mx-auto my-12">
-          <ButtonPadrao texto="CONFIRMAR" onClick={handleAlterarStatus} />
+                <div>
+                  <ListaCardsClientes agendamentos={agendamentosDoDia} />
+                </div>
+              </>
+            ) : (
+              <div>
+                <span>escolha um dia</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {feedback.message && (
-        <MensagemFeedback
-          type={feedback.type as 'failure' | 'success'}
-          message={feedback.message}
-          subMessage={feedback.subMessage}
-          onClose={() => setFeedback({ type: '', message: '', subMessage: '' })}
-        />
-      )}
     </section>
   );
 };
