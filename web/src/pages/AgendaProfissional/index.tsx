@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import Calendario from '../../components/Calendario';
-import { IAgendamento } from 'types/IAgendamento';
-import dayjs, { Dayjs } from 'dayjs';
-import axios from 'axios';
-import { meses } from 'json';
-import ListaCardsClientes from './ListaCliente';
+import { useEffect, useState } from "react";
+import Calendario from "../../components/Calendario";
+import { IAgendamento } from "types/IAgendamento";
+import dayjs, { Dayjs } from "dayjs";
+import axios from "axios";
+import { meses } from "json";
+import ListaCardsClientes from "./ListaCliente";
 
 const AgendaProfissional = () => {
   const [agendamentosDoDia, setAgendamentosDoDia] = useState<IAgendamento[]>(
@@ -17,18 +17,18 @@ const AgendaProfissional = () => {
       axios
         .get(
           `http://localhost:3001/api/getAgendamentos/${diaSelecionado.format(
-            'YYYY-MM-DD'
-          )}/${sessionStorage.getItem('proId')}`
+            "YYYY-MM-DD"
+          )}/${sessionStorage.getItem("proId")}`
         )
         .then((response) => {
           setAgendamentosDoDia(response.data);
         })
         .catch((error) => {
-          console.error('Erro ao carregar os agendamentos:', error);
+          console.error("Erro ao carregar os agendamentos:", error);
         });
     } else {
       setAgendamentosDoDia([]);
-      console.log('Agendamentos', agendamentosDoDia);
+      console.log("Agendamentos", agendamentosDoDia);
     }
   }, [diaSelecionado]);
 
@@ -47,7 +47,7 @@ const AgendaProfissional = () => {
         <div className="grid grid-cols-2">
           <div>
             <div className="flex justify-center">
-              {' '}
+              {" "}
               <Calendario onDiaSelecionado={handleDiaSelecionado} />
             </div>
           </div>
@@ -56,19 +56,19 @@ const AgendaProfissional = () => {
               <>
                 <div className="text-center my-2 font-bold text-3xl">
                   <p className="text-white font-face-montserrat">
-                    Agendados para: <br />{' '}
+                    Agendados para: <br />{" "}
                     <span className="text-[#E29C31] font-face-montserrat">
-                      {diaSelecionado.format('DD')} de{' '}
+                      {diaSelecionado.format("DD")} de{" "}
                       {meses[diaSelecionado.month()]}
-                    </span>{' '}
-                    de{' '}
+                    </span>{" "}
+                    de{" "}
                     <span className="text-[#E29C31] font-face-montserrat">
                       {diaSelecionado.year()}
                     </span>
                   </p>
                 </div>
 
-                <div>
+                <div className="flex justify-center">
                   <ListaCardsClientes agendamentos={agendamentosDoDia} />
                 </div>
               </>

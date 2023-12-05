@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { ChevronDown as IconSetaPraBaixo } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { IOption } from 'types/IOptions';
+import { useState, useEffect, useRef } from "react";
+import { ChevronDown as IconSetaPraBaixo } from "lucide-react";
+import { Link } from "react-router-dom";
+import { IOption } from "types/IOptions";
 
 interface DropdownSelectProps {
   options: IOption[];
@@ -37,9 +37,9 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -47,7 +47,7 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
     <div className="relative z-50" ref={dropdownRef}>
       <div
         className={`flex items-center cursor-pointer ${
-          estaAberto ? 'open' : ''
+          estaAberto ? "open" : ""
         }`}
         onClick={handleToggleDropdown}
       >
@@ -59,12 +59,12 @@ const DropdownSelect = ({ options, onChange }: DropdownSelectProps) => {
             <li
               key={option.value}
               className={`p-3 cursor-pointer transition-colors duration-200 border-b-2 border-[#E29C31]${
-                opcaoSelecionada === option ? 'bg-gray-200' : ''
+                opcaoSelecionada === option ? "bg-gray-200" : ""
               }`}
               onClick={() => handleOptionChange(option)}
             >
               <Link
-                to={option.to}
+                to={option.to ?? "/"}
                 className="flex items-center space-x-2 rounded-3xl"
               >
                 {option.icon && (

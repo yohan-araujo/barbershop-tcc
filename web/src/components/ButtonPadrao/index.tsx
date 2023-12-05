@@ -4,6 +4,7 @@ interface PropsButton {
   tipo?: "submit";
   outline?: boolean;
   tamanho?: string;
+  disabled?: boolean;
 }
 
 const ButtonPadrao = ({
@@ -12,6 +13,7 @@ const ButtonPadrao = ({
   tipo,
   tamanho,
   outline,
+  disabled,
 }: PropsButton) => {
   return (
     <button
@@ -20,9 +22,10 @@ const ButtonPadrao = ({
           ? "border border-[#E29C31] text-white hover:bg-[#E29C31] bg-transparent hover:text-[#000000]"
           : "border border-[#E29C31] text-black bg-[#E29C31] hover:bg-transparent hover:text-white"
       } 
-      ${tamanho || ""}`}
+      ${tamanho || ""} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={onClick}
       type={tipo}
+      disabled={disabled}
     >
       {texto}
     </button>

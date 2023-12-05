@@ -1,8 +1,11 @@
-import axios from 'axios';
-import ButtonPadrao from 'components/ButtonPadrao';
-import { useEffect, useState } from 'react';
-import { IAgendamento } from 'types/IAgendamento';
-import { ICliente } from 'types/ICliente';
+import axios from "axios";
+import ButtonPadrao from "components/ButtonPadrao";
+import DropdownValue from "components/DropdownValue";
+import { useEffect, useState } from "react";
+import { IAgendamento } from "types/IAgendamento";
+import { ICliente } from "types/ICliente";
+import { IOption } from "types/IOptions";
+import { CreditCard, DollarSign, Smartphone } from "lucide-react";
 
 interface CardClienteProps {
   agendamento: IAgendamento;
@@ -10,6 +13,7 @@ interface CardClienteProps {
 
 const CardCliente = ({ agendamento }: CardClienteProps) => {
   const [cliente, setCliente] = useState<ICliente | null>(null);
+  const [selectedOption, setSelectedOption] = useState<IOption | null>(null);
 
   useEffect(() => {
     const fetchCliente = async () => {
@@ -19,7 +23,7 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         );
         setCliente(response.data);
       } catch (error) {
-        console.error('Erro ao carregar os detalhes do cliente:', error);
+        console.error("Erro ao carregar os detalhes do cliente:", error);
       }
     };
 
@@ -28,10 +32,16 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
 
   const urlImagem = cliente
     ? `http://localhost:3001/uploads/Clientes/${cliente.usu_id}/${cliente.usu_foto}`
-    : '';
+    : "";
+
+  const handleOptionChange = (option: IOption | null) => {
+    setSelectedOption(option);
+  };
+
+  const isButtonDisabled = !selectedOption;
 
   return (
-    <div className="w-[26rem] h-40 border-2 border-[#E29C31] bg-black">
+    <div className="w-[26rem] h-40 border-2 border-[#E29C31] bg-black my-4">
       <div className="flex flex-row gap-6 my-2">
         <div className="ml-4">
           <img src={urlImagem} alt="" className="w-20 h-20 rounded-full" />
@@ -39,7 +49,7 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         <div>
           <div>
             <span className="text-white font-face-montserrat text-3xl">
-              {cliente ? cliente.usu_nomeCompleto : 'Carregando...'}
+              {cliente ? cliente.usu_nomeCompleto : "Carregando..."}
             </span>
           </div>
           <div>
@@ -50,8 +60,27 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         </div>
       </div>
       <div className="flex flex-row gap-2 justify-center">
-        <ButtonPadrao texto="Pagamento" tamanho="px-8 py-1" />
-        <ButtonPadrao texto="Confirmar" tamanho="px-8 py-1" />
+        <DropdownValue
+          options={[
+            {
+              label: "Pix",
+              icon: <Smartphone />,
+              value: "Pix",
+            },
+            { label: "Dinheiro", icon: <DollarSign />, value: "Pix" },
+            {
+              label: "Cartão de crédito",
+              icon: <CreditCard />,
+              value: "Cartão de Crédito",
+            },
+          ]}
+          onSelect={handleOptionChange}
+        />
+        <ButtonPadrao
+          texto="Confirmar"
+          tamanho="px-8 py-1"
+          disabled={isButtonDisabled}
+        />
       </div>
     </div>
   );

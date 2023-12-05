@@ -56,8 +56,7 @@ const Navbar = () => {
   };
 
   const handleOptionChange = (option: IOption | null) => {
-    if (option) {
-      console.log("Opção selecionada:", option);
+    if (option && option.to) {
       navigate(option.to);
     }
   };
