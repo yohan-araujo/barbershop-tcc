@@ -1,6 +1,4 @@
-import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
-import { IProfissional } from "types/IProfissional";
+import { IProfissional } from 'types/IProfissional';
 
 interface ListaProfissionaisProps {
   profissionais: IProfissional[];

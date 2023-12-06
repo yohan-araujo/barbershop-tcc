@@ -1,17 +1,24 @@
-import axios from "axios";
-import ButtonPadrao from "components/ButtonPadrao";
-import DropdownValue from "components/DropdownValue";
-import { useEffect, useState } from "react";
-import { IAgendamento } from "types/IAgendamento";
-import { ICliente } from "types/ICliente";
-import { IOption } from "types/IOptions";
-import { CreditCard, DollarSign, Smartphone } from "lucide-react";
+import axios from 'axios';
+import ButtonPadrao from 'components/ButtonPadrao';
+import DropdownValue from 'components/DropdownValue';
+import { useEffect, useState } from 'react';
+import { IAgendamento } from 'types/IAgendamento';
+import { ICliente } from 'types/ICliente';
+import { IOption } from 'types/IOptions';
+import { CreditCard, DollarSign, Smartphone } from 'lucide-react';
 
 interface CardClienteProps {
   agendamento: IAgendamento;
+  onConfirmarAgendamento: (
+    agendamentoId: number,
+    formaPagamento: string
+  ) => void;
 }
 
-const CardCliente = ({ agendamento }: CardClienteProps) => {
+const CardCliente: React.FC<CardClienteProps> = ({
+  agendamento,
+  onConfirmarAgendamento,
+}) => {
   const [cliente, setCliente] = useState<ICliente | null>(null);
   const [selectedOption, setSelectedOption] = useState<IOption | null>(null);
 
@@ -23,7 +30,7 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         );
         setCliente(response.data);
       } catch (error) {
-        console.error("Erro ao carregar os detalhes do cliente:", error);
+        console.error('Erro ao carregar os detalhes do cliente:', error);
       }
     };
 
@@ -32,10 +39,21 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
 
   const urlImagem = cliente
     ? `http://localhost:3001/uploads/Clientes/${cliente.usu_id}/${cliente.usu_foto}`
-    : "";
+    : '';
 
   const handleOptionChange = (option: IOption | null) => {
     setSelectedOption(option);
+  };
+
+  const handleConfirmar = async () => {
+    if (selectedOption) {
+      try {
+        await onConfirmarAgendamento(agendamento.age_id, selectedOption.value);
+        // Aqui você pode adicionar lógica para atualizar a interface, se necessário
+      } catch (error) {
+        console.error('Erro ao confirmar agendamento:', error);
+      }
+    }
   };
 
   const isButtonDisabled = !selectedOption;
@@ -49,7 +67,7 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         <div>
           <div>
             <span className="text-white font-face-montserrat text-3xl">
-              {cliente ? cliente.usu_nomeCompleto : "Carregando..."}
+              {cliente ? cliente.usu_nomeCompleto : 'Carregando...'}
             </span>
           </div>
           <div>
@@ -63,15 +81,15 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
         <DropdownValue
           options={[
             {
-              label: "Pix",
+              label: 'Pix',
               icon: <Smartphone />,
-              value: "Pix",
+              value: 'Pix',
             },
-            { label: "Dinheiro", icon: <DollarSign />, value: "Pix" },
+            { label: 'Dinheiro', icon: <DollarSign />, value: 'Dinheiro' },
             {
-              label: "Cartão de crédito",
+              label: 'Cartão de crédito',
               icon: <CreditCard />,
-              value: "Cartão de Crédito",
+              value: 'Cartão de Crédito',
             },
           ]}
           onSelect={handleOptionChange}
@@ -80,6 +98,7 @@ const CardCliente = ({ agendamento }: CardClienteProps) => {
           texto="Confirmar"
           tamanho="px-8 py-1"
           disabled={isButtonDisabled}
+          onClick={handleConfirmar}
         />
       </div>
     </div>

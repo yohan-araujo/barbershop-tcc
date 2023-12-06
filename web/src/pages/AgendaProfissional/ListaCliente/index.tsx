@@ -1,16 +1,26 @@
-import { IAgendamento } from "types/IAgendamento";
-import { ICliente } from "types/ICliente";
-import CardCliente from "./CardCliente";
+import CardCliente from './CardCliente';
+import { IAgendamento } from 'types/IAgendamento';
 
 interface ListaCardsClientesProps {
   agendamentos: IAgendamento[];
+  onConfirmarAgendamento: (
+    agendamentoId: number,
+    formaPagamento: string
+  ) => void;
 }
 
-const ListaCardsClientes = ({ agendamentos }: ListaCardsClientesProps) => {
+const ListaCardsClientes: React.FC<ListaCardsClientesProps> = ({
+  agendamentos,
+  onConfirmarAgendamento,
+}) => {
   return (
-    <div className="h-[28rem] w-[32rem] bg-black p-12">
+    <div>
       {agendamentos.map((agendamento) => (
-        <CardCliente key={agendamento.age_id} agendamento={agendamento} />
+        <CardCliente
+          key={agendamento.age_id}
+          agendamento={agendamento}
+          onConfirmarAgendamento={onConfirmarAgendamento}
+        />
       ))}
     </div>
   );

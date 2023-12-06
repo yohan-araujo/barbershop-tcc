@@ -746,65 +746,72 @@ app.get('/api/getPontosCartao/:cli_id', (req, res) => {
   });
 });
 
-app.put('/api/atualizarStatusAgendamentos', (req, res) => {
-  const { agendamentosSelecionados } = req.body;
+app.put('/api/atualizarStatusEPagamentoAgendamento', (req, res) => {
+  const { agendamentoSelecionado, formaPagamento } = req.body;
 
-  // Passo 1: Consulte o cli_id a partir do agendamento selecionado
-  const getClienteIdQuery = `
-    SELECT cli_id FROM age_agendamento
-    WHERE age_id IN (${agendamentosSelecionados.join(',')});
+  // Passo 1: Atualize o status e a forma de pagamento do agendamento selecionado
+  const updateAgendamentoQuery = `
+    UPDATE age_agendamento
+    SET age_status = true,
+        age_pagamento = ?
+    WHERE age_id = ?;
   `;
 
-  db.query(getClienteIdQuery, (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Erro ao obter o ID do cliente.');
-      return;
-    }
-
-    if (results.length === 0) {
-      res.status(400).send('Nenhum agendamento encontrado.');
-      return;
-    }
-
-    const clienteId = results[0].cli_id;
-
-    // Passo 2: Atualize cf_pontos na tabela cf_cartoesFidelidade
-    const updatePontosQuery = `
-      UPDATE cf_cartoesFidelidade
-      SET cf_pontos = cf_pontos + 1
-      WHERE cli_id = ${clienteId};
-    `;
-
-    db.query(updatePontosQuery, (err, result) => {
+  db.query(
+    updateAgendamentoQuery,
+    [formaPagamento, agendamentoSelecionado],
+    (err, result) => {
       if (err) {
         console.error(err);
-        res.status(500).send('Erro ao atualizar os pontos de fidelidade.');
+        res
+          .status(500)
+          .send('Erro ao atualizar o status e pagamento do agendamento.');
       } else {
-        // Passo 3: Atualize o status dos agendamentos
-        const updateStatusQuery = `
-          UPDATE age_agendamento
-          SET age_status = true
-          WHERE age_id IN (${agendamentosSelecionados.join(',')});
-        `;
+        // Passo 2: Consulte o cli_id a partir do agendamento selecionado
+        const getClienteIdQuery = `
+        SELECT cli_id FROM age_agendamento
+        WHERE age_id = ${agendamentoSelecionado};
+      `;
 
-        db.query(updateStatusQuery, (err, result) => {
+        db.query(getClienteIdQuery, (err, results) => {
           if (err) {
             console.error(err);
-            res
-              .status(500)
-              .send('Erro ao atualizar o status dos agendamentos.');
-          } else {
-            res
-              .status(200)
-              .send(
-                'Status dos agendamentos e pontos de fidelidade atualizados com sucesso.'
-              );
+            res.status(500).send('Erro ao obter o ID do cliente.');
+            return;
           }
+
+          if (results.length === 0) {
+            res.status(400).send('Agendamento não encontrado.');
+            return;
+          }
+
+          const clienteId = results[0].cli_id;
+
+          // Passo 3: Atualize cf_pontos na tabela cf_cartoesFidelidade
+          const updatePontosQuery = `
+          UPDATE cf_cartoesFidelidade
+          SET cf_pontos = cf_pontos + 1
+          WHERE cli_id = ${clienteId};
+        `;
+
+          db.query(updatePontosQuery, (err, result) => {
+            if (err) {
+              console.error(err);
+              res
+                .status(500)
+                .send('Erro ao atualizar os pontos de fidelidade.');
+            } else {
+              res
+                .status(200)
+                .send(
+                  'Status e pagamento do agendamento atualizados com sucesso.'
+                );
+            }
+          });
         });
       }
-    });
-  });
+    }
+  );
 });
 
 app.delete('/api/deleteAgendamentos', (req, res) => {

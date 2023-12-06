@@ -1,6 +1,5 @@
 import ButtonPadrao from 'components/ButtonPadrao';
 import { Link } from 'react-router-dom';
-import { Edit } from 'lucide-react';
 import Skills from './Skills';
 import { useState, useEffect } from 'react';
 import { ISkill } from 'types/ISkill';
@@ -14,7 +13,6 @@ const PerfilProfissional = () => {
   const [fotoUsuario, setFotoUsuario] = useState('') ?? '';
 
   const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
-  const proDesc = sessionStorage.getItem('proDesc') ?? '';
   const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
   const charts = [<GraficoLineProfissional />, <GraficoPieProfissional />];
