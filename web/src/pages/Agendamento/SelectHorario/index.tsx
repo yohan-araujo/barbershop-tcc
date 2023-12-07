@@ -37,7 +37,7 @@ const SelectHorario = ({
   };
 
   return (
-    <ul className="font-face-montserrat text-2xl max-h-72 overflow-y-auto p-0 list-none">
+    <ul className="font-face-montserrat text-2xl max-h-[28rem] overflow-y-auto p-0 list-none">
       {horarios.map((horario, index) => (
         <li
           key={index}
