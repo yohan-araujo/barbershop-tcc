@@ -75,6 +75,14 @@ const CardCliente: React.FC<CardClienteProps> = ({
               {agendamento.age_hora} - mais 30
             </span>
           </div>
+          <div>
+            <span className="text-white font-face-montserrat text-xl">
+              {agendamento.ser_tipo} -{' '}
+              {agendamento.ser_preco === 0
+                ? 'Corte gratuito'
+                : `R$ ${agendamento.ser_preco.toFixed(2)}`}
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex flex-row gap-2 justify-center">

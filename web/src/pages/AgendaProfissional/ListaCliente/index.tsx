@@ -14,7 +14,7 @@ const ListaCardsClientes: React.FC<ListaCardsClientesProps> = ({
   onConfirmarAgendamento,
 }) => {
   return (
-    <div>
+    <div className="w-[28rem] max-h-96 overflow-y-auto bg-black">
       {agendamentos.map((agendamento) => (
         <CardCliente
           key={agendamento.age_id}

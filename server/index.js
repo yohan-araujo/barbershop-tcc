@@ -767,47 +767,60 @@ app.put('/api/atualizarStatusEPagamentoAgendamento', (req, res) => {
           .status(500)
           .send('Erro ao atualizar o status e pagamento do agendamento.');
       } else {
-        // Passo 2: Consulte o cli_id a partir do agendamento selecionado
-        const getClienteIdQuery = `
-        SELECT cli_id FROM age_agendamento
-        WHERE age_id = ${agendamentoSelecionado};
-      `;
+        // Passo 2: Consulte o cli_id e ser_id a partir do agendamento selecionado
+        const getAgendamentoInfoQuery = `
+          SELECT cli_id, ser_id, age_status FROM age_agendamento
+          WHERE age_id = ${agendamentoSelecionado};
+        `;
 
-        db.query(getClienteIdQuery, (err, results) => {
+        db.query(getAgendamentoInfoQuery, (err, agendamentoInfo) => {
           if (err) {
             console.error(err);
-            res.status(500).send('Erro ao obter o ID do cliente.');
+            res.status(500).send('Erro ao obter informações do agendamento.');
             return;
           }
 
-          if (results.length === 0) {
+          if (agendamentoInfo.length === 0) {
             res.status(400).send('Agendamento não encontrado.');
             return;
           }
 
-          const clienteId = results[0].cli_id;
+          const { cli_id, ser_id, age_status } = agendamentoInfo[0];
 
-          // Passo 3: Atualize cf_pontos na tabela cf_cartoesFidelidade
-          const updatePontosQuery = `
-          UPDATE cf_cartoesFidelidade
-          SET cf_pontos = cf_pontos + 1
-          WHERE cli_id = ${clienteId};
-        `;
-
-          db.query(updatePontosQuery, (err, result) => {
-            if (err) {
-              console.error(err);
-              res
-                .status(500)
-                .send('Erro ao atualizar os pontos de fidelidade.');
-            } else {
-              res
-                .status(200)
-                .send(
-                  'Status e pagamento do agendamento atualizados com sucesso.'
+          // Passo 3: Atualize cf_pontos na tabela cf_cartoesFidelidade se o serviço não for gratuito
+          if (!age_status) {
+            const updatePontosQuery = `
+              UPDATE cf_cartoesFidelidade
+              SET cf_pontos = cf_pontos + 1
+              WHERE cli_id = ${cli_id} 
+                AND EXISTS (
+                  SELECT 1 
+                  FROM ser_servicos 
+                  WHERE ser_id = ${ser_id} AND ser_gratuito = false
                 );
-            }
-          });
+            `;
+
+            db.query(updatePontosQuery, (err, result) => {
+              if (err) {
+                console.error(err);
+                res
+                  .status(500)
+                  .send('Erro ao atualizar os pontos de fidelidade.');
+              } else {
+                res
+                  .status(200)
+                  .send(
+                    'Status e pagamento do agendamento atualizados com sucesso.'
+                  );
+              }
+            });
+          } else {
+            res
+              .status(200)
+              .send(
+                'Status do agendamento atualizado com sucesso. O agendamento é gratuito, portanto, nenhum ponto foi adicionado.'
+              );
+          }
         });
       }
     }
@@ -986,7 +999,7 @@ app.get('/api/getAgendamentos/:data/:pro_id', (req, res) => {
   const pro_id = req.params.pro_id;
 
   const query =
-    'SELECT * FROM age_agendamento WHERE age_data = ? AND pro_id = ?';
+    'SELECT * FROM age_agendamento a JOIN ser_servicos s ON a.ser_id = s.ser_id WHERE age_data = ? AND pro_id = ?';
   db.query(query, [data, pro_id], (error, results) => {
     if (error) {
       console.error('Erro ao consultar agendamentos:', error);

@@ -1,6 +1,6 @@
 interface SelectHorarioProps {
   horarioSelecionado?: string | null;
-  setHorarioSelecionado?: (horario: string) => void;
+  setHorarioSelecionado?: (horario: string | null) => void; // Alterado para aceitar null
 }
 
 const SelectHorario = ({
@@ -26,24 +26,35 @@ const SelectHorario = ({
 
   const horarios = gerarHorarios();
 
+  const handleHorarioClick = (horario: string) => {
+    if (horarioSelecionado === horario) {
+      // Se o horário clicado já estiver selecionado, desselecione-o
+      setHorarioSelecionado && setHorarioSelecionado(null);
+    } else {
+      // Senão, selecione o horário clicado
+      setHorarioSelecionado && setHorarioSelecionado(horario);
+    }
+  };
+
   return (
-    <select
-      onChange={(e) =>
-        setHorarioSelecionado && setHorarioSelecionado(e.target.value)
-      }
-      value={horarioSelecionado || ''}
-      className="border border-[#0064B1] px-12 py-1 bg-white rounded-full font-face-montserrat text-2xl shadow-lg"
-    >
+    <ul className="font-face-montserrat text-2xl max-h-72 overflow-y-auto p-0 list-none">
       {horarios.map((horario, index) => (
-        <option
+        <li
           key={index}
-          value={horario}
-          className="font-face-montserrat hover:bg-[#0064B1]"
+          onClick={() => handleHorarioClick(horario)}
+          className={`mx-4 border-2 border-[#E29C31] py-2 px-6 hover:bg-[#E29C31] hover:text-black cursor-pointer my-6 text-center text-white font-face-montserrat font-bold ${
+            horarioSelecionado === horario
+              ? 'bg-[#E29C31] font-bold text-black'
+              : ''
+          }`}
+          style={{
+            color: horarioSelecionado === horario ? '#000' : '',
+          }}
         >
           {horario}
-        </option>
+        </li>
       ))}
-    </select>
+    </ul>
   );
 };
 

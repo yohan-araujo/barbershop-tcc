@@ -1,50 +1,24 @@
 import { ReactNode } from 'react';
 
 interface ModalProps {
-  etapaAtual: number;
-  aoFechar: () => void;
+  exibirModal: boolean;
   children: ReactNode;
+  titulo: string;
 }
 
-const Modal = ({ etapaAtual, aoFechar, children }: ModalProps) => {
+const Modal = ({ exibirModal, children, titulo }: ModalProps) => {
+  if (!exibirModal) {
+    return null;
+  }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="modal max-w-md w-full bg-white rounded-lg shadow-lg">
-        <div className="modal-header px-6 py-4 bg-gray-800 text-white">
-          <h2 className="text-xl font-bold">Agendamento</h2>
-          <button
-            className="close-button text-gray-300 hover:text-white"
-            onClick={aoFechar}
-          >
-            Fechar
-          </button>
+      <div className="modal max-w-[56rem] w-full bg-black shadow-lg border-2 border-[#E29C31]">
+        <div className="modal-header px-6 py-4  text-white">
+          <h2 className="text-3xl font-bold font-merriweather text-[#E29C31] text-center">
+            {titulo}
+          </h2>
         </div>
-        <div className="modal-body px-6 py-4">
-          <div className="stepper flex mb-6">
-            <div
-              className={`step flex-1 text-center ${
-                etapaAtual === 1 ? 'text-indigo-500' : 'text-gray-400'
-              }`}
-            >
-              Seleção do Profissional
-            </div>
-            <div
-              className={`step flex-1 text-center ${
-                etapaAtual === 2 ? 'text-indigo-500' : 'text-gray-400'
-              }`}
-            >
-              Seleção de Serviço
-            </div>
-            <div
-              className={`step flex-1 text-center ${
-                etapaAtual === 3 ? 'text-indigo-500' : 'text-gray-400'
-              }`}
-            >
-              Seleção de Data e Hora
-            </div>
-          </div>
-          {children}
-        </div>
+        <div className="modal-body px-12 py-4">{children}</div>
       </div>
     </div>
   );
