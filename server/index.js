@@ -1031,6 +1031,85 @@ app.get('/api/getCliente/:cli_id', (req, res) => {
   });
 });
 
+app.get('/api/getDadosFP', (req, res) => {
+  const query = `
+    SELECT age_pagamento, COUNT(*) as count
+    FROM age_agendamento
+    WHERE age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    GROUP BY age_pagamento
+  `;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro ao executar a consulta:', error);
+      res.status(500).send('Erro ao buscar dados do banco de dados');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/getDadosTS', (req, res) => {
+  const query = `
+  SELECT ser_tipo, COUNT(*) as quantidade
+    FROM age_agendamento
+    INNER JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    GROUP BY ser_tipo`;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro ao executar a consulta:', error);
+      res.status(500).send('Erro ao buscar dados do banco de dados');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/getDadosFEP', (req, res) => {
+  const faturamentoQuery = `
+    SELECT 
+      DATE(age_data) AS data, 
+      SUM(ser_preco) AS ganho_diario
+    FROM age_agendamento
+    JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    WHERE age_status = 1
+    GROUP BY data
+    ORDER BY data;
+  `;
+
+  const projecaoQuery = `
+    SELECT 
+      DATE(age_data) AS data, 
+      SUM(ser_preco) AS ganho_diario
+    FROM age_agendamento
+    JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    GROUP BY data
+    ORDER BY data;
+  `;
+
+  db.query(faturamentoQuery, (errorFaturamento, resultsFaturamento) => {
+    if (errorFaturamento) {
+      console.error('Erro no faturamento: ', errorFaturamento);
+      res.status(500).json({ error: 'Erro ao recuperar faturamento' });
+    } else {
+      db.query(projecaoQuery, (errorProjecao, resultsProjecao) => {
+        if (errorProjecao) {
+          console.error('Erro na projeção: ', errorProjecao);
+          res
+            .status(500)
+            .json({ error: 'Erro ao recuperar projeção de faturamento' });
+        } else {
+          res.json({
+            faturamento: resultsFaturamento,
+            projecao: resultsProjecao,
+          });
+        }
+      });
+    }
+  });
+});
+
 //Inicializando sessoes
 
 app.post('/api/loginUsuario', (req, res) => {
