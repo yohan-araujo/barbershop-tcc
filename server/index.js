@@ -1032,10 +1032,36 @@ app.get('/api/getCliente/:cli_id', (req, res) => {
 });
 
 app.get('/api/getDadosFP', (req, res) => {
+  const filtro = req.query.filtro;
+  const pro_id = req.query.pro_id;
+
+  let dateFilter = '';
+  if (filtro === 'semanal') {
+    dateFilter = `
+      WHERE WEEK(age_data) = WEEK(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  } else if (filtro === 'mensal') {
+    dateFilter = `
+      WHERE MONTH(age_data) = MONTH(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  } else if (filtro === 'semestral') {
+    dateFilter = `
+      WHERE QUARTER(age_data) = QUARTER(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  }
+
+  const proIdFilter = pro_id ? `AND age_agendamento.pro_id = ${pro_id}` : '';
+
   const query = `
     SELECT age_pagamento, COUNT(*) as count
     FROM age_agendamento
-    WHERE age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    ${
+      dateFilter ? dateFilter + ' AND ' : ' WHERE '
+    } age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    ${proIdFilter}  
     GROUP BY age_pagamento
   `;
 
@@ -1050,11 +1076,37 @@ app.get('/api/getDadosFP', (req, res) => {
 });
 
 app.get('/api/getDadosTS', (req, res) => {
+  const filtro = req.query.filtro;
+  const pro_id = req.query.pro_id;
+
+  let dateFilter = '';
+  if (filtro === 'semanal') {
+    dateFilter = `
+      WHERE WEEK(age_data) = WEEK(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  } else if (filtro === 'mensal') {
+    dateFilter = `
+      WHERE MONTH(age_data) = MONTH(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  } else if (filtro === 'semestral') {
+    dateFilter = `
+      WHERE QUARTER(age_data) = QUARTER(NOW()) 
+      AND YEAR(age_data) = YEAR(NOW())
+    `;
+  }
+
+  const proIdFilter = pro_id ? `AND age_agendamento.pro_id = ${pro_id}` : '';
+
   const query = `
-  SELECT ser_tipo, COUNT(*) as quantidade
+    SELECT ser_tipo, COUNT(*) as quantidade
     FROM age_agendamento
     INNER JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
-    GROUP BY ser_tipo`;
+    ${dateFilter}
+    ${proIdFilter}
+    GROUP BY ser_tipo
+  `;
 
   db.query(query, (error, results) => {
     if (error) {
@@ -1067,13 +1119,28 @@ app.get('/api/getDadosTS', (req, res) => {
 });
 
 app.get('/api/getDadosFEP', (req, res) => {
+  const filtro = req.query.filtro;
+  const pro_id = req.query.pro_id;
+
+  let dateFilter = '';
+  if (filtro === 'semanal') {
+    dateFilter = `WHERE WEEK(age_data) = WEEK(NOW()) AND YEAR(age_data) = YEAR(NOW())`;
+  } else if (filtro === 'mensal') {
+    dateFilter = `WHERE MONTH(age_data) = MONTH(NOW()) AND YEAR(age_data) = YEAR(NOW())`;
+  } else if (filtro === 'semestral') {
+    dateFilter = `WHERE QUARTER(age_data) = QUARTER(NOW()) AND YEAR(age_data) = YEAR(NOW())`;
+  }
+
+  const proIdFilter = pro_id ? `AND age_agendamento.pro_id = ${pro_id}` : '';
+
   const faturamentoQuery = `
     SELECT 
       DATE(age_data) AS data, 
-      SUM(ser_preco) AS ganho_diario
+      SUM(CASE WHEN age_status = 1 THEN ser_preco ELSE 0 END) AS ganho_diario
     FROM age_agendamento
     JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
-    WHERE age_status = 1
+    ${dateFilter}
+    ${proIdFilter}
     GROUP BY data
     ORDER BY data;
   `;
@@ -1084,6 +1151,8 @@ app.get('/api/getDadosFEP', (req, res) => {
       SUM(ser_preco) AS ganho_diario
     FROM age_agendamento
     JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    ${dateFilter}
+    ${proIdFilter}
     GROUP BY data
     ORDER BY data;
   `;

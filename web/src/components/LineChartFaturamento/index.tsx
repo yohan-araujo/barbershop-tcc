@@ -7,14 +7,10 @@ import {
   Legend,
   CartesianGrid,
 } from 'recharts';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { IDadosFormatados } from 'types/IDadosFormatados';
 
-interface FormattedData {
-  name: string;
-  faturamento?: number;
-  projecao?: number;
+interface LineChartFaturamentoProps {
+  dados: IDadosFormatados[];
 }
 
 const CustomLegend = ({ payload }: any) => {
@@ -60,44 +56,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const LineChartFaturamento = () => {
-  const [data, setData] = useState<FormattedData[]>([]);
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/getDadosFEP')
-      .then((response) => {
-        const { faturamento, projecao } = response.data;
-
-        // Mapeando os dados para o formato necessário para o Recharts
-        const formattedFaturamento: FormattedData[] = faturamento.map(
-          (item: any) => ({
-            name: format(new Date(item.data), 'dd/MM'), // Formatando a data para dd/mm
-            faturamento: item.ganho_diario,
-          })
-        );
-
-        const formattedProjecao: FormattedData[] = projecao.map(
-          (item: any) => ({
-            name: format(new Date(item.data), 'dd/MM'), // Formatando a data para dd/mm
-            projecao: item.ganho_diario,
-          })
-        );
-
-        const mergedData: FormattedData[] = formattedFaturamento.map(
-          (item, index) => ({
-            ...item,
-            ...formattedProjecao[index],
-          })
-        );
-
-        setData(mergedData);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
-      });
-  }, []);
-
+const LineChartFaturamento = ({ dados }: LineChartFaturamentoProps) => {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col bg-black rounded-lg justify-center items-center">
@@ -106,7 +65,7 @@ const LineChartFaturamento = () => {
           <hr className="border-[#E29C31] mt-4" />
         </span>
         <div className="px-12 py-4">
-          <LineChart width={800} height={350} data={data}>
+          <LineChart width={800} height={350} data={dados}>
             <XAxis
               tickMargin={15}
               dataKey="name"

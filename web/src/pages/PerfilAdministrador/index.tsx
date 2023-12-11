@@ -1,20 +1,20 @@
-import ButtonPadrao from "components/ButtonPadrao";
-import { Link } from "react-router-dom";
-import ListaProfissionais from "./ListaProfissionais";
-import { useEffect, useState } from "react";
-import { IProfissional } from "types/IProfissional";
-import axios from "axios";
-import GraficoLine from "../../components/GraficoLine";
-import CarroselGrafico from "../../components/CarroselGrafico";
-import GraficoPie from "components/GraficoPie";
+import ButtonPadrao from 'components/ButtonPadrao';
+import { Link } from 'react-router-dom';
+import ListaProfissionais from './ListaProfissionais';
+import { useEffect, useState } from 'react';
+import { IProfissional } from 'types/IProfissional';
+import axios from 'axios';
+import GraficoLine from '../../components/GraficoLine';
+import CarroselGrafico from '../../components/CarroselGrafico';
+import GraficoPie from 'components/GraficoPie';
 
 const PerfilAdministrador = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
-  const [fotoUsuario, setFotoUsuario] = useState("");
-  const nomeUsuario = sessionStorage.getItem("usuarioNome") ?? "";
-  const usuarioId = sessionStorage.getItem("usuarioId") ?? "";
+  const [fotoUsuario, setFotoUsuario] = useState('');
+  const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
+  const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
   useEffect(() => {
     axios
@@ -29,7 +29,7 @@ const PerfilAdministrador = () => {
       fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Erro ao obter a foto do perfil");
+            throw new Error('Erro ao obter a foto do perfil');
           }
           return response.text();
         })
@@ -133,6 +133,15 @@ const PerfilAdministrador = () => {
                     />
                   </Link>
                 </div>
+                <div className="flex items-center mt-4">
+                  <Link to="/dashboard">
+                    <ButtonPadrao
+                      texto="Dashboard"
+                      tamanho="w-[18rem]"
+                      outline={true}
+                    />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -152,18 +161,6 @@ const PerfilAdministrador = () => {
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col">
-                    <div className="flex flex-row">
-                      <span className="text-white text-4xl font-semibold font-face-montserrat">
-                        Desempenho profissionais
-                      </span>
-                    </div>
-                    <div className="w-[28rem] mt-4">
-                      <p className="text-white font-face-montserrat text-xl font-medium shadow-inner rounded-lg p-6">
-                        aqui vai o desempenho de cada profissional
-                      </p>
-                    </div>
-                  </div> */}
     </section>
   );
 };

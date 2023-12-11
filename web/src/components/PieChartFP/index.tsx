@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
 import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts';
-import axios from 'axios';
+
+interface PieChartFP {
+  dados: number[];
+}
 
 const COLORS = ['black', '#E29C31', 'white', '#FF8042'];
 
@@ -49,26 +51,7 @@ const textStyle = {
   fontFamily: 'montserrat',
 };
 
-const PieChartFP = () => {
-  const [dados, setDados] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/getDadosFP')
-      .then((response) => {
-        // Transforma os dados para o formato esperado pelo Recharts
-        const formattedData = response.data.map((item: any) => ({
-          name: item.age_pagamento,
-          value: item.count,
-        }));
-        setDados(formattedData);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
-      });
-  }, []);
-  console.log(dados);
-
+const PieChartFP = ({ dados }: PieChartFP) => {
   return (
     <div className="flex justify-center items-center ">
       <div className="flex flex-col bg-black rounded-lg justify-center items-center">

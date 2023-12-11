@@ -144,6 +144,7 @@ const Agendamento = () => {
       servicoSelecionado &&
       agendamentoConfirmado
     ) {
+      console.log('era pra ir');
       const dataFormatada = format(diaSelecionado.toDate(), 'yyyy-MM-dd');
       axios
         .post('http://localhost:3001/api/insertAgendamento', {
@@ -327,7 +328,7 @@ const Agendamento = () => {
 
             {etapaAtual === 3 && (
               <>
-                <div className='relative'>
+                <div className="relative">
                   <div className="absolute top-5 left-5 h-[64.5rem] w-[87rem] border-2 border-[#E29C31]"></div>
                   <div className="flex flex-col bg-[#1D1D1D]  px-12 py-12  mt-24 justify-center relative z-10">
                     <div className="mt-6">
@@ -337,15 +338,17 @@ const Agendamento = () => {
                     </div>
                     <div className="grid grid-cols-5 gap-9 m-12">
                       <div className="flex flex-col col-span-3 px-12">
-                        <div className='border-b border-[#E29C31] w-[25.5rem] my-12'>
+                        <div className="border-b border-[#E29C31] w-[25.5rem] my-12">
                           <span className="text-start text-[#E29C31] font-semibold font-merriweather text-3xl">
                             Selecione o dia e o horário:
                           </span>
                         </div>
 
-                        <div className='grid grid-cols-3 my-6 gap-12'>
+                        <div className="grid grid-cols-3 my-6 gap-12">
                           <div className="col-span-2 flex flex-auto">
-                            <Calendario onDiaSelecionado={handleDiaSelecionado} />
+                            <Calendario
+                              onDiaSelecionado={handleDiaSelecionado}
+                            />
                           </div>
 
                           <div className="col-span-1 flex flex-auto">
@@ -357,7 +360,7 @@ const Agendamento = () => {
                         </div>
                       </div>
                       <div className="col-span-2 flex flex-col gap-16 justify-center items-center">
-                        <div className=''>
+                        <div className="">
                           <span className="text-[#E29C31] font-face-montserrat font-bold text-3xl">
                             Serviço Selecionado:
                           </span>
@@ -381,7 +384,7 @@ const Agendamento = () => {
                             </span>
                           </div>
                         </div>
-                        <div className=''>
+                        <div className="">
                           <span className="text-[#E29C31] font-face-montserrat font-bold text-3xl">
                             Profissional Selecionado:
                           </span>
@@ -412,7 +415,6 @@ const Agendamento = () => {
                       </div>
                     </div>
                     <div className="flex flex-wrap m-12 justify-center gap-12">
-
                       <ButtonPadrao
                         texto={'Próximo'}
                         outline
@@ -477,23 +479,28 @@ const Agendamento = () => {
                             }
                             onClick={handleAgendamentoConfirmado}
                             outline
+                            tipo="submit"
                           />
                         </div>
+                        {feedback.message && (
+                          <MensagemFeedback
+                            type={feedback.type as 'failure' | 'success'}
+                            message={feedback.message}
+                            subMessage={feedback.subMessage}
+                            onClose={() =>
+                              setFeedback({
+                                type: '',
+                                message: '',
+                                subMessage: '',
+                              })
+                            }
+                            redirectTo="/perfilCliente"
+                          />
+                        )}
                       </Modal>
                     )}
                   </div>
                 </div>
-                {feedback.message && (
-                  <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
-                    message={feedback.message}
-                    subMessage={feedback.subMessage}
-                    onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
-                    }
-                    redirectTo="/perfilCliente"
-                  />
-                )}
               </>
             )}
           </div>
@@ -504,14 +511,16 @@ const Agendamento = () => {
           <>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
-                className={`w-8 h-8 rounded-full ${etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
-                  }`}
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
-                className={`w-8 h-8 rounded-full ${etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
-                  }`}
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
               ></div>
             </div>
           </>
@@ -519,20 +528,23 @@ const Agendamento = () => {
           <>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
-                className={`w-8 h-8 rounded-full ${etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
-                  }`}
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
-                className={`w-8 h-8 rounded-full ${etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
-                  }`}
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
               ></div>
             </div>
             <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
               <div
-                className={`w-8 h-8 rounded-full ${etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-black'
-                  }`}
+                className={`w-8 h-8 rounded-full ${
+                  etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-black'
+                }`}
               ></div>
             </div>
           </>
