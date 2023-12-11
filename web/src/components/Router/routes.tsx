@@ -23,6 +23,7 @@ import CadastroCliente from '../../pages/CadastroCliente';
 import RedefinirSenha from 'pages/EsqueciSenha';
 import DefinirNovaSenha from 'pages/DefinirNovaSenha';
 import Dashboard from 'pages/Dashboard';
+import AgendaAdministrador from 'pages/AgendaAdministrador';
 
 interface ProtegidoProps {
   component: React.ComponentType<any>;
@@ -101,6 +102,12 @@ export default function AppRouter() {
           <Route
             path="editarAgendas"
             element={usuarioTipo === 'A' ? <EditarAgendas /> : <Pagina404 />}
+          />
+          <Route
+            path="agendaAdministrador"
+            element={
+              usuarioTipo === 'A' ? <AgendaAdministrador /> : <Pagina404 />
+            }
           />
 
           {/* Rotas do Gerais */}

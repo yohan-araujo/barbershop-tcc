@@ -999,7 +999,7 @@ app.get('/api/getAgendamentos/:data/:pro_id', (req, res) => {
   const pro_id = req.params.pro_id;
 
   const query =
-    'SELECT * FROM age_agendamento a JOIN ser_servicos s ON a.ser_id = s.ser_id WHERE age_data = ? AND pro_id = ?';
+    'SELECT * FROM age_agendamento a JOIN ser_servicos s ON a.ser_id = s.ser_id WHERE age_data = ? AND pro_id = ? AND age_status = 0';
   db.query(query, [data, pro_id], (error, results) => {
     if (error) {
       console.error('Erro ao consultar agendamentos:', error);
@@ -1177,6 +1177,33 @@ app.get('/api/getDadosFEP', (req, res) => {
       });
     }
   });
+});
+
+app.delete('/api/excluirAgendamento/:age_id', async (req, res) => {
+  try {
+    const age_id = req.params.age_id; // ID do agendamento a ser excluído
+
+    // Consulta SQL para excluir o agendamento com o age_id fornecido
+    const query = `DELETE FROM age_agendamento WHERE age_id = ${age_id}`;
+
+    db.query(query, (error, results) => {
+      if (error) {
+        console.error('Erro ao excluir agendamento:', error);
+        res.status(500).json({ error: 'Erro ao excluir o agendamento.' });
+      } else {
+        if (results.affectedRows > 0) {
+          res
+            .status(200)
+            .json({ message: 'Agendamento excluído com sucesso.' });
+        } else {
+          res.status(404).json({ error: 'Agendamento não encontrado.' });
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao excluir agendamento:', error);
+    res.status(500).json({ error: 'Erro ao excluir o agendamento.' });
+  }
 });
 
 //Inicializando sessoes

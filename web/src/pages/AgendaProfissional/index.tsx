@@ -4,8 +4,8 @@ import { IAgendamento } from 'types/IAgendamento';
 import { Dayjs } from 'dayjs';
 import axios from 'axios';
 import { meses } from 'json';
-import ListaCardsClientes from './ListaCliente';
 import MensagemFeedback from 'components/MensagemFeedback';
+import ListaHorariosClientes from 'components/ListaHorariosClientes';
 
 const AgendaProfissional: React.FC = () => {
   const [agendamentosDoDia, setAgendamentosDoDia] = useState<IAgendamento[]>(
@@ -98,7 +98,7 @@ const AgendaProfissional: React.FC = () => {
                 </div>
 
                 <div className="flex justify-center">
-                  <ListaCardsClientes
+                  <ListaHorariosClientes
                     agendamentos={agendamentosDoDia}
                     onConfirmarAgendamento={handleConfirmarAgendamento}
                   />

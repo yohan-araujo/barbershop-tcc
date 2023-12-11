@@ -1,7 +1,7 @@
 import CardCliente from './CardCliente';
 import { IAgendamento } from 'types/IAgendamento';
 
-interface ListaCardsClientesProps {
+interface ListaHorariosClientesProps {
   agendamentos: IAgendamento[];
   onConfirmarAgendamento: (
     agendamentoId: number,
@@ -9,7 +9,7 @@ interface ListaCardsClientesProps {
   ) => void;
 }
 
-const ListaCardsClientes: React.FC<ListaCardsClientesProps> = ({
+const ListaHorariosClientes: React.FC<ListaHorariosClientesProps> = ({
   agendamentos,
   onConfirmarAgendamento,
 }) => {
@@ -26,4 +26,4 @@ const ListaCardsClientes: React.FC<ListaCardsClientesProps> = ({
   );
 };
 
-export default ListaCardsClientes;
+export default ListaHorariosClientes;
