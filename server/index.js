@@ -1084,7 +1084,7 @@ app.get('/api/getDadosFP', (req, res) => {
     FROM age_agendamento
     ${
       dateFilter ? dateFilter + ' AND ' : ' WHERE '
-    } age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    } age_pagamento IN ('Dinheiro', 'Pix', 'Cartão', 'Gratuito')
     ${proIdFilter}  
     GROUP BY age_pagamento
   `;
@@ -1114,7 +1114,7 @@ app.get('/api/getDadosFPSemanal', (req, res) => {
   const query = `
     SELECT age_pagamento, COUNT(*) as count
     FROM age_agendamento
-    ${dateFilter} AND age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    ${dateFilter} AND age_pagamento IN ('Dinheiro', 'Pix', 'Cartão','Gratuito')
     ${proIdFilter}  
     GROUP BY age_pagamento
   `;

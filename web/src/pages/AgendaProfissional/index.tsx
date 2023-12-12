@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import Calendario from '../../components/Calendario';
-import { IAgendamento } from 'types/IAgendamento';
-import { Dayjs } from 'dayjs';
-import axios from 'axios';
-import { meses } from 'json';
-import MensagemFeedback from 'components/MensagemFeedback';
-import ListaHorariosClientes from 'components/ListaHorariosClientes';
+import { useEffect, useState } from "react";
+import Calendario from "../../components/Calendario";
+import { IAgendamento } from "types/IAgendamento";
+import { Dayjs } from "dayjs";
+import axios from "axios";
+import { meses } from "json";
+import MensagemFeedback from "components/MensagemFeedback";
+import ListaHorariosClientes from "components/ListaHorariosClientes";
 
 const AgendaProfissional: React.FC = () => {
   const [agendamentosDoDia, setAgendamentosDoDia] = useState<IAgendamento[]>(
@@ -13,9 +13,9 @@ const AgendaProfissional: React.FC = () => {
   );
   const [diaSelecionado, setDiaSelecionado] = useState<Dayjs | null>(null);
   const [feedback, setFeedback] = useState({
-    type: '',
-    message: '',
-    subMessage: '',
+    type: "",
+    message: "",
+    subMessage: "",
   });
 
   useEffect(() => {
@@ -23,14 +23,14 @@ const AgendaProfissional: React.FC = () => {
       axios
         .get(
           `http://localhost:3001/api/getAgendamentos/${diaSelecionado.format(
-            'YYYY-MM-DD'
-          )}/${sessionStorage.getItem('proId')}`
+            "YYYY-MM-DD"
+          )}/${sessionStorage.getItem("proId")}`
         )
         .then((response) => {
           setAgendamentosDoDia(response.data);
         })
         .catch((error) => {
-          console.error('Erro ao carregar os agendamentos:', error);
+          console.error("Erro ao carregar os agendamentos:", error);
         });
     } else {
       setAgendamentosDoDia([]);
@@ -47,24 +47,24 @@ const AgendaProfissional: React.FC = () => {
   ) => {
     try {
       await axios.put(
-        'http://localhost:3001/api/atualizarStatusEPagamentoAgendamento',
+        "http://localhost:3001/api/atualizarStatusEPagamentoAgendamento",
         {
           agendamentoSelecionado: agendamentoId,
           formaPagamento: formaPagamento,
         }
       );
       setFeedback({
-        type: 'success',
-        message: 'Agendamento confirmado!',
-        subMessage: 'Status e pagamento atualizados com sucesso.',
+        type: "success",
+        message: "Agendamento confirmado!",
+        subMessage: "Status e pagamento atualizados com sucesso.",
       });
     } catch (error) {
       setFeedback({
-        type: 'error',
-        message: 'Erro ao confirmar o agendamento.',
-        subMessage: 'Tente novamente mais tarde.',
+        type: "error",
+        message: "Erro ao confirmar o agendamento.",
+        subMessage: "Tente novamente mais tarde.",
       });
-      console.error('Erro ao confirmar agendamento:', error);
+      console.error("Erro ao confirmar agendamento:", error);
     }
   };
 
@@ -87,17 +87,17 @@ const AgendaProfissional: React.FC = () => {
                   <p className="text-white font-face-montserrat">
                     Agendados para: <br />
                     <span className="text-[#E29C31] font-face-montserrat">
-                      {diaSelecionado.format('DD')} de{' '}
+                      {diaSelecionado.format("DD")} de{" "}
                       {meses[diaSelecionado.month()]}
-                    </span>{' '}
-                    de{' '}
+                    </span>{" "}
+                    de{" "}
                     <span className="text-[#E29C31] font-face-montserrat">
                       {diaSelecionado.year()}
                     </span>
                   </p>
                 </div>
 
-                {agendamentosDoDia.length > 1 ? (
+                {agendamentosDoDia.length > 0 ? (
                   <div className="flex justify-center">
                     <ListaHorariosClientes
                       agendamentos={agendamentosDoDia}
@@ -115,11 +115,11 @@ const AgendaProfissional: React.FC = () => {
 
                 {feedback.message && (
                   <MensagemFeedback
-                    type={feedback.type as 'failure' | 'success'}
+                    type={feedback.type as "failure" | "success"}
                     message={feedback.message}
                     subMessage={feedback.subMessage}
                     onClose={() =>
-                      setFeedback({ type: '', message: '', subMessage: '' })
+                      setFeedback({ type: "", message: "", subMessage: "" })
                     }
                   />
                 )}
