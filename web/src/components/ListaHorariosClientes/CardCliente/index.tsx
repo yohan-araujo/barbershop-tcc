@@ -1,11 +1,11 @@
-import axios from "axios";
-import ButtonPadrao from "components/ButtonPadrao";
-import DropdownValue from "components/DropdownValue";
-import { useEffect, useState } from "react";
-import { IAgendamento } from "types/IAgendamento";
-import { ICliente } from "types/ICliente";
-import { IOption } from "types/IOptions";
-import { CreditCard, DollarSign, Smartphone } from "lucide-react";
+import axios from 'axios';
+import ButtonPadrao from 'components/ButtonPadrao';
+import DropdownValue from 'components/DropdownValue';
+import { useEffect, useState } from 'react';
+import { IAgendamento } from 'types/IAgendamento';
+import { ICliente } from 'types/ICliente';
+import { IOption } from 'types/IOptions';
+import { CreditCard, DollarSign, Smartphone } from 'lucide-react';
 
 interface CardClienteProps {
   agendamento: IAgendamento;
@@ -30,7 +30,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
         );
         setCliente(response.data);
       } catch (error) {
-        console.error("Erro ao carregar os detalhes do cliente:", error);
+        console.error('Erro ao carregar os detalhes do cliente:', error);
       }
     };
 
@@ -39,7 +39,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
 
   const urlImagem = cliente
     ? `http://localhost:3001/uploads/Clientes/${cliente.usu_id}/${cliente.usu_foto}`
-    : "";
+    : '';
 
   const handleOptionChange = (option: IOption | null) => {
     setSelectedOption(option);
@@ -51,7 +51,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
         await onConfirmarAgendamento(agendamento.age_id, selectedOption.value);
         // Aqui você pode adicionar lógica para atualizar a interface, se necessário
       } catch (error) {
-        console.error("Erro ao confirmar agendamento:", error);
+        console.error('Erro ao confirmar agendamento:', error);
       }
     }
   };
@@ -67,7 +67,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
         <div>
           <div>
             <span className="text-white font-face-montserrat text-3xl">
-              {cliente ? cliente.usu_nomeCompleto : "Carregando..."}
+              {cliente ? cliente.usu_nomeCompleto : 'Carregando...'}
             </span>
           </div>
           <div>
@@ -77,9 +77,9 @@ const CardCliente: React.FC<CardClienteProps> = ({
           </div>
           <div>
             <span className="text-white font-face-montserrat text-xl">
-              {agendamento.ser_tipo} -{" "}
+              {agendamento.ser_tipo} -{' '}
               {agendamento.ser_preco === 0
-                ? "Corte gratuito"
+                ? 'Corte gratuito'
                 : `R$ ${agendamento.ser_preco.toFixed(2)}`}
             </span>
           </div>
@@ -89,17 +89,17 @@ const CardCliente: React.FC<CardClienteProps> = ({
         <DropdownValue
           options={[
             {
-              label: "Pix",
+              label: 'Pix',
               icon: <Smartphone />,
-              value: "Pix",
+              value: 'Pix',
             },
-            { label: "Dinheiro", icon: <DollarSign />, value: "Dinheiro" },
+            { label: 'Dinheiro', icon: <DollarSign />, value: 'Dinheiro' },
             {
-              label: "Cartão",
+              label: 'Cartão',
               icon: <CreditCard />,
-              value: "Cartão",
+              value: 'Cartão',
             },
-            { label: "Gratuito", icon: <DollarSign />, value: "Gratuito" },
+            { label: 'Gratuito', icon: <DollarSign />, value: 'Gratuito' },
           ]}
           onSelect={handleOptionChange}
         />

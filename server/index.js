@@ -792,15 +792,17 @@ app.put('/api/atualizarStatusEPagamentoAgendamento', (req, res) => {
           }
 
           const { cli_id, ser_id, age_status } = agendamentoInfo[0];
+          console.log(cli_id, ser_id, age_status);
 
           // Passo 3: Atualize cf_pontos na tabela cf_cartoesFidelidade se o serviço não for gratuito
-          if (!age_status) {
+          if (age_status === 1) {
+            console.log('entrou aqui');
             const updatePontosQuery = `
               UPDATE cf_cartoesFidelidade
               SET cf_pontos = cf_pontos + 1
               WHERE cli_id = ${cli_id} 
                 AND EXISTS (
-                  SELECT 1 
+                  SELECT ${ser_id}
                   FROM ser_servicos 
                   WHERE ser_id = ${ser_id} AND ser_gratuito = false
                 );
@@ -812,15 +814,18 @@ app.put('/api/atualizarStatusEPagamentoAgendamento', (req, res) => {
                 res
                   .status(500)
                   .send('Erro ao atualizar os pontos de fidelidade.');
+                console.log('nao atualizou');
               } else {
                 res
                   .status(200)
                   .send(
                     'Status e pagamento do agendamento atualizados com sucesso.'
                   );
+                console.log('era pra atualizar');
               }
             });
           } else {
+            console.log('Nao entrou aqui');
             res
               .status(200)
               .send(
