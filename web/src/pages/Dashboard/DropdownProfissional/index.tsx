@@ -50,18 +50,21 @@ const DropdownProfissional = ({
 
   return (
     <div className="mt-4">
-      <label htmlFor="professionalDropdown" className="block text-gray-700">
-        Selecione um profissional:
-      </label>
       <select
         id="professionalDropdown"
         value={profissionalSelecionado || ''}
         onChange={handleSelectChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="mt-1 block w-[12rem] h-12 border border-[#E29C31] bg-black text-[#E29C31] px-4 font-face-montserrat text-2xl"
       >
-        <option value="">Selecione...</option>
+        <option value="" className="font-face-montserrat text-2xl">
+          Selecione...
+        </option>
         {profissionais.map((profissional) => (
-          <option key={profissional.pro_id} value={profissional.pro_id}>
+          <option
+            key={profissional.pro_id}
+            value={profissional.pro_id}
+            className="font-face-montserrat text-2xl"
+          >
             {profissional.usu_nomeCompleto}
           </option>
         ))}

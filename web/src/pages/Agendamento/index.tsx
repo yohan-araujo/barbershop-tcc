@@ -509,41 +509,41 @@ const Agendamento = () => {
       <div className="flex justify-center gap-3 py-16">
         {cartaoResgatavel ? (
           <>
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#1D1D1D] flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-[#1D1D1D]'
                 }`}
               ></div>
             </div>
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#1D1D1D] flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-[#1D1D1D]'
                 }`}
               ></div>
             </div>
           </>
         ) : (
           <>
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#1D1D1D] flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 1 ? 'bg-[#E29C31]' : 'bg-[#1D1D1D]'
                 }`}
               ></div>
             </div>
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#1D1D1D] flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 2 ? 'bg-[#E29C31]' : 'bg-[#1D1D1D]'
                 }`}
               ></div>
             </div>
-            <div className="w-12 h-12 bg-black flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#1D1D1D] flex items-center justify-center rounded-full">
               <div
                 className={`w-8 h-8 rounded-full ${
-                  etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-black'
+                  etapaAtual >= 3 ? 'bg-[#E29C31]' : 'bg-[#1D1D1D]'
                 }`}
               ></div>
             </div>

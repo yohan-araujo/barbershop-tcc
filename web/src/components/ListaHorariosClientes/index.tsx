@@ -14,7 +14,7 @@ const ListaHorariosClientes: React.FC<ListaHorariosClientesProps> = ({
   onConfirmarAgendamento,
 }) => {
   return (
-    <div className="w-[28rem] max-h-96 overflow-y-auto bg-black">
+    <div className="flex justify-center w-[28rem] h-[24rem] max-h-[24rem]  bg-black">
       {agendamentos.map((agendamento) => (
         <CardCliente
           key={agendamento.age_id}

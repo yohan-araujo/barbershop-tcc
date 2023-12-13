@@ -1,5 +1,6 @@
 import ButtonPadrao from 'components/ButtonPadrao';
 import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CarroselGraficoProps {
   charts: JSX.Element[];
@@ -22,10 +23,16 @@ const CarrosselGraficoProfissional = ({ charts }: CarroselGraficoProps) => {
 
   return (
     <div className="">
-      <div>{charts[currentIndex]}</div>
       <div className="flex flex-row mt-4 justify-center space-x-5">
-        <ButtonPadrao texto="Anterior" onClick={prevChart} outline={true} />
-        <ButtonPadrao texto="Próximo" onClick={nextChart} outline={true} />
+        <ChevronLeft
+          className="text-white cursor-pointer mt-40"
+          onClick={prevChart}
+        />
+        <div>{charts[currentIndex]}</div>
+        <ChevronRight
+          className="text-white cursor-pointer mt-40"
+          onClick={nextChart}
+        />
       </div>
     </div>
   );

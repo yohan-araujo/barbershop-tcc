@@ -29,7 +29,7 @@ const AgendaAdministrador = () => {
     if (diaSelecionado) {
       axios
         .get(
-          `http://localhost:3001/api/getAgendamentos/${diaSelecionado.format(
+          `http://localhost:3001/api/getAgendamentosComCliente/${diaSelecionado.format(
             'YYYY-MM-DD'
           )}/${profissionalSelecionado?.pro_id}`
         )
@@ -121,18 +121,18 @@ const AgendaAdministrador = () => {
 
   return (
     <section className="flex bg-black min-h-screen justify-center">
-      <div className="w-2/3 h-[48rem] bg-[#1D1D1D] my-24">
+      <div className="w-2/3 h-[56rem] bg-[#1D1D1D] my-24">
         <span className="flex justify-center uppercase text-[#E29C31] font-merriweather my-12 text-5xl">
           Agenda
         </span>
         <div className="grid grid-cols-2">
           <div>
-            <div>
+            <div className="ml-32">
               <DropdownProfissional
                 aoSelecionarProfissional={handleProfissionalSelecionado}
               />
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-6">
               <Calendario onDiaSelecionado={handleDiaSelecionado} />
             </div>
             <div className="flex justify-center mt-24">
@@ -148,32 +148,36 @@ const AgendaAdministrador = () => {
               >
                 <div className="flex flex-col gap-24 justify-center my-12">
                   <div className="">
-                    <table className="w-full bg-white rounded-lg overflow-hidden">
-                      <thead className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
-                        <tr>
-                          <th className="py-3 px-6 text-left">
-                            Nome do Cliente
+                    <table className="w-full overflow-hidden border border-[#E29C31]">
+                      <thead className="uppercase leading-normal border border-[#E29C31] text-xl">
+                        <tr className="">
+                          <th className="py-3 px-6 text-center text-white font-face-montserrat border border-[#E29C31]">
+                            Cliente
                           </th>
-                          <th className="py-3 px-6 text-left">
-                            Tipo do Serviço
+                          <th className="py-3 px-6 text-center text-white font-face-montserrat border border-[#E29C31]">
+                            Serviço
                           </th>
-                          <th className="py-3 px-6 text-left">Horário</th>
-                          <th className="py-3 px-6 text-center">Excluir</th>
+                          <th className="py-3 px-6 text-center text-white font-face-montserrat border border-[#E29C31]">
+                            Horário
+                          </th>
+                          <th className="py-3 px-6 text-center text-white font-face-montserrat border border-[#E29C31]">
+                            Excluir
+                          </th>
                         </tr>
                       </thead>
-                      <tbody className="text-gray-600 text-sm font-light">
+                      <tbody className="text-lg font-light border border-[#E29C31]">
                         {agendamentosDoDia.map((agendamento) => (
-                          <tr key={agendamento.age_id}>
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
+                          <tr key={agendamento.age_id} className="">
+                            <td className="py-3 px-6 text-center text-white whitespace-nowrap font-face-montserrat border border-[#E29C31]">
                               {agendamento.usu_nomeCompleto}
                             </td>
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
+                            <td className="py-3 px-6 text-center text-white whitespace-nowrap font-face-montserrat border border-[#E29C31]">
                               {agendamento.ser_tipo}
                             </td>
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
+                            <td className="py-3 px-6 text-center text-white whitespace-nowrap font-face-montserrat border border-[#E29C31]">
                               {agendamento.age_hora}
                             </td>
-                            <td className="py-3 px-6 text-center">
+                            <td className="py-3 px-6 text-center border border-[#E29C31]">
                               <ButtonPadrao
                                 texto="Excluir"
                                 onClick={() =>
@@ -213,7 +217,7 @@ const AgendaAdministrador = () => {
               </Modal>
             </div>
           </div>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col mt-12">
             {diaSelecionado && profissionalSelecionado ? (
               <>
                 <div className="text-center my-2 font-bold text-3xl">
@@ -230,12 +234,22 @@ const AgendaAdministrador = () => {
                   </p>
                 </div>
 
-                <div className="flex justify-center">
-                  <ListaHorariosClientes
-                    agendamentos={agendamentosDoDia}
-                    onConfirmarAgendamento={handleConfirmarAgendamento}
-                  />
-                </div>
+                {agendamentosDoDia.length > 0 ? (
+                  <div className="flex justify-center">
+                    <ListaHorariosClientes
+                      agendamentos={agendamentosDoDia}
+                      onConfirmarAgendamento={handleConfirmarAgendamento}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex justify-center mt-12">
+                    <span className="text-4xl font-face-montserrat text-white font-bold uppercase text-center">
+                      nenhum cliente <br />
+                      registrado para o dia!
+                    </span>
+                  </div>
+                )}
+
                 {feedback.message && (
                   <MensagemFeedback
                     type={feedback.type as 'failure' | 'success'}
@@ -248,8 +262,11 @@ const AgendaAdministrador = () => {
                 )}
               </>
             ) : (
-              <div>
-                <span>escolha um dia</span>
+              <div className="flex justify-center">
+                <span className="text-4xl font-face-montserrat text-[#E29C31] font-bold uppercase text-center">
+                  escolha o <br />
+                  profissional e o dia!
+                </span>
               </div>
             )}
           </div>

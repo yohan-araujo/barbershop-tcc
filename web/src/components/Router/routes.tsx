@@ -9,13 +9,11 @@ import Agendamento from '../../pages/Agendamento';
 import PaginaPadrao from '../PaginaPadrao';
 import Login from '../../pages/Login';
 import CadastroProfissional from '../../pages/CadastroProfissional';
-import Sobre from '../../pages/Sobre';
 import PerfilCliente from '../../pages/PerfilCliente';
 import PerfilProfissional from '../../pages/PerfilProfissional';
 import PerfilAdministrador from '../../pages/PerfilAdministrador';
 import CadastroServico from '../../pages/CadastroServico';
 import Pagina404 from '../../pages/Pagina404';
-import EditarAgendas from 'pages/EditarAgendas';
 import AgendaProfissional from '../../pages/AgendaProfissional';
 import Galeria from 'pages/Galeria';
 import CadastroGaleria from 'pages/CadastroGaleria';
@@ -99,10 +97,7 @@ export default function AppRouter() {
             path="cadastroServico"
             element={usuarioTipo === 'A' ? <CadastroServico /> : <Pagina404 />}
           />
-          <Route
-            path="editarAgendas"
-            element={usuarioTipo === 'A' ? <EditarAgendas /> : <Pagina404 />}
-          />
+
           <Route
             path="agendaAdministrador"
             element={
@@ -125,7 +120,6 @@ export default function AppRouter() {
 
           <Route path="galeria" element={<Galeria />} />
           <Route path="login" element={<Login />} />
-          <Route path="sobre" element={<Sobre />} />
           <Route path="*" element={<Pagina404 />} />
         </Route>
       </Routes>

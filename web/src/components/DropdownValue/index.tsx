@@ -49,7 +49,7 @@ const DropdownValue: React.FC<DropdownValueProps> = ({ options, onSelect }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute mt-2 w-56 bg-black ">
+        <div className="absolute mt-2 w-56 bg-black">
           <div
             className="py-1"
             role="menu"
@@ -60,13 +60,15 @@ const DropdownValue: React.FC<DropdownValueProps> = ({ options, onSelect }) => {
               <button
                 key={index}
                 onClick={() => handleOptionClick(option)}
-                className="flex flex-row px-4 py-2 text-sm  hover:bg-gray-100 hover:text-gray-900"
+                className="flex flex-row px-4 py-2 w-full hover:bg-[#E29C31] hover:text-black border border-[#E29C31]"
                 role="menuitem"
               >
-                <span className="text-white font-face-montserrat">
-                  {option.icon}
-                </span>
-                <span className="text-white">{option.label}</span>
+                <div className="flex flex-row gap-4">
+                  <span className="text-white ">{option.icon}</span>
+                  <span className="text-white font-face-montserrat font-bold uppercase ">
+                    {option.label}
+                  </span>
+                </div>
               </button>
             ))}
           </div>

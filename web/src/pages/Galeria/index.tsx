@@ -1,17 +1,17 @@
-import axios from "axios";
-import ButtonPadrao from "components/ButtonPadrao";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import IImage from "types/IImage";
+import axios from 'axios';
+import ButtonPadrao from 'components/ButtonPadrao';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import IImage from 'types/IImage';
 
-const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+const usuarioTipo = sessionStorage.getItem('usuarioTipo');
 
 const Galeria = () => {
   const [imagens, setImagens] = useState<IImage[]>([]);
 
   const fetchImagens = () => {
     axios
-      .get<IImage[]>("http://localhost:3001/api/getImagens")
+      .get<IImage[]>('http://localhost:3001/api/getImagens')
       .then((res) => {
         setImagens(res.data);
       })
@@ -32,7 +32,7 @@ const Galeria = () => {
           imagens.map((imagem, index) => (
             <img
               key={index}
-              src={`http://localhost:3001/uploads/${imagem.gal_nomeImagem}`}
+              src={`http://localhost:3001/uploads/Galeria/${imagem.gal_nomeImagem}`}
               alt={`Imagem ${index}`}
               className="border-2 border-[#E29C31] max-w-xs h-auto mb-4 object-cover max-h-48"
             />
@@ -43,7 +43,7 @@ const Galeria = () => {
           </p>
         )}
       </div>
-      {usuarioTipo === "A" || usuarioTipo === "P" ? (
+      {usuarioTipo === 'A' || usuarioTipo === 'P' ? (
         <div className="flex flex-col items-center mb-12">
           <span className="text-4xl text-white font-face-montserrat my-12">
             Quer cadastrar fotos para exibir aqui?

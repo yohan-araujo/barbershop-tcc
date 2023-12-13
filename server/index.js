@@ -26,7 +26,13 @@ app.use('/uploads', express.static('uploads'));
 
 const storageGaleria = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/Galeria');
+    const directory = 'uploads/Galeria';
+    fs.mkdir(directory, { recursive: true }, (err) => {
+      if (err) {
+        console.error('Error creating directory:', err);
+      }
+      cb(null, directory);
+    });
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -1011,6 +1017,24 @@ app.get('/api/getAgendamentos/:data/:pro_id', (req, res) => {
   });
 });
 
+app.get('/api/getAgendamentosComCliente/:data/:pro_id', (req, res) => {
+  const data = req.params.data;
+  const pro_id = req.params.pro_id;
+
+  const query =
+    'SELECT a.*, s.*, u.usu_nomeCompleto FROM age_agendamento a JOIN ser_servicos s ON a.ser_id = s.ser_id JOIN cli_clientes c ON a.cli_id = c.cli_id JOIN usu_usuarios u ON c.usu_id = u.usu_id WHERE age_data = ? AND pro_id = ? AND age_status = 0;';
+
+  db.query(query, [data, pro_id], (error, results) => {
+    if (error) {
+      console.error('Erro ao consultar agendamentos:', error);
+      res.status(500).json({ error: 'Erro ao consultar agendamentos' });
+      return;
+    }
+
+    res.json(results);
+  });
+});
+
 app.get('/api/getCliente/:cli_id', (req, res) => {
   const cli_id = req.params.cli_id; // Corrigido para req.params.cli_id
   const query =
@@ -1075,6 +1099,36 @@ app.get('/api/getDadosFP', (req, res) => {
   });
 });
 
+app.get('/api/getDadosFPSemanal', (req, res) => {
+  const filtro = 'semanal';
+
+  const dateFilter = `
+    WHERE WEEK(age_data) = WEEK(NOW()) 
+    AND YEAR(age_data) = YEAR(NOW())
+  `;
+
+  const proIdFilter = req.query.pro_id
+    ? `AND age_agendamento.pro_id = ${req.query.pro_id}`
+    : '';
+
+  const query = `
+    SELECT age_pagamento, COUNT(*) as count
+    FROM age_agendamento
+    ${dateFilter} AND age_pagamento IN ('Dinheiro', 'Pix', 'Cartão de crédito')
+    ${proIdFilter}  
+    GROUP BY age_pagamento
+  `;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro ao executar a consulta:', error);
+      res.status(500).send('Erro ao buscar dados do banco de dados');
+      return;
+    }
+    res.json(results);
+  });
+});
+
 app.get('/api/getDadosTS', (req, res) => {
   const filtro = req.query.filtro;
   const pro_id = req.query.pro_id;
@@ -1105,6 +1159,32 @@ app.get('/api/getDadosTS', (req, res) => {
     INNER JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
     ${dateFilter}
     ${proIdFilter}
+    GROUP BY ser_tipo
+  `;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Erro ao executar a consulta:', error);
+      res.status(500).send('Erro ao buscar dados do banco de dados');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/getDadosTSSemanal', (req, res) => {
+  const filtro = 'semanal'; // Definindo o filtro como semanal
+
+  const dateFilter = `
+    WHERE WEEK(age_data) = WEEK(NOW()) 
+    AND YEAR(age_data) = YEAR(NOW())
+  `;
+
+  const query = `
+    SELECT ser_tipo, COUNT(*) as quantidade
+    FROM age_agendamento
+    INNER JOIN ser_servicos ON age_agendamento.ser_id = ser_servicos.ser_id
+    ${dateFilter}
     GROUP BY ser_tipo
   `;
 

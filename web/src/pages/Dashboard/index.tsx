@@ -112,7 +112,7 @@ const Dashboard = () => {
             Dashboard
           </span>
         </div>
-        <div className="flex justify-start ml-28">
+        <div className="flex justify-start ml-28 gap-4">
           <DropdownFiltro onSelectFilter={handleFilterSelect} />
           <DropdownProfissional
             aoSelecionarProfissional={handleProfissionalSelecionado}

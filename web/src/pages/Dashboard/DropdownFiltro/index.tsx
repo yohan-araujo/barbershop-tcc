@@ -15,19 +15,24 @@ const DropdownFiltro = ({ onSelectFilter }: DropdownFiltroProps) => {
 
   return (
     <div className="mt-4">
-      <label htmlFor="filterDropdown" className="block text-gray-700">
-        Selecione um filtro:
-      </label>
       <select
         id="filterDropdown"
         value={selectedFilter}
         onChange={handleSelectChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="mt-1 block w-[12rem] h-12 border border-[#E29C31] bg-black text-[#E29C31] px-4 font-face-montserrat text-2xl"
       >
-        <option value="">Selecione...</option>
-        <option value="semanal">Semanal</option>
-        <option value="mensal">Mensal</option>
-        <option value="semestral">Semestral</option>
+        <option value="" className="font-face-montserrat text-2xl">
+          Selecione...
+        </option>
+        <option value="semanal" className="font-face-montserrat text-2xl">
+          Semanal
+        </option>
+        <option value="mensal" className="font-face-montserrat text-2xl">
+          Mensal
+        </option>
+        <option value="semestral" className="font-face-montserrat text-2xl">
+          Semestral
+        </option>
       </select>
     </div>
   );

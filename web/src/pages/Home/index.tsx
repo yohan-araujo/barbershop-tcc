@@ -72,7 +72,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="bg-stone-900 p-14">
+      <div className="bg-[#1D1D1D] p-14">
         <div className="flex flex-row">
           <div className="w-1/2 ml-36">
             <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left">
@@ -126,7 +126,7 @@ const Home = () => {
         )}
       </section>
 
-      <div className="w-max-screen h-3/5 bg-stone-800 py-24">
+      <div className="w-max-screen h-3/5 bg-[#1D1D1D] py-24">
         <div className="flex flex-row items-center lg:mx-[12rem] md:mx-5 gap-12 md:gap-4">
           <div className="flex flex-auto p-8">
             <div className="relative">

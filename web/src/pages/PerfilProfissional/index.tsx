@@ -4,18 +4,25 @@ import Skills from './Skills';
 import { useState, useEffect } from 'react';
 import { ISkill } from 'types/ISkill';
 import axios from 'axios';
-import GraficoPieProfissional from 'components/GraficoPieProfissional';
 import CarrosselGraficoProfissional from 'components/CarroselGraficoProfissional';
-import GraficoLineProfissional from 'components/GraficoLineProfissional';
+import PieChartFP from 'components/PieChartFP';
+import PieChartTS from 'components/PieChartTS';
+import DropdownFiltro from 'pages/Dashboard/DropdownFiltro';
 
 const PerfilProfissional = () => {
   const [skills, setSkills] = useState<ISkill[]>([]);
   const [fotoUsuario, setFotoUsuario] = useState('') ?? '';
+  const [dadosFp, setDadosFp] = useState([]);
+  const [dadosTs, setDadosTs] = useState([]);
+  const [filtroSelecionado, setFiltroSelecionado] = useState<string>('');
 
   const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
   const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
-  const charts = [<GraficoLineProfissional />, <GraficoPieProfissional />];
+  const charts = [
+    <PieChartFP dados={dadosFp} />,
+    <PieChartTS dados={dadosTs} />,
+  ];
 
   const proId = sessionStorage.getItem('proId');
 
@@ -44,6 +51,45 @@ const PerfilProfissional = () => {
         });
     }
   }, [usuarioId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:3001/api/getDadosFP?filtro=${filtroSelecionado}&pro_id=${proId}`
+      )
+      .then((response) => {
+        const formattedData = response.data.map((item: any) => ({
+          name: item.age_pagamento,
+          value: item.count,
+        }));
+        setDadosFp(formattedData);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, [filtroSelecionado, proId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:3001/api/getDadosTS?filtro=${filtroSelecionado}&pro_id=${proId}`
+      )
+      .then((response) => {
+        const formattedData = response.data.map((item: any) => ({
+          name: item.ser_tipo,
+          value: item.quantidade,
+        }));
+        setDadosTs(formattedData);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, [filtroSelecionado, proId]);
+
+  const handleFilterSelect = (selectedOption: string) => {
+    setFiltroSelecionado(selectedOption);
+    console.log('Opção selecionada:', selectedOption);
+  };
 
   return (
     <section className="flex bg-black">
@@ -91,8 +137,13 @@ const PerfilProfissional = () => {
                   <span className="text-[#E29C31] text-4xl font-merriweather">
                     Desempenho
                   </span>
-                  <div className="flex justify-center p-5 my-8">
-                    <CarrosselGraficoProfissional charts={charts} />
+                  <div className="flex flex-col justify-center p-5 my-8">
+                    <div className="">
+                      <DropdownFiltro onSelectFilter={handleFilterSelect} />
+                    </div>
+                    <div className="mt-4">
+                      <CarrosselGraficoProfissional charts={charts} />
+                    </div>
                   </div>
                 </div>
               </div>

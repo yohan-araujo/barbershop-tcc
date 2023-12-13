@@ -4,15 +4,18 @@ import ListaProfissionais from './ListaProfissionais';
 import { useEffect, useState } from 'react';
 import { IProfissional } from 'types/IProfissional';
 import axios from 'axios';
-import GraficoLine from '../../components/GraficoLine';
 import CarroselGrafico from '../../components/CarroselGrafico';
-import GraficoPie from 'components/GraficoPie';
+import PieChartFP from 'components/PieChartFP';
+import PieChartTS from 'components/PieChartTS';
 
 const PerfilAdministrador = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
   const [fotoUsuario, setFotoUsuario] = useState('');
+  const [dadosFp, setDadosFp] = useState([]);
+  const [dadosTs, setDadosTs] = useState([]);
+
   const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
   const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
 
@@ -42,7 +45,40 @@ const PerfilAdministrador = () => {
     }
   }, [usuarioId]);
 
-  const charts = [<GraficoLine />, <GraficoPie />];
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/getDadosFPSemanal`)
+      .then((response) => {
+        const formattedData = response.data.map((item: any) => ({
+          name: item.age_pagamento,
+          value: item.count,
+        }));
+        setDadosFp(formattedData);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/getDadosTSSemanal`)
+      .then((response) => {
+        const formattedData = response.data.map((item: any) => ({
+          name: item.ser_tipo,
+          value: item.quantidade,
+        }));
+        setDadosTs(formattedData);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar dados da API:', error);
+      });
+  }, []);
+
+  const charts = [
+    <PieChartFP dados={dadosFp} />,
+    <PieChartTS dados={dadosTs} />,
+  ];
 
   return (
     <section className="min-h-screen bg-black">
@@ -107,7 +143,7 @@ const PerfilAdministrador = () => {
                   </h3>
                 </div>
                 <div className="flex items-center">
-                  <Link to="/editarAgendas">
+                  <Link to="/agendaAdministrador">
                     <ButtonPadrao
                       texto="Editar Agendas"
                       tamanho="w-[18rem]"

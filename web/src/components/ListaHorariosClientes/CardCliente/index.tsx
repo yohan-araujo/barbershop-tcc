@@ -59,7 +59,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
   const isButtonDisabled = !selectedOption;
 
   return (
-    <div className="w-[26rem] h-40 border-2 border-[#E29C31] bg-black my-4">
+    <div className="w-[26rem] h-44 border-2 border-[#E29C31] bg-black my-4">
       <div className="flex flex-row gap-6 my-2">
         <div className="ml-4">
           <img src={urlImagem} alt="" className="w-20 h-20 rounded-full" />
@@ -72,7 +72,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
           </div>
           <div>
             <span className="text-white font-face-montserrat text-xl">
-              {agendamento.age_hora} - mais 30
+              {agendamento.age_hora} - 00:00
             </span>
           </div>
           <div>
@@ -95,10 +95,11 @@ const CardCliente: React.FC<CardClienteProps> = ({
             },
             { label: 'Dinheiro', icon: <DollarSign />, value: 'Dinheiro' },
             {
-              label: 'Cartão de crédito',
+              label: 'Cartão',
               icon: <CreditCard />,
-              value: 'Cartão de Crédito',
+              value: 'Cartão',
             },
+            { label: 'Gratuito', icon: <DollarSign />, value: 'Dinheiro' },
           ]}
           onSelect={handleOptionChange}
         />

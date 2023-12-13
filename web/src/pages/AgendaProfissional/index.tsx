@@ -97,12 +97,22 @@ const AgendaProfissional: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="flex justify-center">
-                  <ListaHorariosClientes
-                    agendamentos={agendamentosDoDia}
-                    onConfirmarAgendamento={handleConfirmarAgendamento}
-                  />
-                </div>
+                {agendamentosDoDia.length > 1 ? (
+                  <div className="flex justify-center">
+                    <ListaHorariosClientes
+                      agendamentos={agendamentosDoDia}
+                      onConfirmarAgendamento={handleConfirmarAgendamento}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex justify-center mt-12">
+                    <span className="text-4xl font-face-montserrat text-white font-bold uppercase text-center">
+                      nenhum cliente <br />
+                      registrado para o dia!
+                    </span>
+                  </div>
+                )}
+
                 {feedback.message && (
                   <MensagemFeedback
                     type={feedback.type as 'failure' | 'success'}
@@ -115,8 +125,11 @@ const AgendaProfissional: React.FC = () => {
                 )}
               </>
             ) : (
-              <div>
-                <span>escolha um dia</span>
+              <div className="flex justify-center">
+                <span className="text-4xl font-face-montserrat text-[#E29C31] font-bold uppercase text-center">
+                  escolha o <br />
+                  profissional e o dia!
+                </span>
               </div>
             )}
           </div>
