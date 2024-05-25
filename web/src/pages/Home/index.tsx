@@ -1,12 +1,13 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { IProfissional } from 'types/IProfissional';
-import BgHome from 'assets/bg-home.svg';
-import imgbarbahora from 'assets/img/bg-home2.jpg';
-import { IServico } from 'types/IServico';
-import ListaCardsServicos from './ListaCardsServicos';
-import ListaCardsProfissional from './ListaCardsProfissional';
-import ButtonPadrao from 'components/ButtonPadrao';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { IProfissional } from "types/IProfissional";
+import BgHome from "assets/bg-home.svg";
+import imgbarbahora from "assets/img/bg-home2.jpg";
+import { IServico } from "types/IServico";
+import ListaCardsServicos from "./ListaCardsServicos";
+import ListaCardsProfissional from "./ListaCardsProfissional";
+import ButtonPadrao from "components/ButtonPadrao";
+import ButtonZapZap from "components/ButtonZapzap";
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -16,7 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IProfissional[]>('http://localhost:3001/api/getProfissionais')
+      .get<IProfissional[]>("http://localhost:3001/api/getProfissionais")
       .then((response) => {
         setListaProfissionais(response.data);
       });
@@ -24,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get<IServico[]>('http://localhost:3001/api/getServicosCadastrados')
+      .get<IServico[]>("http://localhost:3001/api/getServicosCadastrados")
       .then((response) => {
         setListaServicos(response.data);
       });
@@ -96,7 +97,7 @@ const Home = () => {
             <img
               src="https://source.unsplash.com/user/erondu/445x367"
               alt="foto do mapa"
-              className="m-2 md:w-[30rem] md:h-[30rem]"
+              className="m-2 w-[50rem] h-[30rem]"
             />
           </div>
         </div>
@@ -126,25 +127,25 @@ const Home = () => {
         )}
       </section>
 
-      <div className="w-max-screen h-3/5 bg-[#1D1D1D] py-24">
-        <div className="flex flex-row items-center lg:mx-[12rem] md:mx-5 gap-12 md:gap-4">
-          <div className="flex flex-auto p-8">
+      <div className="w-full h-3/5 bg-[#1D1D1D] py-24">
+        <div className="flex flex-wrap justify-center items-center mx-8 lg:mx-[12rem] space-y-8 lg:space-y-0 lg:space-x-[18rem]">
+          <div className="flex justify-center">
             <div className="relative">
-              <div className="lg:w-[35rem] md:w-[24rem] lg:h-[29rem] md:h-[20rem] absolute top-7 left-7 border-2 border-orange-400 border-solid border-opacity-50"></div>
-              <img
-                className="lg:w-[35rem] md:w-[25rem] relative z-10"
-                src={imgbarbahora}
-                alt="foto de um barbeiro"
-              />
+              <div className="border-2 absolute left-[1.25rem] top-[1.25rem] w-[35rem] h-[29rem] border-[#E29C31]"></div>
+              <div className="flex flex-row">
+                <img
+                  className="w-[35rem] z-10 object-cover"
+                  src={imgbarbahora}
+                  alt="foto de um barbeiro"
+                />
+              </div>
             </div>
           </div>
-
           <div className="flex flex-col my-8 p-5 bg-black border border-orange-400 w-[30rem] h-[38rem]">
             <div className="ml-5 mt-3">
               <h3 className="w-[293px] h-[83px] mb-[7rem] text-orange-400 text-4xl font-bold font-['Merriweather']">
                 Horário de funcionamento
               </h3>
-
               <div className="flex flex-col gap-16">
                 <div className="flex flex-col items-center">
                   <div className="border-b border-orange-400 mt-4 w-full flex justify-between">
@@ -205,6 +206,8 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      <ButtonZapZap />
     </section>
   );
 };
