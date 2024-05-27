@@ -1,30 +1,30 @@
-import ButtonPadrao from 'components/ButtonPadrao';
-import { Link } from 'react-router-dom';
-import Skills from './Skills';
-import { useState, useEffect } from 'react';
-import { ISkill } from 'types/ISkill';
-import axios from 'axios';
-import CarrosselGraficoProfissional from 'components/CarroselGraficoProfissional';
-import PieChartFP from 'components/PieChartFP';
-import PieChartTS from 'components/PieChartTS';
-import DropdownFiltro from 'pages/Dashboard/DropdownFiltro';
+import ButtonPadrao from "components/ButtonPadrao";
+import { Link } from "react-router-dom";
+import Skills from "./Skills";
+import { useState, useEffect } from "react";
+import { ISkill } from "types/ISkill";
+import axios from "axios";
+import CarrosselGraficoProfissional from "components/CarroselGraficoProfissional";
+import PieChartFP from "components/PieChartFP";
+import PieChartTS from "components/PieChartTS";
+import DropdownFiltro from "pages/Dashboard/DropdownFiltro";
 
 const PerfilProfissional = () => {
   const [skills, setSkills] = useState<ISkill[]>([]);
-  const [fotoUsuario, setFotoUsuario] = useState('') ?? '';
+  const [fotoUsuario, setFotoUsuario] = useState("") ?? "";
   const [dadosFp, setDadosFp] = useState([]);
   const [dadosTs, setDadosTs] = useState([]);
-  const [filtroSelecionado, setFiltroSelecionado] = useState<string>('');
+  const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
 
-  const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
-  const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
+  const nomeUsuario = sessionStorage.getItem("usuarioNome") ?? "";
+  const usuarioId = sessionStorage.getItem("usuarioId") ?? "";
 
   const charts = [
     <PieChartFP dados={dadosFp} />,
     <PieChartTS dados={dadosTs} />,
   ];
 
-  const proId = sessionStorage.getItem('proId');
+  const proId = sessionStorage.getItem("proId");
 
   useEffect(() => {
     axios
@@ -39,7 +39,7 @@ const PerfilProfissional = () => {
       fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Erro ao obter a foto do perfil');
+            throw new Error("Erro ao obter a foto do perfil");
           }
           return response.text();
         })
@@ -65,7 +65,7 @@ const PerfilProfissional = () => {
         setDadosFp(formattedData);
       })
       .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
+        console.error("Erro ao buscar dados da API:", error);
       });
   }, [filtroSelecionado, proId]);
 
@@ -82,13 +82,13 @@ const PerfilProfissional = () => {
         setDadosTs(formattedData);
       })
       .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
+        console.error("Erro ao buscar dados da API:", error);
       });
   }, [filtroSelecionado, proId]);
 
   const handleFilterSelect = (selectedOption: string) => {
     setFiltroSelecionado(selectedOption);
-    console.log('Opção selecionada:', selectedOption);
+    console.log("Opção selecionada:", selectedOption);
   };
 
   return (
@@ -120,7 +120,7 @@ const PerfilProfissional = () => {
         </div>
         <div className="grid grid-cols-2 bg-[#1D1D1D] rounded-b-xl">
           <div className="flex flex-col my-36">
-            {' '}
+            {" "}
             <div className="flex flex-row ml-12">
               <span className="text-[#E29C31] text-4xl font-merriweather">
                 Skills
@@ -157,13 +157,27 @@ const PerfilProfissional = () => {
             </div>
             <div className="flex flex-col mt-12">
               <div className="flex justify-start ">
-                <Skills skills={skills}></Skills>
+                <div className=" bg-[#E29C31] px-12 py-1 ml-2 shadow-inner">
+                  <span className="text-white font-face-montserrat uppercase font-bold">
+                    Rápido
+                  </span>
+                </div>
+                <div className=" bg-[#E29C31] px-12 py-1 ml-2 shadow-inner">
+                  <span className="text-white font-face-montserrat uppercase font-bold">
+                    Desenhista
+                  </span>
+                </div>
+                <div className=" bg-[#E29C31] px-12 py-1 ml-2 shadow-inner">
+                  <span className="text-white font-face-montserrat uppercase font-bold">
+                    Paciente
+                  </span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col mt-52">
               <span className="text-[#E29C31] text-4xl font-merriweather">
                 Funções
-              </span>{' '}
+              </span>{" "}
               <div className="flex flex-col ml-40 mt-12">
                 <Link to="/agendaProfissional" className="mt-6 ml-1">
                   <ButtonPadrao

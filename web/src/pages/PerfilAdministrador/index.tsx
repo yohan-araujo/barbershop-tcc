@@ -1,23 +1,24 @@
-import ButtonPadrao from 'components/ButtonPadrao';
-import { Link } from 'react-router-dom';
-import ListaProfissionais from './ListaProfissionais';
-import { useEffect, useState } from 'react';
-import { IProfissional } from 'types/IProfissional';
-import axios from 'axios';
-import CarroselGrafico from '../../components/CarroselGrafico';
-import PieChartFP from 'components/PieChartFP';
-import PieChartTS from 'components/PieChartTS';
+import ButtonPadrao from "components/ButtonPadrao";
+import { Link } from "react-router-dom";
+import ListaProfissionais from "./ListaProfissionais";
+import { useEffect, useState } from "react";
+import { IProfissional } from "types/IProfissional";
+import axios from "axios";
+import CarroselGrafico from "../../components/CarroselGrafico";
+import PieChartFP from "components/PieChartFP";
+import PieChartTS from "components/PieChartTS";
+import CarrosselGraficoProfissional from "components/CarroselGraficoProfissional";
 
 const PerfilAdministrador = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
     []
   );
-  const [fotoUsuario, setFotoUsuario] = useState('');
+  const [fotoUsuario, setFotoUsuario] = useState("");
   const [dadosFp, setDadosFp] = useState([]);
   const [dadosTs, setDadosTs] = useState([]);
 
-  const nomeUsuario = sessionStorage.getItem('usuarioNome') ?? '';
-  const usuarioId = sessionStorage.getItem('usuarioId') ?? '';
+  const nomeUsuario = sessionStorage.getItem("usuarioNome") ?? "";
+  const usuarioId = sessionStorage.getItem("usuarioId") ?? "";
 
   useEffect(() => {
     axios
@@ -32,7 +33,7 @@ const PerfilAdministrador = () => {
       fetch(`http://localhost:3001/api/getImagensPerfis/${usuarioId}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Erro ao obter a foto do perfil');
+            throw new Error("Erro ao obter a foto do perfil");
           }
           return response.text();
         })
@@ -56,7 +57,7 @@ const PerfilAdministrador = () => {
         setDadosFp(formattedData);
       })
       .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
+        console.error("Erro ao buscar dados da API:", error);
       });
   }, []);
 
@@ -71,7 +72,7 @@ const PerfilAdministrador = () => {
         setDadosTs(formattedData);
       })
       .catch((error) => {
-        console.error('Erro ao buscar dados da API:', error);
+        console.error("Erro ao buscar dados da API:", error);
       });
   }, []);
 
@@ -191,7 +192,7 @@ const PerfilAdministrador = () => {
                 </span>
               </div>
               <div className="flex p-5 my-8">
-                <CarroselGrafico charts={charts} />
+                <CarrosselGraficoProfissional charts={charts} />
               </div>
             </div>
           </div>

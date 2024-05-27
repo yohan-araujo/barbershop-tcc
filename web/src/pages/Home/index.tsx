@@ -127,8 +127,8 @@ const Home = () => {
         )}
       </section>
 
-      <div className="w-full h-3/5 bg-[#1D1D1D] py-24">
-        <div className="flex flex-wrap justify-center items-center mx-8 lg:mx-[12rem] space-y-8 lg:space-y-0 lg:space-x-[18rem]">
+      <div className="w-max-screen h-3/5 bg-[#1D1D1D] py-24">
+        <div className="flex flex-auto justify-center space-x-60 items-center ">
           <div className="flex justify-center">
             <div className="relative">
               <div className="border-2 absolute left-[1.25rem] top-[1.25rem] w-[35rem] h-[29rem] border-[#E29C31]"></div>
