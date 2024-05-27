@@ -8,6 +8,7 @@ import ListaCardsServicos from "./ListaCardsServicos";
 import ListaCardsProfissional from "./ListaCardsProfissional";
 import ButtonPadrao from "components/ButtonPadrao";
 import ButtonZapZap from "components/ButtonZapzap";
+import MapaLocal from "components/MapaLocal";
 
 const Home = () => {
   const [listaProfissionais, setListaProfissionais] = useState<IProfissional[]>(
@@ -74,31 +75,30 @@ const Home = () => {
       </div>
 
       <div className="bg-[#1D1D1D] p-14">
-        <div className="flex flex-row">
-          <div className="w-1/2 ml-36">
-            <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left">
-              Sobre nós
-            </h2>
-            <p className="text-justify font-normal font-face-montserrat text-xl text-white my-12 pr-48">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
+        <div className="grid grid-cols-2 gap-x-10 mx-5">
+          <div className="flex flex-auto justify-end items-end">
+            <div className="flex flex-col max-w-screen-md">
+              <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-left">
+                Sobre nós
+              </h2>
+              <p className="text-justify font-normal font-face-montserrat text-xl text-white my-12 pr-48">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged. It was
+                popularised in the 1960s with the release of Letraset sheets
+                containing Lorem Ipsum passages, and more recently with desktop
+                publishing software like Aldus PageMaker including versions of
+                Lorem Ipsum.
+              </p>
+            </div>
           </div>
-
-          <div className="flex flex-auto justify-start items-center">
-            <img
-              src="https://source.unsplash.com/user/erondu/445x367"
-              alt="foto do mapa"
-              className="m-2 w-[50rem] h-[30rem]"
-            />
+          <div className="flex flex-auto ">
+            <div className="flex flex-auto max-w-screen-md justify-start items-center">
+              <MapaLocal />
+            </div>
           </div>
         </div>
       </div>
