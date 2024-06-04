@@ -10,7 +10,7 @@ const CardServicos = ({ servico }: CardServicosProps) => {
       <div className="flex flex-col border border-orange-400 h-full">
         <div className="relative">
           <img
-            src="https://picsum.photos/200/300"
+            src={`http://localhost:3001/uploads/Servicos/${servico.ser_id}/${servico.ser_foto}`}
             alt="foto do servico"
             className="w-full h-72 object-cover"
             loading="lazy"

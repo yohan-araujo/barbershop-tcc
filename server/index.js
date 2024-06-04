@@ -81,13 +81,40 @@ const storagePerfilProfissionais = multer.diskStorage({
   },
 });
 
+const storageServicos = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    try {
+      const diretorio = `./uploads/Servicos/`;
+
+      if (!fs.existsSync(diretorio)) {
+        fs.mkdirSync(diretorio, { recursive: true });
+      }
+
+      cb(null, diretorio);
+    } catch (error) {
+      cb(error, '');
+    }
+  },
+
+  filename: function (req, file, cb) {
+    const fileName = file.originalname;
+    cb(null, fileName);
+  },
+});
+
 const uploadFotoCliente = multer({ storage: storagePerfilClientes }).single(
   'usu_foto'
 );
 
+
+
 const uploadFotoProfissional = multer({
   storage: storagePerfilProfissionais,
 }).single('usu_foto');
+
+const uploadServico = multer({ storage: storageServicos }).single(
+  'ser_foto'
+);
 
 app.post('/api/redefinicaoDeSenha', async (req, res) => {
   const { email } = req.body;
@@ -326,6 +353,83 @@ app.post('/api/insertUsuarioCliente', uploadFotoCliente, (req, res) => {
   });
 });
 
+app.post('/api/insertServico', uploadServico, (req, res) => {
+  const { ser_tipo, ser_preco } = req.body;
+  const ser_foto = req.file.filename;
+  const caminhoImagem = req.file.path;
+  const ser_gratuito = false;
+
+  const insertServico =
+    'INSERT INTO ser_servicos (ser_tipo, ser_preco, ser_foto, ser_caminhoFoto, ser_gratuito) VALUES (?,?,?,?,?)';
+
+  db.beginTransaction((err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }
+
+    db.query(
+      insertServico,
+      [ser_tipo, ser_preco, ser_foto, caminhoImagem, ser_gratuito],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return db.rollback(() => {
+            res.status(500).send(err);
+          });
+        }
+
+        const ser_id = result.insertId;
+        const diretorio = `uploads\\Servicos\\${ser_id}`;
+
+        if (!fs.existsSync(diretorio)) {
+          fs.mkdirSync(diretorio, { recursive: true });
+        }
+
+        const newFilePath = `${diretorio}\\${ser_foto}`;
+
+        fs.rename(caminhoImagem, newFilePath, (err) => {
+          if (err) {
+            console.log(err);
+            return db.rollback(() => {
+              res.status(500).send(err);
+            });
+          }
+
+          const updateCaminhoFoto =
+            'UPDATE ser_servicos SET ser_caminhoFoto = ? WHERE ser_id = ?';
+
+          db.query(updateCaminhoFoto, [newFilePath, ser_id], (err, result) => {
+            if (err) {
+              console.log(err);
+              return db.rollback(() => {
+                res.status(500).send(err);
+              });
+            }
+
+            db.commit((err) => {
+              if (err) {
+                console.log(err);
+                return db.rollback(() => {
+                  res.status(500).send(err);
+                });
+              }
+
+              res.status(200).json({
+                success: true,
+                message: 'Serviço inserido com sucesso',
+                ser_id: ser_id,
+              });
+            });
+          });
+        });
+      }
+    );
+  });
+});
+
+
 const uploadGaleria = multer({ storage: storageGaleria });
 
 app.get('/api/getImagens', (req, res) => {
@@ -505,23 +609,7 @@ app.post('/api/insertAgendamentoGratuito', (req, res) => {
   );
 });
 
-app.post('/api/insertServico', (req, res) => {
-  const { tipo, preco } = req.body;
 
-  const insertServico =
-    'INSERT INTO ser_servicos (ser_tipo, ser_preco) VALUES (?,?)';
-
-  db.query(insertServico, [tipo, preco], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-      return;
-    }
-    res
-      .status(200)
-      .json({ success: true, message: 'Servico inserido com sucesso' });
-  });
-});
 
 app.post(
   '/api/insertUsuarioProfissional',
@@ -531,7 +619,7 @@ app.post(
     const usu_tipo = 'P';
     const usu_foto = req.file.filename;
     const caminhoImagem = req.file.path;
-    console.log(caminhoImagem);
+
 
     const salt = crypto.randomBytes(16).toString('hex');
     const hash = crypto
@@ -561,7 +649,7 @@ app.post(
           hash,
           salt,
           usu_foto,
-          '', // Empty usu_caminhoFoto for now
+          '', 
           usu_tipo,
         ],
         (err, result) => {
@@ -662,7 +750,7 @@ app.get('/api/getProfissionais', (req, res) => {
 
 app.get('/api/getServicosCadastrados', (req, res) => {
   const selectServicos = `
-    SELECT ser_id, ser_tipo, ser_preco FROM ser_servicos WHERE ser_gratuito = false;
+    SELECT ser_id, ser_tipo, ser_preco, ser_foto, ser_caminhoFoto FROM ser_servicos WHERE ser_gratuito = false;
   `;
   db.query(selectServicos, (err, result) => {
     if (err) {
