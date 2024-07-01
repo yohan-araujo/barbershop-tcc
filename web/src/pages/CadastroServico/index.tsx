@@ -87,7 +87,7 @@ const CadastroServico = () => {
     <section className="flex min-h-screen bg-black">
       <div className='flex flex-auto justify-center items-center'>
         <div className='relative'>
-          <div className="border-2 border-[#E29C31] absolute left-3 top-3 w-[25.5rem] h-[35.2rem] " />
+          <div className="border-2 border-[#E29C31] absolute left-3 top-3 w-[25.5rem] h-[47.25rem] " />
           <div className="flex flex-auto justify-center relative w-[25rem] z-10 bg-[#1D1D1D] rounded-lg shadow-xl">
             <div className="flex flex-col items-center">
               <div className="flex p-14 w-auto">
@@ -126,7 +126,7 @@ const CadastroServico = () => {
                     <div>
                       <div className="flex flex-col mb-4">
                         <h4 className="mb-2 font-face-montserrat text-start text-white text-lg font-normal">
-                          Foto de perfil
+                          Foto do Serviço
                         </h4>
                         <p className="mb-2 font-face-montserrat text-white text-sm text-start text-opacity-60">
                           Envie uma foto do seu dispositivo

@@ -8,4 +8,6 @@ export interface IAgendamento {
   ser_tipo: string;
   age_status: boolean;
   ser_preco: number;
+  ser_foto: string;
+  ser_caminhoFoto: string;
 }

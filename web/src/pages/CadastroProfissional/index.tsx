@@ -91,7 +91,7 @@ const CadastroProfissional = () => {
       <div className="flex flex-auto mx-40 bg-[#1D1D1D]">
         <div className="flex flex-auto justify-center">
           <div className="relative">
-            <div className="border-2 absolute left-[5rem] top-[11rem] w-[36rem] h-[81.5rem] border-[#E29C31]"></div>
+            <div className="border-2 absolute left-[2rem] top-[11rem] w-[39.5rem] h-[83rem] border-[#E29C31]"></div>
             <div className="bg-black rounded-lg shadow-xl my-36 relative z-10 w-[40rem]">
               <div className="flex my-6 justify-center items-center">
                 <div className="w-full">

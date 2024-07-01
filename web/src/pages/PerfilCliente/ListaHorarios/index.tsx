@@ -31,27 +31,28 @@ const ListaHorarios = ({ agendamentos }: ListaHorariosProps) => {
                     : "highlighted-row grid grid-cols-5 gap-0 my-2 "
                 }
               >
-                <div className="flex flex-row font-face-montserrat text-center px-2 py-2 ">
-                  <div className="inline-flex items-center justify-center h-11 w-11 rounded-full bg-white mr-2 text-black">
-                    icon
-                  </div>
-                  <div className="font-face-montserrat mt-2">
+                <div className="flex flex-row items-center text-center space-x-12 py-2 px-12">
+                  <div className="font-face-montserrat">
                     {horario.ser_tipo}
                   </div>
-                </div>
-                <div className="font-face-montserrat text-center py-2 mt-2">
-                  {new Date(horario.age_data).toLocaleDateString("pt-BR")}
-                </div>
-                <div className="font-face-montserrat text-center py-2 mt-2">
-                  {horario.age_hora.substring(0, 5)}
-                </div>
-                <div className="font-face-montserrat text-center py-2 mt-2">
-                  {horario.usu_nomeCompleto}
-                </div>
-                <div className="font-face-montserrat text-center py-2 mt-2">
-                  {horario.ser_preco !== 0
-                    ? `R$ ${horario.ser_preco.toFixed(2)}`
-                    : "Gratuito"}
+
+                  <div className="font-face-montserrat">
+                    {new Date(horario.age_data).toLocaleDateString("pt-BR")}
+                  </div>
+
+                  <div className="font-face-montserrat">
+                    {horario.age_hora.substring(0, 5)}
+                  </div>
+
+                  <div className="font-face-montserrat">
+                    {horario.usu_nomeCompleto}
+                  </div>
+
+                  <div className="font-face-montserrat">
+                    {horario.ser_preco !== 0
+                      ? `R$ ${horario.ser_preco.toFixed(2)}`
+                      : "Gratuito"}
+                  </div>
                 </div>
               </div>
             );

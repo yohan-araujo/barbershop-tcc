@@ -66,7 +66,7 @@ const CadastroCliente = () => {
     <section className="flex flex-1 min-h-screen bg-black">
       <div className="flex flex-auto justify-center">
         <div className="relative">
-          <div className="border-2 absolute left-[2rem] top-[10rem] w-[61rem] h-[59rem] border-[#E29C31]"></div>
+          <div className="border-2 absolute left-[1.5rem] top-[11rem] w-[59rem] h-[59rem] border-[#E29C31]"></div>
           <div className="bg-[#1D1D1D] rounded-lg shadow-xl my-36 relative z-10">
             <div className="flex flex-row">
               <div className="max-h-full border-[#E29C31]">

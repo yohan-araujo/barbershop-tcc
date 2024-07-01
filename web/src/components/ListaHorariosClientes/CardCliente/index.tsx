@@ -59,7 +59,7 @@ const CardCliente: React.FC<CardClienteProps> = ({
   const isButtonDisabled = !selectedOption;
 
   return (
-    <div className="w-[26rem] h-44 border-2 border-[#E29C31] bg-black my-4">
+    <div className="w-[26rem] h-[46rem] p-4 border-2 border-[#E29C31] bg-black my-4">
       <div className="flex flex-row gap-6 my-2">
         <div className="ml-4">
           <img src={urlImagem} alt="" className="w-20 h-20 rounded-full" />

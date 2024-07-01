@@ -55,7 +55,7 @@ const CartaoFidelidade = ({ cartoes }: CartaoProps) => {
               <img
                 src={CfFoto}
                 alt=""
-                className="w-54 h-54 relative z-10 max-w-xs h-auto mb-4 object-cover "
+                className="w-54 h-54 relative z-10 max-w-xs mb-4 object-cover"
               />
             </div>
           </div>

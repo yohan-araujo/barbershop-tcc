@@ -18,7 +18,7 @@ const Calendario = ({ onDiaSelecionado }: CalendarioProps) => {
 
     const arrayData = [];
 
-    //gerar data prefixa
+    // Gerar data prefixa
     for (let i = 0; i < primeiraDataDoMes.day(); i++) {
       const data = ultimaDataDoMes.day(i);
 
@@ -28,18 +28,18 @@ const Calendario = ({ onDiaSelecionado }: CalendarioProps) => {
       });
     }
 
-    //gerar data atual
+    // Gerar data atual
     for (let i = primeiraDataDoMes.date(); i <= ultimaDataDoMes.date(); i++) {
+      const dia = primeiraDataDoMes.date(i);
       arrayData.push({
         mesAtual: true,
-        data: primeiraDataDoMes.date(i),
-        hoje:
-          primeiraDataDoMes.date(i).toDate().toDateString() ===
-          dayjs().toDate().toDateString(),
+        data: dia,
+        hoje: dia.isSame(dayjs(), 'day'),
+        inativo: dia.isBefore(dayjs(), 'day'), // Marca os dias anteriores como inativos
       });
     }
 
-    //gerando dias inativos dos proximos e antigos meses
+    // Gerando dias inativos dos próximos e antigos meses
     const diasRestantes = 42 - arrayData.length;
 
     for (
@@ -56,10 +56,14 @@ const Calendario = ({ onDiaSelecionado }: CalendarioProps) => {
   const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
   function cn(...classes: string[]) {
-    return classes.filter(Boolean).join('');
+    return classes.filter(Boolean).join(' ');
   }
 
-  const selecionarDia = (dia: Dayjs) => {
+  const selecionarDia = (dia: Dayjs, inativo: boolean) => {
+    if (inativo) {
+      return; // Impede a seleção de dias inativos
+    }
+
     if (diaSelecionado && diaSelecionado.isSame(dia, 'day')) {
       setDiaSelecionado(null);
       onDiaSelecionado(null);
@@ -104,40 +108,37 @@ const Calendario = ({ onDiaSelecionado }: CalendarioProps) => {
         </div>
       </div>
       <div className="w-full grid grid-cols-7 bg-black font-medium">
-        {dias.map((dia, index) => {
-          return (
-            <h1
-              key={index}
-              className="h-14 grid place-content-center text-white font-face-montserrat text-xl"
-            >
-              {dia}
-            </h1>
-          );
-        })}
+        {dias.map((dia, index) => (
+          <h1
+            key={index}
+            className="h-14 grid place-content-center text-white font-face-montserrat text-xl"
+          >
+            {dia}
+          </h1>
+        ))}
       </div>
       <div className="w-full grid grid-cols-7 bg-black rounded">
         {gerarData(mesAtual.month(), mesAtual.year()).map(
-          ({ mesAtual, data, hoje }, index) => {
-            return (
-              <div
-                key={index}
-                className="h-14 w-14 grid place-content-center text-xl"
+          ({ mesAtual, data, hoje, inativo = false }, index) => (
+            <div
+              key={index}
+              className="h-14 w-14 grid place-content-center text-xl"
+            >
+              <h1
+                className={`${cn(
+                  mesAtual ? '' : 'opacity-50',
+                  hoje ? 'bg-[#E29C31] h-10 w-10' : '',
+                  inativo ? 'cursor-not-allowed' : '',
+                  diaSelecionado && diaSelecionado.isSame(data, 'day')
+                    ? 'grid place-content-center bg-[#E29C31] h-10 w-10 text-black rounded-[4px] cursor-pointer font-inter'
+                    : 'h-10 w-10 grid place-content-center rounded-[4px] text-white hover:bg-[#E29C31] hover:text-black transition-all cursor-pointer font-inter'
+                )}`}
+                onClick={() => selecionarDia(data, inativo)}
               >
-                <h1
-                  className={`${cn(
-                    mesAtual ? '' : 'opacity-50 h-10 w-10 cursor',
-                    hoje ? 'bg-[#E29C31] h-10 w-10' : '',
-                    diaSelecionado && diaSelecionado.isSame(data, 'day')
-                      ? 'grid place-content-center bg-[#E29C31] h-10 w-10 text-black rounded-[4px] cursor-pointer font-inter'
-                      : 'h-10 w-10 grid place-content-center rounded-[4px] text-white hover:bg-[#E29C31] hover:text-black transition-all cursor-pointer font-inter'
-                  )}`}
-                  onClick={() => selecionarDia(data)}
-                >
-                  {data.date()}
-                </h1>
-              </div>
-            );
-          }
+                {data.date()}
+              </h1>
+            </div>
+          )
         )}
       </div>
     </div>

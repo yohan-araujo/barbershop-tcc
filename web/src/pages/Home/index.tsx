@@ -56,7 +56,7 @@ const Home = () => {
                 Venha cortar em uma das melhores barbearias da cidade!
               </div>
 
-              <div className="">
+              <div>
                 <ButtonPadrao texto="Agendar horário" outline={true} />
               </div>
             </div>
@@ -82,16 +82,22 @@ const Home = () => {
                 Sobre nós
               </h2>
               <p className="text-justify font-normal font-face-montserrat text-xl text-white my-12 pr-48">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                Bem-vindo ao Barbershop, onde a tradição encontra o estilo
+                moderno. Nossa barbearia oferece uma experiência completa para
+                homens que valorizam um corte de cabelo impecável e um barbear
+                preciso. Com uma equipe de barbeiros experientes e apaixonados
+                pelo ofício, garantimos não apenas cortes clássicos e
+                contemporâneos, mas também uma série de serviços adicionais.
+                Aproveite nossas sessões de barba completa, que incluem
+                modelagem, tratamento com produtos premium e até mesmo serviços
+                de relaxamento como massagem facial. Além disso, oferecemos
+                serviços de tintura de barba e cabelo, para aqueles que desejam
+                um toque de cor ou cobertura de grisalhos. Na Barbearia
+                Cortezia, cada cliente recebe atenção personalizada e sai não
+                apenas com um visual renovado, mas também com a confiança de
+                estar bem cuidado. Venha nos visitar e descubra como podemos
+                transformar sua rotina de cuidados pessoais em um momento de
+                prazer e estilo.
               </p>
             </div>
           </div>
@@ -106,13 +112,13 @@ const Home = () => {
       <section className="p-14 my-12">
         <div className="flex flex-col">
           <h2 className="text-orange-400 text-4xl font-bold font-face-montserrat text-center">
-            Nossos Servicos
+            Nossos Serviços
           </h2>
           <p className="font-normal font-face-montserrat text-xl m-12 px-36 text-white text-center">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            No Barbershop, oferecemos cortes de cabelo modernos, aparo de barba,
+            tratamentos capilares e cuidados personalizados para garantir uma
+            experiência de bem-estar e estilo impecável. Esses são os serviçõs
+            disponíveis em nosso estabelecimento!
           </p>
         </div>
 
@@ -189,10 +195,10 @@ const Home = () => {
             Conheça nossos funcionários
           </h2>
           <p className="text-white text-xl font-normal font-face-montserrat mx-64">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            No Barbershop, nossa equipe de profissionais é o coração
+            pulsante do nosso sucesso. Cada barbeiro traz consigo uma combinação
+            única de talento, experiência e paixão pelo que faz, assegurando que
+            cada cliente receba um serviço excepcional.
           </p>
         </div>
 
